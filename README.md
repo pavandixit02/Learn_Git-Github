@@ -100,9 +100,8 @@ My objectives are:
 My-First-Website
 │
 ├── index.html
-├── about.html
-├── style.css
-└── script.js
+├── GG.css
+└── GG.js
 ```
 
 
