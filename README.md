@@ -96,12 +96,15 @@ My objectives are:
 
 # 📂 Repository Structure
 
-```text
-.
-├── README.md
-├── index.html
-└── practice-files/
 ```
+My-First-Website
+│
+├── index.html
+├── about.html
+├── style.css
+└── script.js
+```
+
 
 ---
 
