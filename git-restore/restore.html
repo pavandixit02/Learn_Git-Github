@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Git Restore Command</title>
+</head>
+<body>
+
+    <header>
+        <h1>🔄 Git Restore Command</h1>
+        <hr>
+    </header>
+
+    <section>
+        <h2>📌 What is Git Restore?</h2>
+
+        <p>
+            <strong>git restore</strong> is a Git command used to restore files
+            to their previous state. It can discard unwanted changes in your
+            working directory or restore files from another commit or branch.
+        </p>
+    </section>
+
+    <hr>
+
+    <section>
+        <h2>🎯 Why Do We Use git restore?</h2>
+
+        <ul>
+            <li>Undo accidental changes in a file.</li>
+            <li>Restore deleted files.</li>
+            <li>Remove uncommitted modifications.</li>
+            <li>Recover files from a previous commit.</li>
+            <li>Keep your working directory clean.</li>
+        </ul>
+    </section>
+
+    <hr>
+
+    <section>
+        <h2>⚙️ Basic Syntax</h2>
+
+<pre>
+git restore &lt;file-name&gt;
+</pre>
+
+        <p>
+            This command restores the specified file to its last committed version.
+        </p>
+
+    </section>
+
+    <hr>
+
+    <section>
+
+        <h2>💻 Examples</h2>
+
+        <h3>1. Restore One File</h3>
+
+<pre>
+git restore index.html
+</pre>
+
+        <p>
+            Restores <strong>index.html</strong> to its last committed state.
+        </p>
+
+        <hr>
+
+        <h3>2. Restore Multiple Files</h3>
+
+<pre>
+git restore index.html style.css script.js
+</pre>
+
+        <hr>
+
+        <h3>3. Restore All Modified Files</h3>
+
+<pre>
+git restore .
+</pre>
+
+        <p>
+            Restores all modified tracked files.
+        </p>
+
+        <hr>
+
+        <h3>4. Restore a Deleted File</h3>
+
+<pre>
+git restore README.md
+</pre>
+
+        <hr>
+
+        <h3>5. Restore a File from Another Commit</h3>
+
+<pre>
+git restore --source=HEAD~1 index.html
+</pre>
+
+        <p>
+            Restores the file from the previous commit.
+        </p>
+
+    </section>
+
+    <hr>
+
+    <section>
+
+        <h2>📖 Real-Life Example</h2>
+
+        <p>
+            Imagine you are writing an assignment and accidentally delete an
+            important paragraph.
+        </p>
+
+        <p>
+            Instead of rewriting everything, you restore the previous saved
+            version.
+        </p>
+
+        <p>
+            <strong>git restore</strong> works in the same way.
+        </p>
+
+    </section>
+
+    <hr>
+
+    <section>
+
+        <h2>⚠️ Important Notes</h2>
+
+        <ul>
+            <li>Works only for tracked files.</li>
+            <li>Untracked files are not restored.</li>
+            <li>Discarded changes cannot be recovered unless they were committed.</li>
+            <li>Always verify before using <code>git restore .</code>.</li>
+        </ul>
+
+    </section>
+
+    <hr>
+
+    <section>
+
+        <h2>🆚 Git Restore vs Git Checkout</h2>
+
+        <table border="1" cellpadding="10">
+
+            <tr>
+                <th>Git Restore</th>
+                <th>Git Checkout</th>
+            </tr>
+
+            <tr>
+                <td>Restore files only</td>
+                <td>Switch branches and restore files</td>
+            </tr>
+
+            <tr>
+                <td>Modern command</td>
+                <td>Older command</td>
+            </tr>
+
+            <tr>
+                <td>Safer for beginners</td>
+                <td>Can perform multiple actions</td>
+            </tr>
+
+        </table>
+
+    </section>
+
+    <hr>
+
+    <section>
+
+        <h2>📊 Workflow Example</h2>
+
+<pre>
+Create Repository
+        │
+        ▼
+Modify index.html
+        │
+        ▼
+git status
+        │
+        ▼
+git restore index.html
+        │
+        ▼
+File Restored Successfully
+</pre>
+
+    </section>
+
+    <hr>
+
+    <section>
+
+        <h2>💡 Best Practices</h2>
+
+        <ul>
+            <li>Run <code>git status</code> before using git restore.</li>
+            <li>Commit important work before discarding changes.</li>
+            <li>Use <code>git restore .</code> carefully.</li>
+            <li>Understand the difference between staged and unstaged changes.</li>
+        </ul>
+
+    </section>
+
+    <hr>
+
+    <section>
+
+        <h2>📝 Interview Questions</h2>
+
+        <ol>
+            <li>What is the purpose of git restore?</li>
+            <li>How is git restore different from git checkout?</li>
+            <li>Can git restore recover deleted files?</li>
+            <li>Does git restore work on untracked files?</li>
+            <li>What happens when you run <code>git restore .</code>?</li>
+        </ol>
+
+    </section>
+
+    <hr>
+
+    <section>
+
+        <h2>📌 Summary</h2>
+
+        <ul>
+            <li>git restore restores tracked files.</li>
+            <li>It discards unwanted changes.</li>
+            <li>It can recover deleted tracked files.</li>
+            <li>It is safer and more modern than using checkout for restoring files.</li>
+            <li>Always check git status before restoring.</li>
+        </ul>
+
+    </section>
+
+    <hr>
+
+    <footer>
+
+        <p><strong>Git & GitHub Learning Repository</strong></p>
+
+        <p>Created by Pavan Kumar Dixit</p>
+
+    </footer>
+
+</body>
+</html>
