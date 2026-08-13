@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Git Alias - Complete Study Material</title>
+  <style>
+    :root{
+      --bg:#0f172a;
+      --card:#111827;
+      --card2:#1e293b;
+      --text:#e5e7eb;
+      --muted:#94a3b8;
+      --accent:#38bdf8;
+      --green:#4ade80;
+      --yellow:#facc15;
+      --red:#fb7185;
+      --border:#334155;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Arial,Helvetica,sans-serif;
+      background:linear-gradient(135deg,#020617,#0f172a 55%,#111827);
+      color:var(--text);
+      line-height:1.7;
+    }
+    .container{max-width:1100px;margin:auto;padding:28px 20px 60px}
+    header{
+      padding:42px 30px;
+      border:1px solid var(--border);
+      border-radius:22px;
+      background:linear-gradient(135deg,#0c4a6e,#172554);
+      box-shadow:0 15px 45px rgba(0,0,0,.3);
+      margin-bottom:28px;
+    }
+    header h1{margin:0 0 10px;font-size:42px;color:#fff}
+    header p{margin:0;color:#dbeafe;font-size:18px}
+    .badge{
+      display:inline-block;
+      background:rgba(56,189,248,.15);
+      border:1px solid rgba(56,189,248,.4);
+      color:#7dd3fc;
+      padding:5px 12px;
+      border-radius:999px;
+      font-size:13px;
+      margin-bottom:14px;
+    }
+    section{
+      background:rgba(17,24,39,.9);
+      border:1px solid var(--border);
+      border-radius:18px;
+      padding:26px;
+      margin:22px 0;
+    }
+    h2{color:var(--accent);margin-top:0;border-bottom:1px solid var(--border);padding-bottom:10px}
+    h3{color:#c4b5fd}
+    code{
+      background:#020617;
+      color:#86efac;
+      padding:2px 6px;
+      border-radius:5px;
+      font-family:"Courier New",monospace;
+    }
+    pre{
+      background:#020617;
+      border:1px solid #1e293b;
+      padding:18px;
+      border-radius:12px;
+      overflow-x:auto;
+      color:#d1fae5;
+      font-family:"Courier New",monospace;
+      font-size:14px;
+    }
+    .note,.warning,.success{
+      padding:15px 18px;
+      border-radius:10px;
+      margin:15px 0;
+    }
+    .note{background:#082f49;border-left:4px solid var(--accent)}
+    .warning{background:#422006;border-left:4px solid var(--yellow)}
+    .success{background:#052e16;border-left:4px solid var(--green)}
+    table{width:100%;border-collapse:collapse;margin:15px 0}
+    th,td{border:1px solid var(--border);padding:12px;text-align:left}
+    th{background:#1e293b;color:#7dd3fc}
+    tr:nth-child(even){background:rgba(30,41,59,.35)}
+    .flow{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+      justify-content:center;
+      margin:22px 0;
+    }
+    .flow span{
+      padding:12px 16px;
+      background:#1e293b;
+      border:1px solid #475569;
+      border-radius:10px;
+    }
+    .arrow{color:var(--accent);font-size:22px}
+    ul,ol{padding-left:24px}
+    .quiz{
+      background:#172554;
+      border:1px solid #3730a3;
+      border-radius:12px;
+      padding:16px;
+      margin:12px 0;
+    }
+    footer{
+      text-align:center;
+      color:var(--muted);
+      padding:25px 0;
+      font-size:14px;
+    }
+    @media(max-width:700px){
+      header h1{font-size:31px}
+      section{padding:20px}
+    }
+  </style>
+</head>
+
+<body>
+<div class="container">
+
+  <header>
+    <span class="badge">Git / DevOps Study Material</span>
+    <h1>Git Alias</h1>
+    <p>Git commands ko short aur easy banane ke liye Alias ka complete beginner-friendly guide.</p>
+  </header>
+
+  <section>
+    <h2>1. Git Alias Kya Hota Hai?</h2>
+    <p>
+      <strong>Git Alias</strong> ek custom shortcut hota hai jo kisi Git command ke liye
+      banaya jata hai. Agar koi Git command baar-baar type karni padti hai, to uska
+      short name (alias) create karke command ko quickly run kar sakte hain.
+    </p>
+
+    <div class="note">
+      <strong>Simple Definition:</strong><br>
+      Git Alias = Git command ka shortcut.
+    </div>
+
+    <p>Example:</p>
+    <pre>git status</pre>
+
+    <p>Agar <code>status</code> ka alias <code>st</code> bana diya:</p>
+    <pre>git st</pre>
+
+    <p>Dono commands same kaam karengi.</p>
+  </section>
+
+  <section>
+    <h2>2. Git Alias Ki Zarurat Kyu Hoti Hai?</h2>
+    <p>Git projects me kuch commands bahut frequently use hoti hain. Alias se:</p>
+    <ul>
+      <li>Typing kam hoti hai.</li>
+      <li>Frequently-used commands jaldi run hoti hain.</li>
+      <li>Developer productivity improve hoti hai.</li>
+      <li>Long Git commands ko short aur memorable banaya ja sakta hai.</li>
+    </ul>
+
+    <table>
+      <thead>
+        <tr><th>Original Command</th><th>Alias</th><th>Use</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>git status</code></td><td><code>git st</code></td><td>Working tree status</td></tr>
+        <tr><td><code>git branch</code></td><td><code>git br</code></td><td>Branches dekhna</td></tr>
+        <tr><td><code>git checkout</code></td><td><code>git co</code></td><td>Branch switch/checkout</td></tr>
+        <tr><td><code>git log --oneline</code></td><td><code>git lg</code></td><td>Short commit history</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>3. Git Alias Kaise Create Kare?</h2>
+
+    <h3>Example 1: status ka alias</h3>
+    <pre>git config --global alias.st status</pre>
+
+    <p>Ab aap run kar sakte hain:</p>
+    <pre>git st</pre>
+
+    <div class="success">
+      <strong>Result:</strong> <code>git st</code> internally <code>git status</code> ke equivalent kaam karega.
+    </div>
+
+    <h3>Example 2: branch ka alias</h3>
+    <pre>git config --global alias.br branch</pre>
+    <pre>git br</pre>
+
+    <h3>Example 3: checkout ka alias</h3>
+    <pre>git config --global alias.co checkout</pre>
+    <pre>git co main</pre>
+  </section>
+
+  <section>
+    <h2>4. Useful Git Alias Examples</h2>
+
+    <h3>Log ko short aur graphical banana</h3>
+    <pre>git config --global alias.lg "log --oneline --graph --all"</pre>
+    <p>Ab:</p>
+    <pre>git lg</pre>
+
+    <h3>Last commit dekhna</h3>
+    <pre>git config --global alias.last "log -1 HEAD"</pre>
+    <pre>git last</pre>
+
+    <h3>Commit shortcut</h3>
+    <pre>git config --global alias.cm "commit -m"</pre>
+    <pre>git cm "Add Docker configuration"</pre>
+
+    <h3>Switch shortcut</h3>
+    <pre>git config --global alias.sw switch</pre>
+    <pre>git sw main</pre>
+  </section>
+
+  <section>
+    <h2>5. --global Ka Matlab Kya Hai?</h2>
+    <p>
+      <code>--global</code> ka matlab hai ki alias current user ke Git configuration
+      me save hoga aur us user ke repositories me available rahega.
+    </p>
+
+    <pre>git config --global alias.st status</pre>
+
+    <p>Linux par configuration commonly:</p>
+    <pre>~/.gitconfig</pre>
+
+    <p>Example configuration:</p>
+    <pre>[alias]
+    st = status
+    br = branch
+    co = checkout
+    lg = log --oneline --graph --all</pre>
+
+    <div class="warning">
+      <strong>Note:</strong> Alias repository ke commits ya source code ko change nahi karta.
+      Ye sirf Git command ko invoke karne ka shortcut hai.
+    </div>
+  </section>
+
+  <section>
+    <h2>6. Git Alias Check Kaise Kare?</h2>
+
+    <p>Configured aliases ki list:</p>
+    <pre>git config --global --get-regexp alias</pre>
+
+    <p>Example output:</p>
+    <pre>alias.st status
+alias.br branch
+alias.co checkout
+alias.lg log --oneline --graph --all</pre>
+
+    <p>Specific alias check karne ke liye:</p>
+    <pre>git config --global --get alias.st</pre>
+  </section>
+
+  <section>
+    <h2>7. Git Alias Delete Kaise Kare?</h2>
+
+    <p>Agar <code>st</code> alias delete karna hai:</p>
+    <pre>git config --global --unset alias.st</pre>
+
+    <p>Verify:</p>
+    <pre>git config --global --get alias.st</pre>
+
+    <p>Agar output nahi aata, to alias remove ho gaya hai.</p>
+  </section>
+
+  <section>
+    <h2>8. Local Alias vs Global Alias</h2>
+
+    <table>
+      <thead>
+        <tr><th>Type</th><th>Command</th><th>Scope</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Global</td>
+          <td><code>git config --global alias.st status</code></td>
+          <td>User ke all repositories</td>
+        </tr>
+        <tr>
+          <td>Local</td>
+          <td><code>git config alias.st status</code></td>
+          <td>Current repository</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="note">
+      <strong>Important:</strong> <code>--global</code> nahi lagane par alias current Git repository
+      ke configuration me save hota hai.
+    </div>
+  </section>
+
+  <section>
+    <h2>9. Git Alias Ka Working Flow</h2>
+
+    <div class="flow">
+      <span>Developer</span>
+      <span class="arrow">→</span>
+      <span>git st</span>
+      <span class="arrow">→</span>
+      <span>Alias Lookup</span>
+      <span class="arrow">→</span>
+      <span>status</span>
+      <span class="arrow">→</span>
+      <span>Git Result</span>
+    </div>
+
+    <p>
+      Jab aap <code>git st</code> run karte hain, Git configuration me check karta hai
+      ki <code>st</code> naam ka alias defined hai ya nahi. Agar alias
+      <code>status</code> ko point karta hai, to Git status command execute karta hai.
+    </p>
+  </section>
+
+  <section>
+    <h2>10. Recommended Aliases for DevOps</h2>
+
+    <pre>git config --global alias.st status
+git config --global alias.br branch
+git config --global alias.co checkout
+git config --global alias.sw switch
+git config --global alias.cm "commit -m"
+git config --global alias.lg "log --oneline --graph --all"
+git config --global alias.last "log -1 HEAD"</pre>
+
+    <p>Daily usage:</p>
+    <pre>git st
+git br
+git sw main
+git cm "Add Docker configuration"
+git lg
+git last</pre>
+  </section>
+
+  <section>
+    <h2>11. Real-Life Analogy</h2>
+
+    <p>
+      Maan lo kisi person ka full name <strong>Pavan Kumar Dixit</strong> hai aur
+      daily conversation me use short name <strong>Pavan</strong> se bulate hain.
+    </p>
+
+    <p>Similarly:</p>
+
+    <pre>Full Git Command  →  git status
+Short Alias        →  git st</pre>
+
+    <p>
+      Alias command ka actual meaning change nahi karta. Sirf us command ko call karne
+      ka ek convenient shortcut provide karta hai.
+    </p>
+  </section>
+
+  <section>
+    <h2>12. Alias vs Actual Git Command</h2>
+
+    <table>
+      <thead>
+        <tr><th>Command</th><th>Type</th><th>Meaning</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>git status</code></td><td>Actual Git command</td><td>Repository status check karta hai</td></tr>
+        <tr><td><code>git st</code></td><td>Alias</td><td><code>status</code> ka shortcut</td></tr>
+      </tbody>
+    </table>
+
+    <div class="success">
+      Yaad rakho: <strong>Alias = Shortcut, Replacement nahi.</strong>
+    </div>
+  </section>
+
+  <section>
+    <h2>13. Common Mistakes</h2>
+
+    <ol>
+      <li><code>git alias.st status</code> likhna — ye correct syntax nahi hai.</li>
+      <li><code>alias</code> aur actual Git command ko confuse karna.</li>
+      <li>Alias create karne ke baad verify na karna.</li>
+      <li>Global aur local configuration ka difference na samajhna.</li>
+      <li>Bahut confusing aliases banana jo team members ke liye difficult hon.</li>
+    </ol>
+
+    <h3>Correct syntax</h3>
+    <pre>git config --global alias.st status</pre>
+  </section>
+
+  <section>
+    <h2>14. Interview Questions</h2>
+
+    <div class="quiz">
+      <strong>Q1. Git Alias kya hota hai?</strong>
+      <p>Git command ke liye banaya gaya custom shortcut Git Alias kehlata hai.</p>
+    </div>
+
+    <div class="quiz">
+      <strong>Q2. Status command ka <code>st</code> alias kaise banayenge?</strong>
+      <p><code>git config --global alias.st status</code></p>
+    </div>
+
+    <div class="quiz">
+      <strong>Q3. Global alias ka configuration kaha hota hai?</strong>
+      <p>Linux par commonly <code>~/.gitconfig</code> me.</p>
+    </div>
+
+    <div class="quiz">
+      <strong>Q4. Alias kaise delete karenge?</strong>
+      <p><code>git config --global --unset alias.st</code></p>
+    </div>
+
+    <div class="quiz">
+      <strong>Q5. Global aur local alias me difference?</strong>
+      <p>Global alias user ke repositories me available hota hai, jabki local alias current repository ke configuration tak limited hota hai.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>15. Quick Revision</h2>
+
+    <table>
+      <thead>
+        <tr><th>Task</th><th>Command</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Create global alias</td><td><code>git config --global alias.st status</code></td></tr>
+        <tr><td>Create local alias</td><td><code>git config alias.st status</code></td></tr>
+        <tr><td>List aliases</td><td><code>git config --global --get-regexp alias</code></td></tr>
+        <tr><td>Get one alias</td><td><code>git config --global --get alias.st</code></td></tr>
+        <tr><td>Delete alias</td><td><code>git config --global --unset alias.st</code></td></tr>
+        <tr><td>View config</td><td><code>cat ~/.gitconfig</code></td></tr>
+      </tbody>
+    </table>
+
+    <div class="success">
+      <strong>One-line revision:</strong>
+      Git Alias ek custom shortcut hai jo frequently-used Git commands ko short name se run karne deta hai.
+    </div>
+  </section>
+
+  <footer>
+    Git Alias Study Material • Beginner → Intermediate • DevOps Learning
+  </footer>
+
+</div>
+</body>
+</html>
