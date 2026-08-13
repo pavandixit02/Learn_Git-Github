@@ -1,263 +1,88 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Git Restore Command</title>
-</head>
-<body>
-
-    <header>
-        <h1>🔄 Git Restore Command</h1>
-        <hr>
-    </header>
-
-    <section>
-        <h2>📌 What is Git Restore?</h2>
-
-        <p>
-            <strong>git restore</strong> is a Git command used to restore files
-            to their previous state. It can discard unwanted changes in your
-            working directory or restore files from another commit or branch.
-        </p>
-    </section>
-
-    <hr>
-
-    <section>
-        <h2>🎯 Why Do We Use git restore?</h2>
-
-        <ul>
-            <li>Undo accidental changes in a file.</li>
-            <li>Restore deleted files.</li>
-            <li>Remove uncommitted modifications.</li>
-            <li>Recover files from a previous commit.</li>
-            <li>Keep your working directory clean.</li>
-        </ul>
-    </section>
-
-    <hr>
-
-    <section>
-        <h2>⚙️ Basic Syntax</h2>
-
-<pre>
-git restore &lt;file-name&gt;
-</pre>
-
-        <p>
-            This command restores the specified file to its last committed version.
-        </p>
-
-    </section>
-
-    <hr>
-
-    <section>
-
-        <h2>💻 Examples</h2>
-
-        <h3>1. Restore One File</h3>
-
-<pre>
-git restore index.html
-</pre>
-
-        <p>
-            Restores <strong>index.html</strong> to its last committed state.
-        </p>
-
-        <hr>
-
-        <h3>2. Restore Multiple Files</h3>
-
-<pre>
-git restore index.html style.css script.js
-</pre>
-
-        <hr>
-
-        <h3>3. Restore All Modified Files</h3>
-
-<pre>
-git restore .
-</pre>
-
-        <p>
-            Restores all modified tracked files.
-        </p>
-
-        <hr>
-
-        <h3>4. Restore a Deleted File</h3>
-
-<pre>
-git restore README.md
-</pre>
-
-        <hr>
-
-        <h3>5. Restore a File from Another Commit</h3>
-
-<pre>
-git restore --source=HEAD~1 index.html
-</pre>
-
-        <p>
-            Restores the file from the previous commit.
-        </p>
-
-    </section>
-
-    <hr>
-
-    <section>
-
-        <h2>📖 Real-Life Example</h2>
-
-        <p>
-            Imagine you are writing an assignment and accidentally delete an
-            important paragraph.
-        </p>
-
-        <p>
-            Instead of rewriting everything, you restore the previous saved
-            version.
-        </p>
-
-        <p>
-            <strong>git restore</strong> works in the same way.
-        </p>
-
-    </section>
-
-    <hr>
-
-    <section>
-
-        <h2>⚠️ Important Notes</h2>
-
-        <ul>
-            <li>Works only for tracked files.</li>
-            <li>Untracked files are not restored.</li>
-            <li>Discarded changes cannot be recovered unless they were committed.</li>
-            <li>Always verify before using <code>git restore .</code>.</li>
-        </ul>
-
-    </section>
-
-    <hr>
-
-    <section>
-
-        <h2>🆚 Git Restore vs Git Checkout</h2>
-
-        <table border="1" cellpadding="10">
-
-            <tr>
-                <th>Git Restore</th>
-                <th>Git Checkout</th>
-            </tr>
-
-            <tr>
-                <td>Restore files only</td>
-                <td>Switch branches and restore files</td>
-            </tr>
-
-            <tr>
-                <td>Modern command</td>
-                <td>Older command</td>
-            </tr>
-
-            <tr>
-                <td>Safer for beginners</td>
-                <td>Can perform multiple actions</td>
-            </tr>
-
-        </table>
-
-    </section>
-
-    <hr>
-
-    <section>
-
-        <h2>📊 Workflow Example</h2>
-
-<pre>
-Create Repository
-        │
-        ▼
-Modify index.html
-        │
-        ▼
-git status
-        │
-        ▼
-git restore index.html
-        │
-        ▼
-File Restored Successfully
-</pre>
-
-    </section>
-
-    <hr>
-
-    <section>
-
-        <h2>💡 Best Practices</h2>
-
-        <ul>
-            <li>Run <code>git status</code> before using git restore.</li>
-            <li>Commit important work before discarding changes.</li>
-            <li>Use <code>git restore .</code> carefully.</li>
-            <li>Understand the difference between staged and unstaged changes.</li>
-        </ul>
-
-    </section>
-
-    <hr>
-
-    <section>
-
-        <h2>📝 Interview Questions</h2>
-
-        <ol>
-            <li>What is the purpose of git restore?</li>
-            <li>How is git restore different from git checkout?</li>
-            <li>Can git restore recover deleted files?</li>
-            <li>Does git restore work on untracked files?</li>
-            <li>What happens when you run <code>git restore .</code>?</li>
-        </ol>
-
-    </section>
-
-    <hr>
-
-    <section>
-
-        <h2>📌 Summary</h2>
-
-        <ul>
-            <li>git restore restores tracked files.</li>
-            <li>It discards unwanted changes.</li>
-            <li>It can recover deleted tracked files.</li>
-            <li>It is safer and more modern than using checkout for restoring files.</li>
-            <li>Always check git status before restoring.</li>
-        </ul>
-
-    </section>
-
-    <hr>
-
-    <footer>
-
-        <p><strong>Git & GitHub Learning Repository</strong></p>
-
-        <p>Created by Pavan Kumar Dixit</p>
-
-    </footer>
-
-</body>
-</html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Git Restore - Git Study Material</title><style>
+    :root{--bg:#0f172a;--card:#111827;--text:#e5e7eb;--muted:#94a3b8;--accent:#38bdf8;--green:#4ade80;--yellow:#facc15;--red:#fb7185;--border:#334155}
+    *{box-sizing:border-box} body{margin:0;font-family:Arial,Helvetica,sans-serif;background:linear-gradient(135deg,#020617,#0f172a 55%,#111827);color:var(--text);line-height:1.7}
+    .container{max-width:1100px;margin:auto;padding:28px 20px 60px} header{padding:42px 30px;border:1px solid var(--border);border-radius:22px;background:linear-gradient(135deg,#0c4a6e,#172554);box-shadow:0 15px 45px rgba(0,0,0,.3);margin-bottom:28px}
+    header h1{margin:0 0 10px;font-size:42px;color:#fff} header p{margin:0;color:#dbeafe;font-size:18px}.badge{display:inline-block;background:rgba(56,189,248,.15);border:1px solid rgba(56,189,248,.4);color:#7dd3fc;padding:5px 12px;border-radius:999px;font-size:13px;margin-bottom:14px}
+    section{background:rgba(17,24,39,.9);border:1px solid var(--border);border-radius:18px;padding:26px;margin:22px 0} h2{color:var(--accent);margin-top:0;border-bottom:1px solid var(--border);padding-bottom:10px} h3{color:#c4b5fd}
+    code{background:#020617;color:#86efac;padding:2px 6px;border-radius:5px;font-family:"Courier New",monospace} pre{background:#020617;border:1px solid #1e293b;padding:18px;border-radius:12px;overflow-x:auto;color:#d1fae5;font-family:"Courier New",monospace;font-size:14px}
+    .note,.warning,.success{padding:15px 18px;border-radius:10px;margin:15px 0}.note{background:#082f49;border-left:4px solid var(--accent)}.warning{background:#422006;border-left:4px solid var(--yellow)}.success{background:#052e16;border-left:4px solid var(--green)}
+    table{width:100%;border-collapse:collapse;margin:15px 0}th,td{border:1px solid var(--border);padding:12px;text-align:left}th{background:#1e293b;color:#7dd3fc}tr:nth-child(even){background:rgba(30,41,59,.35)}
+    .flow{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:center;margin:22px 0}.flow span{padding:12px 16px;background:#1e293b;border:1px solid #475569;border-radius:10px}.arrow{color:var(--accent);font-size:22px}
+    .quiz{background:#172554;border:1px solid #3730a3;border-radius:12px;padding:16px;margin:12px 0} footer{text-align:center;color:var(--muted);padding:25px 0;font-size:14px}
+    @media(max-width:700px){header h1{font-size:31px}section{padding:20px}}
+    </style></head><body><div class="container">
+<header><span class="badge">Git / DevOps Study Material</span><h1>Git Restore</h1><p>Working tree aur staging area ke changes ko safely samajhne aur manage karne ka guide.</p></header>
+
+<section><h2>1. Git Restore Kya Hota Hai?</h2>
+<p><strong>git restore</strong> ka main purpose working directory ya staging area me kiye gaye changes ko restore/remove karna hai.</p>
+<div class="note"><strong>Simple Definition:</strong><br>Restore = Working tree ya staging area ke changes ko specified state par wapas lana.</div>
+<p>Important: <code>git restore</code> mainly file-level changes handle karta hai. Ye commits ko delete/undo karne ke liye primary command nahi hai.</p>
+</section>
+
+<section><h2>2. Restore Kab Use Kare?</h2>
+<ul><li>File me galat changes kar diye aur unhe discard karna hai.</li><li>Staged file ko unstage karna hai.</li><li>File ko kisi commit ki state se restore karna hai.</li></ul>
+<div class="warning"><strong>Warning:</strong> Working-tree changes ko discard karne wali restore command se uncommitted work lose ho sakta hai.</div>
+</section>
+
+<section><h2>3. Working Directory Changes Discard Karna</h2>
+<pre>git restore filename.txt</pre>
+<p>Isse <code>filename.txt</code> ke unstaged changes discard hoke last committed state restore ho jayegi.</p>
+<p>Example:</p><pre>git status
+git restore app.py
+git status</pre>
+</section>
+
+<section><h2>4. Multiple Files Restore</h2>
+<pre>git restore file1.txt file2.txt</pre>
+<p>Current directory ke multiple files ke changes discard karne ke liye:</p>
+<pre>git restore .</pre>
+<div class="warning"><strong>Careful:</strong> <code>git restore .</code> current directory ke unstaged changes discard kar sakta hai.</div>
+</section>
+
+<section><h2>5. Staged File Ko Unstage Karna</h2>
+<pre>git add app.py
+git restore --staged app.py</pre>
+<p>Yahaan file ke changes delete nahi hote. Sirf staging area se file remove hoti hai.</p>
+<div class="success"><strong>Important:</strong> <code>--staged</code> ka use unstage karne ke liye hota hai.</div>
+</section>
+
+<section><h2>6. Commit Se File Restore Karna</h2>
+<pre>git restore --source=HEAD -- app.py</pre>
+<p>Isse <code>app.py</code> ko current <code>HEAD</code> commit ki state me restore kiya ja sakta hai.</p>
+<p>Specific commit se:</p>
+<pre>git restore --source=&lt;commit-id&gt; -- app.py</pre>
+</section>
+
+<section><h2>7. Restore Ka Working Flow</h2>
+<div class="flow"><span>File Change</span><span class="arrow">→</span><span>git restore</span><span class="arrow">→</span><span>Previous/Selected State</span></div>
+</section>
+
+<section><h2>8. Restore vs Unstage</h2>
+<table><tr><th>Command</th><th>Main Purpose</th><th>Changes Delete?</th></tr>
+<tr><td><code>git restore file</code></td><td>Unstaged changes discard</td><td>Yes, specified working-tree changes</td></tr>
+<tr><td><code>git restore --staged file</code></td><td>Unstage</td><td>No, working changes remain</td></tr></table>
+</section>
+
+<section><h2>9. Common Mistakes</h2>
+<ul><li><code>git restore file</code> ko unstage command samajhna.</li><li>Uncommitted changes ka backup liye bina restore kar dena.</li><li><code>git restore .</code> blindly run karna.</li></ul>
+</section>
+
+<section><h2>10. Interview Questions</h2>
+<div class="quiz"><strong>Q1. git restore ka primary use?</strong><p>Working tree ya staging area ke changes ko restore/unstage karna.</p></div>
+<div class="quiz"><strong>Q2. File ko unstage kaise karenge?</strong><p><code>git restore --staged filename</code></p></div>
+<div class="quiz"><strong>Q3. Unstaged changes discard?</strong><p><code>git restore filename</code></p></div>
+</section>
+
+<section><h2>11. Quick Revision</h2>
+<table><tr><th>Task</th><th>Command</th></tr>
+<tr><td>Discard file changes</td><td><code>git restore file</code></td></tr>
+<tr><td>Discard current directory changes</td><td><code>git restore .</code></td></tr>
+<tr><td>Unstage file</td><td><code>git restore --staged file</code></td></tr>
+<tr><td>Restore from commit</td><td><code>git restore --source=&lt;commit&gt; -- file</code></td></tr></table>
+<div class="success"><strong>One-line revision:</strong> Restore mainly file-level working-tree/staging changes ko restore ya unstage karne ke liye use hota hai.</div>
+</section>
+
+<footer>Git Git Restore Study Material • Beginner → Intermediate • DevOps Learning</footer>
+</div></body></html>
