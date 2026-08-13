@@ -1,0 +1,1518 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+```
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Git Reset - Complete Study Material</title>
+```
+
+</head>
+
+<body>
+
+```
+<!-- ================= HEADER ================= -->
+
+<header>
+
+    <h1>↩️ Git Reset Command</h1>
+
+    <p>
+        Complete Study Material | Beginner → Intermediate
+    </p>
+
+    <hr>
+
+</header>
+
+
+<!-- ================= INTRODUCTION ================= -->
+
+<section>
+
+    <h2>📌 1. What is Git Reset?</h2>
+
+    <p>
+        <strong>git reset</strong> is a Git command used to move the
+        current branch's <strong>HEAD</strong> to another commit.
+    </p>
+
+    <p>
+        Depending on the reset mode, it can also change the
+        <strong>staging area</strong> and the
+        <strong>working directory</strong>.
+    </p>
+
+    <p>
+        In simple words:
+    </p>
+
+    <blockquote>
+        Git Reset = HEAD/branch ko kisi previous commit par move karna.
+    </blockquote>
+
+    <p>
+        Git reset is mainly useful when you want to undo local commits,
+        unstage files, or completely remove local changes.
+    </p>
+
+</section>
+
+
+<hr>
+
+
+<!-- ================= WHY ================= -->
+
+<section>
+
+    <h2>🎯 2. Why Do We Use Git Reset?</h2>
+
+    <p>
+        Git reset is useful when you have made a mistake in your local
+        Git history and want to move your branch back to an earlier state.
+    </p>
+
+    <h3>Common Uses:</h3>
+
+    <ul>
+
+        <li>Undo the latest commit.</li>
+
+        <li>Undo multiple local commits.</li>
+
+        <li>Unstage a file.</li>
+
+        <li>Remove changes from the staging area.</li>
+
+        <li>Discard local changes.</li>
+
+        <li>Move HEAD to an earlier commit.</li>
+
+        <li>Clean up local Git history.</li>
+
+    </ul>
+
+</section>
+
+
+<hr>
+
+
+<!-- ================= DEFINITION ================= -->
+
+<section>
+
+    <h2>📖 3. Definition</h2>
+
+    <p>
+        <strong>Definition:</strong>
+    </p>
+
+    <p>
+        Git reset is a command that moves the current branch's HEAD
+        and, depending on the selected mode, updates the staging area
+        and working directory to match the selected commit.
+    </p>
+
+</section>
+
+
+<hr>
+
+
+<!-- ================= THREE AREAS ================= -->
+
+<section>
+
+    <h2>🧠 4. Git ke Three Important Areas</h2>
+
+    <p>
+        Git reset ko properly understand karne ke liye Git ke
+        three main areas samajhna bahut important hai.
+    </p>
+
+    <h3>1. Working Directory</h3>
+
+    <p>
+        Yahan tum actual project files ke saath kaam karte ho.
+    </p>
+
+    <h3>2. Staging Area</h3>
+
+    <p>
+        Yahan woh files/changes hote hain jo next commit ke liye
+        prepare kiye gaye hain.
+    </p>
+
+    <h3>3. Repository</h3>
+
+    <p>
+        Yahan committed history store hoti hai.
+    </p>
+```
+
+<pre>
+Working Directory
+       ↓
+   git add
+       ↓
+Staging Area
+       ↓
+  git commit
+       ↓
+Repository
+</pre>
+
+```
+</section>
+
+
+<hr>
+
+
+<!-- ================= HEAD ================= -->
+
+<section>
+
+    <h2>📍 5. What is HEAD?</h2>
+
+    <p>
+        <strong>HEAD</strong> Git ka ek special pointer hai jo generally
+        current branch ke latest commit ko point karta hai.
+    </p>
+
+    <p>
+        Example:
+    </p>
+```
+
+<pre>
+A → B → C
+        ↑
+       HEAD
+</pre>
+
+```
+    <p>
+        Agar tum:
+    </p>
+```
+
+<pre>
+git reset HEAD~1
+</pre>
+
+```
+    <p>
+        run karte ho, to HEAD previous commit par move ho jayega.
+    </p>
+```
+
+<pre>
+A → B ← HEAD
+
+C ab branch history ka current tip nahi raha.
+</pre>
+
+```
+</section>
+
+
+<hr>
+
+
+<!-- ================= BASIC SYNTAX ================= -->
+
+<section>
+
+    <h2>💻 6. Basic Syntax</h2>
+```
+
+<pre>
+git reset [mode] &lt;commit&gt;
+</pre>
+
+```
+    <p>
+        Common modes:
+    </p>
+```
+
+<ul>
+
+```
+<li>--soft</li>
+
+<li>--mixed</li>
+
+<li>--hard</li>
+```
+
+</ul>
+
+```
+</section>
+
+
+<hr>
+
+
+<!-- ================= SOFT ================= -->
+
+<section>
+
+    <h2>🟢 7. git reset --soft</h2>
+
+    <p>
+        <strong>--soft</strong> mode mein HEAD selected commit par
+        move hota hai, lekin staging area aur working directory
+        ke changes preserve rehte hain.
+    </p>
+
+    <h3>Command:</h3>
+```
+
+<pre>
+git reset --soft HEAD~1
+</pre>
+
+```
+    <h3>Example:</h3>
+```
+
+<pre>
+Before:
+
+A → B → C
+        ↑
+       HEAD
+</pre>
+
+```
+    <p>
+        Run:
+    </p>
+```
+
+<pre>
+git reset --soft HEAD~1
+</pre>
+
+```
+    <p>
+        Result:
+    </p>
+```
+
+<pre>
+A → B
+    ↑
+   HEAD
+
+Changes from C
+remain staged.
+</pre>
+
+```
+    <p>
+        Iska use tab useful hai jab tum last commit ko undo karna
+        chahte ho but uske changes ko dobara commit karna chahte ho.
+    </p>
+
+</section>
+
+
+<hr>
+
+
+<!-- ================= MIXED ================= -->
+
+<section>
+
+    <h2>🟡 8. git reset --mixed</h2>
+
+    <p>
+        <strong>--mixed</strong> Git ka default reset mode hai.
+    </p>
+
+    <p>
+        Isme HEAD move hota hai aur staging area reset hota hai,
+        lekin working directory ke file changes generally preserve
+        rehte hain.
+    </p>
+
+    <h3>Command:</h3>
+```
+
+<pre>
+git reset --mixed HEAD~1
+</pre>
+
+```
+    <p>
+        Ya simply:
+    </p>
+```
+
+<pre>
+git reset HEAD~1
+</pre>
+
+```
+    <h3>Example:</h3>
+```
+
+<pre>
+Before:
+
+A → B → C
+        ↑
+       HEAD
+</pre>
+
+```
+    <p>
+        After:
+    </p>
+```
+
+<pre>
+A → B
+    ↑
+   HEAD
+
+Changes introduced by C
+remain in working directory
+but are unstaged.
+</pre>
+
+```
+    <p>
+        Ye useful hai jab tum commit ko undo karna chahte ho
+        aur files ko dobara stage karna chahte ho.
+    </p>
+
+</section>
+
+
+<hr>
+
+
+<!-- ================= HARD ================= -->
+
+<section>
+
+    <h2>🔴 9. git reset --hard</h2>
+
+    <p>
+        <strong>--hard</strong> sabse powerful aur dangerous reset mode
+        hai.
+    </p>
+
+    <p>
+        Isme:
+    </p>
+
+    <ul>
+
+        <li>HEAD move hota hai.</li>
+
+        <li>Staging area reset hota hai.</li>
+
+        <li>Working directory bhi selected commit ke according change hoti hai.</li>
+
+    </ul>
+
+    <h3>Command:</h3>
+```
+
+<pre>
+git reset --hard HEAD~1
+</pre>
+
+```
+    <h3>Example:</h3>
+```
+
+<pre>
+Before:
+
+A → B → C
+        ↑
+       HEAD
+</pre>
+
+```
+    <p>
+        Run:
+    </p>
+```
+
+<pre>
+git reset --hard HEAD~1
+</pre>
+
+```
+    <p>
+        Result:
+    </p>
+```
+
+<pre>
+A → B
+    ↑
+   HEAD
+</pre>
+
+```
+    <p>
+        Commit C se related local changes bhi remove ho sakte hain.
+    </p>
+
+    <p>
+        <strong>
+            ⚠️ Is command ko carefully use karo.
+        </strong>
+    </p>
+
+</section>
+
+
+<hr>
+
+
+<!-- ================= COMPARISON ================= -->
+
+<section>
+
+    <h2>📊 10. --soft vs --mixed vs --hard</h2>
+
+    <table border="1" cellpadding="10">
+
+        <tr>
+
+            <th>Mode</th>
+
+            <th>HEAD</th>
+
+            <th>Staging Area</th>
+
+            <th>Working Directory</th>
+
+        </tr>
+
+        <tr>
+
+            <td><strong>--soft</strong></td>
+
+            <td>Reset</td>
+
+            <td>Preserved</td>
+
+            <td>Preserved</td>
+
+        </tr>
+
+        <tr>
+
+            <td><strong>--mixed</strong></td>
+
+            <td>Reset</td>
+
+            <td>Reset</td>
+
+            <td>Preserved</td>
+
+        </tr>
+
+        <tr>
+
+            <td><strong>--hard</strong></td>
+
+            <td>Reset</td>
+
+            <td>Reset</td>
+
+            <td>Reset</td>
+
+        </tr>
+
+    </table>
+
+</section>
+
+
+<hr>
+
+
+<!-- ================= UNSTAGE ================= -->
+
+<section>
+
+    <h2>📦 11. Unstage a File Using git reset</h2>
+
+    <p>
+        Git reset ka ek common use file ko staging area se remove
+        karna bhi hai.
+    </p>
+
+    <p>
+        Suppose:
+    </p>
+```
+
+<pre>
+git add index.html
+</pre>
+
+```
+    <p>
+        Ab file staged hai.
+    </p>
+
+    <p>
+        Unstage karne ke liye:
+    </p>
+```
+
+<pre>
+git reset index.html
+</pre>
+
+```
+    <p>
+        File working directory me rahegi, lekin staging area se remove
+        ho jayegi.
+    </p>
+
+</section>
+
+
+<hr>
+
+
+<!-- ================= UNDO LAST COMMIT ================= -->
+
+<section>
+
+    <h2>↩️ 12. Undo Last Commit</h2>
+
+    <p>
+        Agar tumne last commit kiya hai aur commit ko undo karna hai,
+        lekin changes preserve karne hain:
+    </p>
+```
+
+<pre>
+git reset --soft HEAD~1
+</pre>
+
+```
+    <p>
+        Agar changes ko unstaged rakhna hai:
+    </p>
+```
+
+<pre>
+git reset --mixed HEAD~1
+</pre>
+
+```
+    <p>
+        Agar commit aur uske local changes ko discard karna hai:
+    </p>
+```
+
+<pre>
+git reset --hard HEAD~1
+</pre>
+
+```
+</section>
+
+
+<hr>
+
+
+<!-- ================= MULTIPLE COMMITS ================= -->
+
+<section>
+
+    <h2>🔢 13. Undo Multiple Commits</h2>
+
+    <p>
+        Suppose history:
+    </p>
+```
+
+<pre>
+A → B → C → D → E
+            ↑
+           HEAD
+</pre>
+
+```
+    <p>
+        Agar tum last 2 commits undo karna chahte ho:
+    </p>
+```
+
+<pre>
+git reset --soft HEAD~2
+</pre>
+
+```
+    <p>
+        Isse HEAD:
+    </p>
+```
+
+<pre>
+A → B
+    ↑
+   HEAD
+</pre>
+
+```
+    <p>
+        par move ho jayega aur undone commits ke changes
+        staging area me preserve rahenge.
+    </p>
+
+</section>
+
+
+<hr>
+
+
+<!-- ================= HEAD~ ================= -->
+
+<section>
+
+    <h2>🔢 14. Understanding HEAD~1, HEAD~2, etc.</h2>
+
+    <p>
+        Git me:
+    </p>
+```
+
+<pre>
+HEAD~1
+</pre>
+
+```
+    <p>
+        means current commit se one parent/previous commit.
+    </p>
+```
+
+<pre>
+HEAD~2
+</pre>
+
+```
+    <p>
+        means two commits back.
+    </p>
+```
+
+<pre>
+HEAD~3
+</pre>
+
+```
+    <p>
+        means three commits back.
+    </p>
+
+    <h3>Example:</h3>
+```
+
+<pre>
+A → B → C → D
+            ↑
+           HEAD
+
+HEAD~1 = C
+
+HEAD~2 = B
+
+HEAD~3 = A
+</pre>
+
+```
+</section>
+
+
+<hr>
+
+
+<!-- ================= PRACTICAL EXAMPLE ================= -->
+
+<section>
+
+    <h2>🧪 15. Practical Example</h2>
+
+    <h3>Step 1: Check history</h3>
+```
+
+<pre>
+git log --oneline
+</pre>
+
+```
+    <p>
+        Suppose output:
+    </p>
+```
+
+<pre>
+e5f6g7h Add broken feature
+c3d4e5f Add contact section
+a1b2c3d Initial website
+</pre>
+
+```
+    <h3>Step 2: Decide what you want</h3>
+
+    <p>
+        Suppose you want to undo the latest commit but keep its
+        changes for editing.
+    </p>
+
+    <h3>Step 3: Use soft reset</h3>
+```
+
+<pre>
+git reset --soft HEAD~1
+</pre>
+
+```
+    <h3>Step 4: Check status</h3>
+```
+
+<pre>
+git status
+</pre>
+
+```
+    <p>
+        Changes should remain staged.
+    </p>
+
+    <h3>Step 5: Make corrections</h3>
+
+    <p>
+        Edit your files.
+    </p>
+
+    <h3>Step 6: Commit again</h3>
+```
+
+<pre>
+git add .
+git commit -m "Add corrected feature"
+</pre>
+
+```
+</section>
+
+
+<hr>
+
+
+<!-- ================= RESET WITH COMMIT ID ================= -->
+
+<section>
+
+    <h2>🎯 16. Reset to a Specific Commit</h2>
+
+    <p>
+        Tum direct commit ID bhi use kar sakte ho.
+    </p>
+```
+
+<pre>
+git reset --soft &lt;commit-id&gt;
+</pre>
+
+```
+    <p>
+        Example:
+    </p>
+```
+
+<pre>
+git reset --soft a1b2c3d
+</pre>
+
+```
+    <p>
+        Isse current branch ka HEAD specified commit par move ho jayega.
+    </p>
+
+</section>
+
+
+<hr>
+
+
+<!-- ================= RESET AND GITHUB ================= -->
+
+<section>
+
+    <h2>🌐 17. Git Reset and GitHub</h2>
+
+    <p>
+        Git reset ko local/private branch par use karna generally safer
+        hota hai.
+    </p>
+
+    <p>
+        Lekin agar commits already GitHub par push ho chuke hain aur tum
+        reset ke baad remote history ko overwrite karna chahte ho,
+        force push ki situation aa sakti hai.
+    </p>
+
+    <p>
+        Example:
+    </p>
+```
+
+<pre>
+git reset --hard HEAD~1
+git push --force-with-lease origin main
+</pre>
+
+```
+    <p>
+        <strong>
+            ⚠️ Shared branch par force push karna risky hai.
+        </strong>
+    </p>
+
+    <p>
+        Shared/public history ko safely undo karne ke liye
+        <strong>git revert</strong> generally better choice hota hai.
+    </p>
+
+</section>
+
+
+<hr>
+
+
+<!-- ================= RESET VS REVERT ================= -->
+
+<section>
+
+    <h2>🆚 18. Git Reset vs Git Revert</h2>
+
+    <table border="1" cellpadding="10">
+
+        <tr>
+
+            <th>Git Reset</th>
+
+            <th>Git Revert</th>
+
+        </tr>
+
+        <tr>
+
+            <td>
+                Branch/HEAD ko previous commit par move karta hai.
+            </td>
+
+            <td>
+                Previous commit ke changes ko reverse karne ke liye
+                new commit create karta hai.
+            </td>
+
+        </tr>
+
+        <tr>
+
+            <td>
+                History rewrite kar sakta hai.
+            </td>
+
+            <td>
+                Existing history ko preserve karta hai.
+            </td>
+
+        </tr>
+
+        <tr>
+
+            <td>
+                Local/private work ke liye useful.
+            </td>
+
+            <td>
+                Shared/public branches ke liye generally safer.
+            </td>
+
+        </tr>
+
+        <tr>
+
+            <td>
+                Force push ki need aa sakti hai.
+            </td>
+
+            <td>
+                Normal push se revert commit share kiya ja sakta hai.
+            </td>
+
+        </tr>
+
+    </table>
+
+</section>
+
+
+<hr>
+
+
+<!-- ================= RESET VS RESTORE ================= -->
+
+<section>
+
+    <h2>🆚 19. Git Reset vs Git Restore</h2>
+
+    <table border="1" cellpadding="10">
+
+        <tr>
+
+            <th>Command</th>
+
+            <th>Main Purpose</th>
+
+        </tr>
+
+        <tr>
+
+            <td>
+                <strong>git restore</strong>
+            </td>
+
+            <td>
+                Working directory ya staging area se files restore/unstage karna.
+            </td>
+
+        </tr>
+
+        <tr>
+
+            <td>
+                <strong>git reset</strong>
+            </td>
+
+            <td>
+                HEAD/branch ko move karna aur reset mode ke according
+                staging/working tree ko update karna.
+            </td>
+
+        </tr>
+
+    </table>
+
+</section>
+
+
+<hr>
+
+
+<!-- ================= REAL LIFE ================= -->
+
+<section>
+
+    <h2>🏠 20. Real-Life Analogy</h2>
+
+    <p>
+        Imagine tumne ek notebook me 5 pages complete kar liye.
+    </p>
+
+    <p>
+        Lekin tumhe realize hota hai ki last 2 pages galat direction
+        me likhe gaye hain.
+    </p>
+
+    <p>
+        <strong>Git reset</strong> ko tum is tarah samajh sakte ho:
+    </p>
+
+    <blockquote>
+        "Main apne current checkpoint ko previous checkpoint par le jana
+        chahta hoon."
+    </blockquote>
+
+    <p>
+        Reset ka exact result depend karega ki tum
+        <strong>--soft</strong>, <strong>--mixed</strong> ya
+        <strong>--hard</strong> use kar rahe ho.
+    </p>
+
+</section>
+
+
+<hr>
+
+
+<!-- ================= DANGEROUS ================= -->
+
+<section>
+
+    <h2>⚠️ 21. Why is git reset --hard Dangerous?</h2>
+
+    <p>
+        Command:
+    </p>
+```
+
+<pre>
+git reset --hard HEAD~1
+</pre>
+
+```
+    <p>
+        HEAD, staging area aur working tree ko target commit ke state
+        ke according reset kar sakta hai.
+    </p>
+
+    <p>
+        Is process me uncommitted changes lose ho sakte hain.
+    </p>
+
+    <p>
+        Isliye command run karne se pehle:
+    </p>
+```
+
+<pre>
+git status
+</pre>
+
+```
+    <p>
+        aur:
+    </p>
+```
+
+<pre>
+git log --oneline
+</pre>
+
+```
+    <p>
+        check karna good practice hai.
+    </p>
+
+</section>
+
+
+<hr>
+
+
+<!-- ================= RECOVERY ================= -->
+
+<section>
+
+    <h2>🛟 22. Can a Git Reset Be Recovered?</h2>
+
+    <p>
+        Kai situations me accidentally reset kiye gaye commits ko
+        <strong>git reflog</strong> ki help se locate kiya ja sakta hai,
+        especially jab Git objects abhi available hon.
+    </p>
+
+    <p>
+        Check:
+    </p>
+```
+
+<pre>
+git reflog
+</pre>
+
+```
+    <p>
+        Example:
+    </p>
+```
+
+<pre>
+e5f6g7h HEAD@{0}: reset: moving to HEAD~1
+c3d4e5f HEAD@{1}: commit: Add feature
+</pre>
+
+```
+    <p>
+        Reflog se tum previous HEAD position identify kar sakte ho.
+    </p>
+
+    <p>
+        Recovery carefully karni chahiye; pehle reflog output ko
+        samajhna important hai.
+    </p>
+
+</section>
+
+
+<hr>
+
+
+<!-- ================= BEST PRACTICES ================= -->
+
+<section>
+
+    <h2>✅ 23. Best Practices</h2>
+
+    <ul>
+
+        <li>
+            Reset karne se pehle <code>git status</code> check karo.
+        </li>
+
+        <li>
+            Commit history samajhne ke liye
+            <code>git log --oneline</code> use karo.
+        </li>
+
+        <li>
+            Local/private commits ko clean karne ke liye reset useful hai.
+        </li>
+
+        <li>
+            Shared branch ki public history ko reset karne se pehle
+            team impact samjho.
+        </li>
+
+        <li>
+            <code>git reset --hard</code> carefully use karo.
+        </li>
+
+        <li>
+            Important work ka backup/commit bana lo before destructive operations.
+        </li>
+
+        <li>
+            Public commits ko safely undo karne ke liye
+            <code>git revert</code> consider karo.
+        </li>
+
+    </ul>
+
+</section>
+
+
+<hr>
+
+
+<!-- ================= COMMON MISTAKES ================= -->
+
+<section>
+
+    <h2>❌ 24. Common Mistakes</h2>
+
+    <ol>
+
+        <li>
+            Git reset ko Git revert samajhna.
+        </li>
+
+        <li>
+            <code>--hard</code> ko bina samjhe use karna.
+        </li>
+
+        <li>
+            Wrong commit par reset kar dena.
+        </li>
+
+        <li>
+            Shared branch par history rewrite karna.
+        </li>
+
+        <li>
+            Force push ke consequences ko ignore karna.
+        </li>
+
+        <li>
+            <code>git status</code> check na karna.
+        </li>
+
+    </ol>
+
+</section>
+
+
+<hr>
+
+
+<!-- ================= COMMAND SUMMARY ================= -->
+
+<section>
+
+    <h2>📚 25. Important Git Reset Commands</h2>
+```
+
+<pre>
+# Default / mixed reset
+git reset HEAD~1
+
+# Soft reset
+git reset --soft HEAD~1
+
+# Mixed reset
+git reset --mixed HEAD~1
+
+# Hard reset
+git reset --hard HEAD~1
+
+# Reset to a specific commit
+git reset --soft &lt;commit-id&gt;
+
+# Unstage a file
+git reset &lt;file-name&gt;
+
+# Check history
+git log --oneline
+
+# Check current state
+git status
+
+# Check previous HEAD positions
+git reflog
+</pre>
+
+```
+</section>
+
+
+<hr>
+
+
+<!-- ================= INTERVIEW ================= -->
+
+<section>
+
+    <h2>🎤 26. Interview Questions</h2>
+
+    <ol>
+
+        <li>
+            What is git reset?
+        </li>
+
+        <li>
+            What is HEAD in Git?
+        </li>
+
+        <li>
+            What is the difference between --soft, --mixed and --hard?
+        </li>
+
+        <li>
+            Which reset mode is the default?
+        </li>
+
+        <li>
+            How do you undo the latest commit but keep changes staged?
+        </li>
+
+        <li>
+            How do you undo the latest commit but keep changes unstaged?
+        </li>
+
+        <li>
+            What does git reset --hard do?
+        </li>
+
+        <li>
+            How do you unstage a file using git reset?
+        </li>
+
+        <li>
+            What is the difference between git reset and git revert?
+        </li>
+
+        <li>
+            Why is git reset risky on a shared branch?
+        </li>
+
+        <li>
+            What is git reflog?
+        </li>
+
+    </ol>
+
+</section>
+
+
+<hr>
+
+
+<!-- ================= QUICK REVISION ================= -->
+
+<section>
+
+    <h2>⚡ 27. Quick Revision</h2>
+
+    <table border="1" cellpadding="10">
+
+        <tr>
+
+            <th>Command</th>
+
+            <th>Meaning</th>
+
+        </tr>
+
+        <tr>
+
+            <td>
+                git reset --soft HEAD~1
+            </td>
+
+            <td>
+                Commit undo, changes staged.
+            </td>
+
+        </tr>
+
+        <tr>
+
+            <td>
+                git reset --mixed HEAD~1
+            </td>
+
+            <td>
+                Commit undo, changes unstaged.
+            </td>
+
+        </tr>
+
+        <tr>
+
+            <td>
+                git reset --hard HEAD~1
+            </td>
+
+            <td>
+                Commit + staging + working tree reset according to target.
+            </td>
+
+        </tr>
+
+        <tr>
+
+            <td>
+                git reset file.html
+            </td>
+
+            <td>
+                File ko staging area se unstage karta hai.
+            </td>
+
+        </tr>
+
+        <tr>
+
+            <td>
+                git reflog
+            </td>
+
+            <td>
+                Previous HEAD positions/history ko inspect karta hai.
+            </td>
+
+        </tr>
+
+    </table>
+
+</section>
+
+
+<hr>
+
+
+<!-- ================= FINAL CONCEPT ================= -->
+
+<section>
+
+    <h2>🏆 28. Final Concept</h2>
+
+    <p>
+        Git reset ko yaad rakhne ka easiest method:
+    </p>
+
+    <blockquote>
+
+        <strong>--soft</strong> → Commit undo, changes staged<br>
+
+        <strong>--mixed</strong> → Commit undo, changes unstaged<br>
+
+        <strong>--hard</strong> → Commit + staging + working tree reset
+
+    </blockquote>
+
+    <h3>One-Line Formula:</h3>
+```
+
+<pre>
+SOFT  → HEAD only
+
+MIXED → HEAD + Staging
+
+HARD  → HEAD + Staging + Working Directory
+</pre>
+
+```
+    <p>
+        Aur sabse important:
+    </p>
+
+    <blockquote>
+
+        Git Reset = Branch/HEAD ko previous state par move karna.
+
+    </blockquote>
+
+    <p>
+        Shared/public history ko undo karna ho to
+        <strong>git revert</strong> generally safer approach hoti hai.
+    </p>
+
+</section>
+
+
+<hr>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    <h3>🚀 Git & GitHub Learning Journey</h3>
+
+    <p>
+        Study Material: Git Reset
+    </p>
+
+    <p>
+        Created for learning and practical Git practice.
+    </p>
+
+</footer>
+```
+
+</body>
+
+</html>
