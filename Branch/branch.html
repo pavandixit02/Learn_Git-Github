@@ -1,0 +1,71 @@
+<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Git Branch - Complete Study Material</title><style>body{margin:0;background:#0f172a;color:#e5e7eb;font-family:Arial;line-height:1.7}.wrap{max-width:1100px;margin:auto;padding:25px}header,section{background:#111827;border:1px solid #334155;border-radius:18px;padding:25px;margin:20px 0}header{background:linear-gradient(135deg,#0c4a6e,#172554)}h1{font-size:42px;color:white}h2{color:#38bdf8;border-bottom:1px solid #334155;padding-bottom:8px}h3{color:#c4b5fd}code,pre{font-family:monospace}code{background:#020617;color:#86efac;padding:2px 5px;border-radius:4px}pre{background:#020617;border:1px solid #1e293b;padding:16px;border-radius:10px;overflow:auto;color:#d1fae5}.note,.warning,.success{padding:14px 18px;border-radius:9px;margin:15px 0}.note{background:#082f49;border-left:4px solid #38bdf8}.warning{background:#422006;border-left:4px solid #facc15}.success{background:#052e16;border-left:4px solid #4ade80}table{width:100%;border-collapse:collapse}th,td{border:1px solid #334155;padding:11px;text-align:left}th{background:#1e293b;color:#7dd3fc}.diagram{background:#020617;border:1px solid #334155;border-radius:10px;padding:18px;text-align:center;font-family:monospace;overflow:auto}.quiz{background:#172554;border:1px solid #3730a3;border-radius:10px;padding:14px;margin:10px 0}.flow{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;align-items:center}.flow span{background:#1e293b;padding:10px 14px;border:1px solid #475569;border-radius:8px}.arrow{color:#38bdf8}footer{text-align:center;color:#94a3b8;padding:30px}@media(max-width:700px){h1{font-size:32px}}</style></head><body><div class="wrap"><header><small>Git / DevOps Study Material</small><h1>Git Branch</h1><p>Beginner se intermediate level tak complete theory + practical guide.</p></header>
+<section><h2>1. Git Branch Kya Hota Hai?</h2><p><strong>Git Branch</strong> repository me development ki separate line/reference hoti hai. Isse feature, bug fix, experiment ya alag work ko main codebase se isolate karke develop kar sakte hain.</p><div class="note"><b>Simple Definition:</b><br>Branch ek movable reference hai jo commits ki ek development line ko point karta hai.</div><pre>A --- B --- C  ← main
+             \
+              D --- E  ← feature-login</pre></section>
+<section><h2>2. Branch Kyu Use Karte Hain?</h2><ul><li>Features ko isolate karna</li><li>Bug fixes separate rakhna</li><li>Parallel development</li><li>Experimental changes</li><li>Stable main branch maintain karna</li><li>Pull Request/code review workflow</li></ul></section>
+<section><h2>3. Real-Life Analogy</h2><p>Main project ko ek main road samjho. Developer feature ke liye side road (branch) leta hai, kaam complete karta hai, review ke baad changes main road me merge hote hain.</p><div class="flow"><span>main</span><span class="arrow">→</span><span>feature branch</span><span class="arrow">→</span><span>code</span><span class="arrow">→</span><span>review</span><span class="arrow">→</span><span>merge</span></div></section>
+<section><h2>4. Branch Internally Kaise Work Karti Hai?</h2><p>Git me branch ek movable pointer/reference hoti hai jo kisi commit ko point karti hai.</p><div class="diagram">A --- B --- C ← main<br>             ↑<br>            HEAD</div><p>Feature par commit hone par feature pointer aage move hota hai; main apni jagah reh sakti hai.</p></section>
+<section><h2>5. HEAD Kya Hota Hai?</h2><p><strong>HEAD</strong> current checkout context ko identify karta hai. Usually HEAD current branch ko point karta hai.</p><pre>git status
+git branch --show-current</pre><div class="note">Branch aur HEAD same nahi hain: branch ek reference hai, HEAD current checkout context ka reference hai.</div></section>
+<section><h2>6. Branch Check Karna</h2><h3>Local branches</h3><pre>git branch</pre><h3>Current branch</h3><pre>git branch --show-current
+git status</pre><h3>Remote branches</h3><pre>git branch -r</pre><h3>All branches</h3><pre>git branch -a</pre></section>
+<section><h2>7. New Branch Create Karna</h2><pre>git branch feature-login</pre><p>Ye branch create karta hai, automatically switch nahi karta.</p><div class="warning"><b>Remember:</b> <code>git branch name</code> = create only.</div></section>
+<section><h2>8. Create + Switch Ek Saath</h2><h3>Modern</h3><pre>git switch -c feature-login</pre><h3>Traditional</h3><pre>git checkout -b feature-login</pre></section>
+<section><h2>9. Existing Branch Par Switch</h2><pre>git switch main</pre><p>Traditional:</p><pre>git checkout main</pre></section>
+<section><h2>10. Branch Rename</h2><pre># Current branch
+git branch -m new-name
+
+# Specific branch
+git branch -m old-name new-name</pre></section>
+<section><h2>11. Local Branch Delete</h2><pre>git branch -d feature-login</pre><p><code>-d</code> safer delete hai.</p><pre>git branch -D feature-login</pre><div class="warning"><code>-D</code> force delete hai; unmerged work lose ho sakta hai.</div></section>
+<section><h2>12. Remote Branch Delete</h2><pre>git push origin --delete feature-login</pre><p>Local branch alag se delete ki ja sakti hai.</p></section>
+<section><h2>13. Branch Remote Par Push</h2><pre>git push -u origin feature-login</pre><p><code>-u</code> upstream tracking set karta hai. Baad me commonly:</p><pre>git push
+git pull</pre></section>
+<section><h2>14. Remote Branch Se Local Branch</h2><pre>git fetch origin
+git switch -c feature-login --track origin/feature-login</pre><p>Traditional:</p><pre>git checkout -b feature-login origin/feature-login</pre></section>
+<section><h2>15. Branch Tracking</h2><p>Local branch kisi remote-tracking branch ko upstream ke roop me track kar sakti hai.</p><pre>git branch -vv</pre><div class="diagram">feature-login → origin/feature-login</div></section>
+<section><h2>16. Branch Compare</h2><pre>git diff main..feature-login
+git log main..feature-login --oneline
+git log --oneline --graph --all --decorate</pre></section>
+<section><h2>17. Branch Merge</h2><pre>git switch main
+git merge feature-login</pre><div class="diagram">main:    A --- B -------- M<br>                  \    /<br>feature:           C -- D</div><p>Merge branch ke changes ko target branch me integrate karta hai.</p></section>
+<section><h2>18. Fast-Forward vs Merge Commit</h2><h3>Fast-Forward</h3><pre>A --- B --- C ← feature
+          ↑
+         main</pre><p>Merge me main pointer C par move ho sakta hai.</p><h3>Merge Commit</h3><pre>A --- B --- C --- M ← main
+     \       /
+      D --- E</pre></section>
+<section><h2>19. Merge Conflict</h2><pre>git switch main
+git merge feature-login
+# conflict resolve karein
+git status
+git add .
+git commit</pre><p>Conflict ke time <code>git status</code> se current state check karna important hai.</p></section>
+<section><h2>20. Rebase Basic Concept</h2><pre>git switch feature-login
+git rebase main</pre><p>Rebase feature commits ko updated base ke upar replay karta hai.</p><div class="warning">Rebase history rewrite kar sakta hai. Already-shared commits par carefully use karein.</div></section>
+<section><h2>21. Complete Practical Workflow</h2><pre>git switch main
+git pull
+git switch -c feature-login
+
+# code changes
+git status
+git add .
+git commit -m "Add login feature"
+git push -u origin feature-login
+
+# GitHub/GitLab: Pull Request → Review → Merge</pre><div class="success">Ye common branch-based collaborative workflow hai.</div></section>
+<section><h2>22. Branch Naming</h2><pre>feature/user-login
+feature/payment-api
+bugfix/navbar-error
+hotfix/production-crash
+docs/git-guide
+chore/update-dependencies</pre><table><tr><th>Prefix</th><th>Use</th></tr><tr><td>feature/</td><td>New feature</td></tr><tr><td>bugfix/</td><td>Bug fix</td></tr><tr><td>hotfix/</td><td>Urgent fix</td></tr><tr><td>docs/</td><td>Documentation</td></tr><tr><td>chore/</td><td>Maintenance</td></tr></table></section>
+<section><h2>23. Important Commands Cheat Sheet</h2><table><tr><th>Task</th><th>Command</th></tr><tr><td>Local branches</td><td><code>git branch</code></td></tr><tr><td>Remote branches</td><td><code>git branch -r</code></td></tr><tr><td>All branches</td><td><code>git branch -a</code></td></tr><tr><td>Current branch</td><td><code>git branch --show-current</code></td></tr><tr><td>Create</td><td><code>git branch name</code></td></tr><tr><td>Create + switch</td><td><code>git switch -c name</code></td></tr><tr><td>Switch</td><td><code>git switch name</code></td></tr><tr><td>Rename</td><td><code>git branch -m new-name</code></td></tr><tr><td>Safe delete</td><td><code>git branch -d name</code></td></tr><tr><td>Force delete</td><td><code>git branch -D name</code></td></tr><tr><td>Push</td><td><code>git push -u origin name</code></td></tr><tr><td>Delete remote</td><td><code>git push origin --delete name</code></td></tr><tr><td>Tracking</td><td><code>git branch -vv</code></td></tr><tr><td>Compare</td><td><code>git diff main..feature</code></td></tr><tr><td>Merge</td><td><code>git merge feature</code></td></tr><tr><td>Rebase</td><td><code>git rebase main</code></td></tr></table></section>
+<section><h2>24. Branch vs Commit vs HEAD</h2><table><tr><th>Concept</th><th>Meaning</th></tr><tr><td>Commit</td><td>Saved snapshot/history point.</td></tr><tr><td>Branch</td><td>Movable reference to a commit line.</td></tr><tr><td>HEAD</td><td>Current checkout context reference.</td></tr><tr><td>origin/main</td><td>Remote-tracking reference.</td></tr></table></section>
+<section><h2>25. Common Mistakes</h2><ol><li><code>git branch new</code> ke baad automatically switch hone ki expectation.</li><li>Current branch check kiye bina commit karna.</li><li><code>git branch -D</code> se unmerged work delete karna.</li><li>Local aur remote branch ko same samajhna.</li><li>Upstream tracking na samajhna.</li><li>Shared branch par careless rebase/reset/force push karna.</li><li>Merge conflict resolve ke baad status verify na karna.</li></ol></section>
+<section><h2>26. Practical Lab</h2><h3>Step 1</h3><pre>git status
+git branch</pre><h3>Step 2</h3><pre>git switch -c feature-demo</pre><h3>Step 3</h3><pre>echo "Branch Practice" > branch-demo.txt</pre><h3>Step 4</h3><pre>git add branch-demo.txt
+git commit -m "Add branch practice file"</pre><h3>Step 5</h3><pre>git log --oneline --decorate --graph --all</pre><h3>Step 6</h3><pre>git switch main</pre><h3>Step 7</h3><pre>git merge feature-demo</pre><h3>Step 8</h3><pre>git branch -d feature-demo</pre></section>
+<section><h2>27. Interview Questions</h2><div class="quiz"><b>Q1. Git branch kya hai?</b><p>Separate development line/reference jo parallel work allow karti hai.</p></div><div class="quiz"><b>Q2. <code>git branch feature</code>?</b><p>Branch create karta hai, switch nahi.</p></div><div class="quiz"><b>Q3. Create + switch?</b><p><code>git switch -c feature</code> ya <code>git checkout -b feature</code>.</p></div><div class="quiz"><b>Q4. Current branch?</b><p><code>git branch --show-current</code> ya <code>git status</code>.</p></div><div class="quiz"><b>Q5. -d vs -D?</b><p><code>-d</code> safer delete; <code>-D</code> force delete.</p></div><div class="quiz"><b>Q6. -u ka use?</b><p>Upstream tracking set karna.</p></div><div class="quiz"><b>Q7. Merge?</b><p>Ek branch ke changes ko doosri branch me integrate karna.</p></div><div class="quiz"><b>Q8. Rebase?</b><p>Commits ko new base par replay karna; history rewrite ho sakti hai.</p></div></section>
+<section><h2>28. Quick Revision</h2><div class="diagram">CREATE → SWITCH → CODE → ADD → COMMIT → PUSH → PR → REVIEW → MERGE</div><div class="success"><b>One-line revision:</b><br>Git Branch code ko separate development lines me organize karta hai, parallel work enable karta hai aur controlled merge/review workflow support karta hai.</div></section>
+<section><h2>29. Learning Checklist</h2><ul><li>☐ Branch aur HEAD samajh liya</li><li>☐ Local/remote/all branches list kar sakte ho</li><li>☐ Branch create/switch/rename/delete</li><li>☐ Remote push aur tracking</li><li>☐ Branch compare</li><li>☐ Merge aur conflict basics</li><li>☐ Rebase basics</li><li>☐ GitHub/GitLab branch workflow</li></ul></section>
+<footer>Git Branch Complete Study Material • Beginner → Intermediate • DevOps Learning</footer></div></body></html>
