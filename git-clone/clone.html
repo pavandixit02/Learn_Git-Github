@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Git Clone - Complete Study Material</title>
+<style>
+:root{--bg:#0f172a;--card:#111827;--text:#e5e7eb;--muted:#94a3b8;--accent:#38bdf8;--green:#4ade80;--yellow:#facc15;--red:#fb7185;--purple:#c4b5fd;--border:#334155}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:linear-gradient(135deg,#020617,#0f172a 55%,#111827);color:var(--text);line-height:1.7}
+.container{max-width:1150px;margin:auto;padding:28px 20px 60px}
+header{padding:45px 30px;border:1px solid var(--border);border-radius:22px;background:linear-gradient(135deg,#0c4a6e,#172554);box-shadow:0 15px 45px rgba(0,0,0,.3);margin-bottom:28px}
+header h1{margin:0 0 10px;font-size:44px;color:#fff}
+header p{margin:0;color:#dbeafe;font-size:18px}
+.badge{display:inline-block;background:rgba(56,189,248,.15);border:1px solid rgba(56,189,248,.4);color:#7dd3fc;padding:5px 12px;border-radius:999px;font-size:13px;margin-bottom:14px}
+section{background:rgba(17,24,39,.92);border:1px solid var(--border);border-radius:18px;padding:27px;margin:22px 0}
+h2{color:var(--accent);margin-top:0;border-bottom:1px solid var(--border);padding-bottom:10px}
+h3{color:var(--purple)}
+code{background:#020617;color:#86efac;padding:2px 6px;border-radius:5px;font-family:"Courier New",monospace}
+pre{background:#020617;border:1px solid #1e293b;padding:18px;border-radius:12px;overflow-x:auto;color:#d1fae5;font-family:"Courier New",monospace;font-size:14px}
+.note,.warning,.success,.danger{padding:15px 18px;border-radius:10px;margin:15px 0}
+.note{background:#082f49;border-left:4px solid var(--accent)}
+.warning{background:#422006;border-left:4px solid var(--yellow)}
+.success{background:#052e16;border-left:4px solid var(--green)}
+.danger{background:#450a0a;border-left:4px solid var(--red)}
+table{width:100%;border-collapse:collapse;margin:15px 0}
+th,td{border:1px solid var(--border);padding:12px;text-align:left;vertical-align:top}
+th{background:#1e293b;color:#7dd3fc}
+tr:nth-child(even){background:rgba(30,41,59,.35)}
+.flow{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:center;margin:22px 0}
+.flow span{padding:12px 16px;background:#1e293b;border:1px solid #475569;border-radius:10px}
+.arrow{color:var(--accent);font-size:22px}
+.diagram{background:#020617;border:1px solid var(--border);border-radius:12px;padding:20px;text-align:center;font-family:"Courier New",monospace;overflow-x:auto}
+.quiz{background:#172554;border:1px solid #3730a3;border-radius:12px;padding:16px;margin:12px 0}
+.tip{background:#1c1917;border-left:4px solid #fb923c;padding:15px 18px;border-radius:10px;margin:15px 0}
+footer{text-align:center;color:var(--muted);padding:25px 0;font-size:14px}
+@media(max-width:700px){header h1{font-size:32px}section{padding:20px}}
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+<span class="badge">Git / DevOps Study Material</span>
+<h1>Git Clone</h1>
+<p><code>git clone</code> ko beginner se intermediate level tak samajhne ke liye complete theory + practical guide.</p>
+</header>
+
+<section>
+<h2>1. Git Clone Kya Hota Hai?</h2>
+<p><strong>git clone</strong> command ka use kisi existing remote Git repository ki local copy banane ke liye hota hai.</p>
+<pre>git clone &lt;repository-url&gt;</pre>
+<div class="note"><strong>Simple Definition:</strong><br>
+Git Clone = Remote repository ko local computer par copy karke ek working Git repository banana.</div>
+<p>Clone karne ke baad aap repository ke files, Git history aur remote-tracking information ke saath local machine par kaam kar sakte ho.</p>
+</section>
+
+<section>
+<h2>2. Git Clone Ki Zarurat Kyu Padti Hai?</h2>
+<ul>
+<li>GitHub/GitLab/Bitbucket par existing project ko local machine par lane ke liye.</li>
+<li>Kisi team project par development start karne ke liye.</li>
+<li>Existing repository ka source code study karne ke liye.</li>
+<li>Local environment me project run/test karne ke liye.</li>
+<li>Remote repository ke saath future me pull/push workflow use karne ke liye.</li>
+</ul>
+<div class="success"><strong>Common DevOps workflow:</strong> Repository clone → project inspect → branch create → changes → commit → push → Pull Request.</div>
+</section>
+
+<section>
+<h2>3. Basic Git Clone Syntax</h2>
+<pre>git clone &lt;repository-url&gt;</pre>
+<p>Example:</p>
+<pre>git clone https://github.com/example/demo-project.git</pre>
+<p>Is command ke baad current directory ke andar normally <code>demo-project</code> naam ka folder create hoga.</p>
+</section>
+
+<section>
+<h2>4. Clone Kaise Work Karta Hai?</h2>
+<div class="flow">
+<span>Remote Repository</span><span class="arrow">→</span><span>git clone</span><span class="arrow">→</span><span>Local Repository</span><span class="arrow">→</span><span>Working Directory</span>
+</div>
+<p>Conceptually clone process:</p>
+<div class="diagram">
+Remote Git Repository<br>
+↓<br>
+Repository data + history download<br>
+↓<br>
+Local .git directory<br>
+↓<br>
+Working files checkout<br>
+↓<br>
+Local Git Repository Ready
+</div>
+</section>
+
+<section>
+<h2>5. Clone Karne Ke Baad Kya Milta Hai?</h2>
+<p>Clone ke baad local repository me generally:</p>
+<ul>
+<li>Project files</li>
+<li>Git commit history</li>
+<li>Local branch information</li>
+<li>Remote-tracking references</li>
+<li><code>.git</code> directory</li>
+<li>Usually <code>origin</code> naam ka remote</li>
+</ul>
+<p>Check:</p>
+<pre>cd demo-project
+ls -la
+git status
+git remote -v</pre>
+</section>
+
+<section>
+<h2>6. <code>.git</code> Directory Kya Hai?</h2>
+<p>Cloned repository ke andar <code>.git</code> directory Git ki local repository information store karti hai.</p>
+<pre>ls -la</pre>
+<p>Aapko normally:</p>
+<pre>.git
+README.md
+src/
+...</pre>
+<p>mil sakta hai.</p>
+<div class="warning"><strong>Important:</strong> <code>.git</code> directory ko manually delete/modify karna avoid karein jab tak aapko Git internals ka proper knowledge na ho.</div>
+</section>
+
+<section>
+<h2>7. HTTPS Se Repository Clone Karna</h2>
+<pre>git clone https://github.com/USERNAME/REPOSITORY.git</pre>
+<p>Example:</p>
+<pre>git clone https://github.com/example/devops-project.git</pre>
+<div class="note">HTTPS beginner-friendly option hai. Private repositories ke liye authentication ki requirement ho sakti hai.</div>
+</section>
+
+<section>
+<h2>8. SSH Se Repository Clone Karna</h2>
+<pre>git clone git@github.com:USERNAME/REPOSITORY.git</pre>
+<p>SSH use karne ke liye machine par SSH key setup aur remote Git hosting account me corresponding public key configured honi chahiye.</p>
+<p>Check SSH connectivity example:</p>
+<pre>ssh -T git@github.com</pre>
+<div class="success">DevOps workflows me SSH authentication frequently useful hoti hai, especially repeated Git operations ke liye.</div>
+</section>
+
+<section>
+<h2>9. HTTPS vs SSH</h2>
+<table>
+<tr><th>Feature</th><th>HTTPS</th><th>SSH</th></tr>
+<tr><td>URL example</td><td><code>https://...</code></td><td><code>git@github.com:...</code></td></tr>
+<tr><td>Authentication</td><td>Hosting provider ke authentication method par depend</td><td>SSH key based</td></tr>
+<tr><td>Setup</td><td>Usually simple start</td><td>Initial key setup required</td></tr>
+<tr><td>Common use</td><td>General development</td><td>DevOps/server/automation workflows me common</td></tr>
+</table>
+</section>
+
+<section>
+<h2>10. Custom Folder Name Ke Saath Clone</h2>
+<p>Aap repository ko custom local directory name me clone kar sakte ho:</p>
+<pre>git clone &lt;repository-url&gt; my-project</pre>
+<p>Example:</p>
+<pre>git clone https://github.com/example/demo.git devops-lab</pre>
+<p>Ab repository ka working folder <code>devops-lab</code> hoga.</p>
+</section>
+
+<section>
+<h2>11. Specific Branch Clone Karna</h2>
+<p>Agar aap directly kisi particular branch ko clone/checkout karna chahte ho:</p>
+<pre>git clone --branch develop &lt;repository-url&gt;</pre>
+<p>Short form:</p>
+<pre>git clone -b develop &lt;repository-url&gt;</pre>
+<div class="note"><strong>Concept:</strong> Clone ke baad selected branch checkout ho sakti hai.</div>
+</section>
+
+<section>
+<h2>12. Sirf Ek Branch Ki History Fetch Karna</h2>
+<p>Large repositories me shallow/specific branch workflow useful ho sakta hai:</p>
+<pre>git clone --single-branch --branch develop &lt;repository-url&gt;</pre>
+<p>Isse selected branch ko focus karke clone kiya ja sakta hai.</p>
+</section>
+
+<section>
+<h2>13. Shallow Clone Kya Hota Hai?</h2>
+<p>Large repository ki complete history ki jagah limited recent history download karne ke liye <code>--depth</code> use kar sakte ho.</p>
+<pre>git clone --depth 1 &lt;repository-url&gt;</pre>
+<p>Ye recent history ko limited depth ke saath clone karta hai.</p>
+<div class="warning"><strong>Trade-off:</strong> Shallow clone me complete historical commit data locally available nahi hota, isliye kuch history-dependent operations limited ho sakte hain.</div>
+</section>
+
+<section>
+<h2>14. Clone With Branch + Depth</h2>
+<pre>git clone --branch develop --single-branch --depth 1 &lt;repository-url&gt;</pre>
+<p>Ye pattern CI/CD ya large repository ke selected branch focused checkout scenarios me useful ho sakta hai.</p>
+</section>
+
+<section>
+<h2>15. Clone Into Current Directory</h2>
+<p>Agar current directory empty hai aur aap repository files wahi lana chahte ho:</p>
+<pre>git clone &lt;repository-url&gt; .</pre>
+<div class="warning"><strong>Careful:</strong> Current directory ka suitable/empty hona important hai. Existing files ke saath collision ho sakti hai.</div>
+</section>
+
+<section>
+<h2>16. Clone + Check Remote</h2>
+<pre>
+git clone &lt;repository-url&gt;
+cd &lt;repository-name&gt;
+git remote -v
+</pre>
+<p>Typical output:</p>
+<pre>origin  https://github.com/example/demo.git (fetch)
+origin  https://github.com/example/demo.git (push)</pre>
+<p><code>origin</code> normally cloned repository ke default remote ka conventional name hota hai.</p>
+</section>
+
+<section>
+<h2>17. Clone Ke Baad Current Branch Check</h2>
+<pre>
+git branch
+git branch --show-current
+git status
+</pre>
+<p>Isse aap dekh sakte ho ki current checkout kis branch par hai.</p>
+</section>
+
+<section>
+<h2>18. Clone Ke Baad Remote Branches Dekhna</h2>
+<pre>git branch -r</pre>
+<p>Local + remote-tracking branches:</p>
+<pre>git branch -a</pre>
+</section>
+
+<section>
+<h2>19. Clone vs Download ZIP</h2>
+<table>
+<tr><th>Feature</th><th>Git Clone</th><th>Download ZIP</th></tr>
+<tr><td>Git history</td><td>Available locally</td><td>Normally not included as Git repository history</td></tr>
+<tr><td>Future pull/push workflow</td><td>Yes, Git remote configured</td><td>Direct Git workflow setup nahi hota</td></tr>
+<tr><td>Branches</td><td>Git branch workflow supported</td><td>Simple files only</td></tr>
+<tr><td>Development</td><td>Best for Git-based development</td><td>Quick source download</td></tr>
+</table>
+</section>
+
+<section>
+<h2>20. Clone vs Pull</h2>
+<table>
+<tr><th>Command</th><th>Main Purpose</th></tr>
+<tr><td><code>git clone</code></td><td>Existing remote repository ki local copy banana.</td></tr>
+<tr><td><code>git pull</code></td><td>Existing local repository ko remote changes ke saath update karna.</td></tr>
+</table>
+<div class="success"><strong>Remember:</strong> First time repository local machine par lane ke liye commonly <code>clone</code>; already cloned repository ko update karne ke liye commonly <code>pull</code>.</div>
+</section>
+
+<section>
+<h2>21. Clone vs Fetch</h2>
+<table>
+<tr><th>Command</th><th>Purpose</th></tr>
+<tr><td><code>git clone</code></td><td>Remote repository ki initial local copy setup.</td></tr>
+<tr><td><code>git fetch</code></td><td>Existing repository me remote updates download/reference karna without automatically integrating them into current branch.</td></tr>
+</table>
+</section>
+
+<section>
+<h2>22. Private Repository Clone</h2>
+<p>Private repository clone karte waqt authorization required hoti hai.</p>
+<h3>HTTPS</h3>
+<pre>git clone https://github.com/USERNAME/private-repo.git</pre>
+<h3>SSH</h3>
+<pre>git clone git@github.com:USERNAME/private-repo.git</pre>
+<div class="danger"><strong>Security:</strong> Passwords, access tokens ya private SSH keys ko commands, scripts, screenshots ya public repositories me expose na karein.</div>
+</section>
+
+<section>
+<h2>23. Common Authentication Errors</h2>
+<h3>HTTPS authentication issue</h3>
+<p>Private repository access ke liye correct credentials/token/credential manager configuration ki need ho sakti hai.</p>
+<h3>SSH public key error</h3>
+<pre>Permission denied (publickey).</pre>
+<p>Possible checks:</p>
+<pre>
+ssh -T git@github.com
+ssh-add -l
+git remote -v
+</pre>
+<p>SSH key account aur SSH agent configuration verify karein.</p>
+</section>
+
+<section>
+<h2>24. Common Clone Errors</h2>
+<table>
+<tr><th>Error/Problem</th><th>Possible Reason</th><th>Basic Check</th></tr>
+<tr><td>Repository not found</td><td>Wrong URL, deleted repo, ya access issue</td><td>URL + permissions check</td></tr>
+<tr><td>Permission denied</td><td>Authentication/authorization issue</td><td>HTTPS credentials or SSH key</td></tr>
+<tr><td>Destination path already exists</td><td>Folder already exists</td><td>Choose another folder or inspect existing one</td></tr>
+<tr><td>Network failure</td><td>Connectivity/proxy/DNS issue</td><td>Internet + Git config check</td></tr>
+<tr><td>Publickey error</td><td>SSH key not accepted</td><td><code>ssh -T git@github.com</code></td></tr>
+</table>
+</section>
+
+<section>
+<h2>25. Complete Practical Lab</h2>
+<h3>Step 1: Working directory</h3>
+<pre>mkdir git-clone-lab
+cd git-clone-lab</pre>
+
+<h3>Step 2: Clone a repository</h3>
+<pre>git clone &lt;repository-url&gt;</pre>
+
+<h3>Step 3: Enter repository</h3>
+<pre>cd &lt;repository-name&gt;</pre>
+
+<h3>Step 4: Check status</h3>
+<pre>git status</pre>
+
+<h3>Step 5: Check remote</h3>
+<pre>git remote -v</pre>
+
+<h3>Step 6: Check branches</h3>
+<pre>git branch
+git branch -a</pre>
+
+<h3>Step 7: Check history</h3>
+<pre>git log --oneline --decorate -10</pre>
+
+<div class="success"><strong>Lab Goal:</strong> Clone ke baad repository structure, remote, branches aur history ko khud inspect karna.</div>
+</section>
+
+<section>
+<h2>26. DevOps Workflow Me Git Clone</h2>
+<div class="flow">
+<span>Git Server</span><span class="arrow">→</span><span>Clone</span><span class="arrow">→</span><span>Build</span><span class="arrow">→</span><span>Test</span><span class="arrow">→</span><span>Docker/Deploy</span>
+</div>
+<p>CI/CD systems me repository source code ko checkout/clone karke build, test aur deployment processes execute kiye ja sakte hain. Actual CI tool apne optimized checkout mechanism ka use kar sakta hai.</p>
+</section>
+
+<section>
+<h2>27. Important Clone Options Cheat Sheet</h2>
+<table>
+<tr><th>Command</th><th>Use</th></tr>
+<tr><td><code>git clone URL</code></td><td>Normal repository clone.</td></tr>
+<tr><td><code>git clone URL folder</code></td><td>Custom local folder.</td></tr>
+<tr><td><code>git clone -b branch URL</code></td><td>Specific branch checkout.</td></tr>
+<tr><td><code>git clone --branch branch URL</code></td><td>Specific branch checkout.</td></tr>
+<tr><td><code>git clone --single-branch -b branch URL</code></td><td>Selected branch focused clone.</td></tr>
+<tr><td><code>git clone --depth 1 URL</code></td><td>Shallow clone with limited history.</td></tr>
+<tr><td><code>git clone URL .</code></td><td>Clone into current directory.</td></tr>
+</table>
+</section>
+
+<section>
+<h2>28. Common Mistakes</h2>
+<ol>
+<li>Repository URL galat copy karna.</li>
+<li>HTTPS aur SSH URL ka difference na samajhna.</li>
+<li>Private repository ke permissions check na karna.</li>
+<li>Existing non-empty folder me blindly clone karna.</li>
+<li>Clone ke baad <code>cd</code> karke repository directory me enter na karna.</li>
+<li>Remote ka naam <code>origin</code> assume karke verify na karna.</li>
+<li>Shallow clone ki history limitations ko ignore karna.</li>
+<li>SSH private key ko public/share karna.</li>
+</ol>
+</section>
+
+<section>
+<h2>29. Interview Questions</h2>
+<div class="quiz"><strong>Q1. Git clone kya karta hai?</strong><p>Existing remote Git repository ki local copy banata hai.</p></div>
+<div class="quiz"><strong>Q2. Basic clone syntax?</strong><p><code>git clone &lt;repository-url&gt;</code></p></div>
+<div class="quiz"><strong>Q3. Clone ke baad default remote ka common naam kya hota hai?</strong><p><code>origin</code>.</p></div>
+<div class="quiz"><strong>Q4. Clone aur pull me difference?</strong><p>Clone initial local repository setup karta hai; pull existing local repository ko remote changes se update karta hai.</p></div>
+<div class="quiz"><strong>Q5. SSH se repository clone kaise karenge?</strong><p><code>git clone git@github.com:USER/REPO.git</code></p></div>
+<div class="quiz"><strong>Q6. Shallow clone kya hai?</strong><p>Limited commit history ke saath repository clone karna, jaise <code>--depth 1</code>.</p></div>
+<div class="quiz"><strong>Q7. Specific branch clone kaise?</strong><p><code>git clone --branch develop URL</code></p></div>
+<div class="quiz"><strong>Q8. <code>git remote -v</code> ka use?</strong><p>Configured remote URLs ko dekhne ke liye.</p></div>
+</section>
+
+<section>
+<h2>30. Quick Revision</h2>
+<pre>
+# Normal clone
+git clone &lt;URL&gt;
+
+# Custom folder
+git clone &lt;URL&gt; my-project
+
+# Specific branch
+git clone -b develop &lt;URL&gt;
+
+# Single branch
+git clone --single-branch -b develop &lt;URL&gt;
+
+# Shallow clone
+git clone --depth 1 &lt;URL&gt;
+
+# SSH clone
+git clone git@github.com:USER/REPO.git
+
+# Current directory
+git clone &lt;URL&gt; .
+</pre>
+<div class="success"><strong>One-line revision:</strong><br>
+<code>git clone</code> remote Git repository ki local working copy create karta hai, jisse aap project ko locally inspect, modify, commit aur remote workflow ke saath work kar sakte ho.
+</div>
+</section>
+
+<section>
+<h2>31. Final Learning Checklist</h2>
+<ul>
+<li>☐ Git clone ka meaning samajh liya</li>
+<li>☐ Basic clone command aati hai</li>
+<li>☐ HTTPS clone samajh liya</li>
+<li>☐ SSH clone samajh liya</li>
+<li>☐ Clone ke baad <code>.git</code> directory ka role samajh liya</li>
+<li>☐ <code>origin</code> remote samajh liya</li>
+<li>☐ Specific branch clone karna aata hai</li>
+<li>☐ Shallow clone samajh liya</li>
+<li>☐ Clone vs pull vs fetch samajh liya</li>
+<li>☐ Private repository authentication basics samajh liye</li>
+<li>☐ Common clone errors identify kar sakte ho</li>
+<li>☐ Practical clone workflow perform kar sakte ho</li>
+</ul>
+</section>
+
+</div>
+<footer>Git Clone Complete Study Material • Beginner → Intermediate • DevOps Learning</footer>
+</body>
+</html>
