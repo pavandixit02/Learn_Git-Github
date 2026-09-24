@@ -1,193 +1,804 @@
-# 🚀 Git & GitHub Learning Journey
+# 🚀 Learn Git & GitHub
 
-Welcome to my first GitHub repository! 👋
+A structured learning repository for understanding **Git & GitHub from Beginner to Advanced level** through practical examples, commands, notes, and hands-on practice.
 
-This repository marks the beginning of my Git and GitHub learning journey. I created it to practice version control, understand Git workflows, and document everything I learn along the way.
-
----
-
-# 📌 About This Repository
-
-This repository is dedicated to learning and practicing Git and GitHub from scratch. Every command, exercise, and project added here represents my progress toward becoming a skilled DevOps and Cloud Engineer.
-
-The purpose of this repository is to:
-
-* Learn Git fundamentals
-* Understand GitHub workflow
-* Practice version control
-* Track my learning progress
-* Build a strong foundation for DevOps
+> 📚 **Learning by Doing — Learn → Practice → Document → Push to GitHub**
 
 ---
 
-# 🎯 Learning Goals
+## 🎯 About This Repository
 
-My objectives are:
+This repository is created to document my complete journey of learning **Git & GitHub**.
 
-* Learn Git from beginner to advanced level
-* Understand how version control works
-* Learn collaboration using GitHub
-* Work with branches and pull requests
-* Build real-world Git workflows
-* Prepare for DevOps and Cloud Engineering
+Here I maintain:
 
----
+* 📖 Git & GitHub concepts
+* 💻 Important Git commands
+* 🧪 Practical examples
+* 🌿 Branching & branch management
+* 🔄 Git workflow
+* ↩️ Undoing changes
+* 🔗 Remote repository operations
+* 📝 Git configuration & aliases
+* 🚫 `.gitignore`
+* 📥 Clone, Fetch & Pull
+* 🧩 Git reset, restore & revert
+* 📚 Personal notes and HTML-based learning pages
 
-# 📚 Topics Covered
-
-### Git Basics
-
-* What is Git?
-* Why Git is used
-* Installing Git
-* Configuring Git
-* Creating repositories
-* Tracking files
-
-### Git Commands
-
-* git init
-* git status
-* git add
-* git commit
-* git log
-* git diff
-* git restore
-* git rm
-* git mv
-
-### Branching
-
-* Creating branches
-* Switching branches
-* Merging branches
-* Deleting branches
-
-### GitHub
-
-* Creating repositories
-* Connecting local repository
-* Push & Pull
-* Clone repository
-* Fork repository
-* Pull Requests
-* Issues
-* Repository management
-
-### Collaboration
-
-* Working with remote repositories
-* Team workflow
-* Conflict resolution
-* Best practices
+The main goal is to build a **strong practical understanding of Git and GitHub** rather than only memorizing commands.
 
 ---
 
-# 🛠 Technologies Used
+# 🗺️ Git & GitHub Learning Roadmap
 
-* HTML5
-* Git
-* GitHub
-* VS Code
-* Git Bash
-* Command Line Interface (CLI)
+## 1. Git Fundamentals
 
----
+* [x] What is Git?
+* [x] What is GitHub?
+* [x] Git vs GitHub
+* [x] Git Repository
+* [x] Working Directory
+* [x] Staging Area
+* [x] Git Commit
+* [x] Basic Git Workflow
 
-# 📂 Repository Structure
+### Basic Workflow
 
+```text
+Working Directory
+       ↓
+   git add
+       ↓
+Staging Area
+       ↓
+  git commit
+       ↓
+Local Repository
+       ↓
+   git push
+       ↓
+Remote Repository
+     GitHub
 ```
-My-First-Website
+
+---
+
+# 🌿 2. Git Branch
+
+Branching allows us to work on different features or versions of a project independently.
+
+📁 Learning File:
+
+`Branch/branch.html`
+
+### Topics
+
+* What is a branch?
+* Create a branch
+* Check branches
+* Switch branches
+* Rename branches
+* Delete branches
+* Merge branches
+* Branch workflow
+
+### Important Commands
+
+```bash
+git branch
+git branch -a
+git branch <branch-name>
+git switch <branch-name>
+git switch -c <branch-name>
+git branch -m <new-name>
+git branch -d <branch-name>
+git merge <branch-name>
+```
+
+---
+
+# 🔗 3. Git Alias
+
+Git aliases allow frequently used Git commands to be shortened.
+
+📁 Learning File:
+
+`git-alias/alias.html`
+
+### Example
+
+```bash
+git config --global alias.co checkout
+git config --global alias.br branch
+git config --global alias.st status
+```
+
+Instead of:
+
+```bash
+git status
+```
+
+we can use:
+
+```bash
+git st
+```
+
+---
+
+# ✏️ 4. Git Amend
+
+`git commit --amend` is used to modify the most recent commit.
+
+📁 Learning File:
+
+`git-amend/amend.html`
+
+### Important Command
+
+```bash
+git commit --amend
+```
+
+### Common Use Cases
+
+* Correct the latest commit message
+* Add forgotten files to the latest commit
+* Modify the latest commit before pushing
+
+Example:
+
+```bash
+git add forgotten-file.txt
+git commit --amend
+```
+
+---
+
+# 📥 5. Git Clone
+
+`git clone` is used to create a local copy of a remote repository.
+
+📁 Learning File:
+
+`git-clone/clone.html`
+
+### Basic Syntax
+
+```bash
+git clone <repository-url>
+```
+
+Example:
+
+```bash
+git clone https://github.com/username/repository.git
+```
+
+### Basic Flow
+
+```text
+GitHub Repository
+       ↓
+   git clone
+       ↓
+Local Repository
+       ↓
+Local Development
+```
+
+---
+
+# 🚫 6. Git Ignore
+
+`.gitignore` tells Git which files and directories should not be tracked.
+
+📁 Learning File:
+
+`git-ignore.html`
+
+### Example
+
+```gitignore
+node_modules/
+.env
+*.log
+*.tmp
+.vscode/
+```
+
+### Example Directory
+
+```text
+project/
+├── src/
+├── node_modules/
+├── .env
+└── .gitignore
+```
+
+If `node_modules/` and `.env` are listed in `.gitignore`, Git will ignore them.
+
+---
+
+# 🔄 7. Git Pull & Fetch
+
+Git Fetch and Git Pull are used to get updates from a remote repository.
+
+📁 Learning File:
+
+`git-pull-&-fetch/pull-&-fetch.html`
+
+## Git Fetch
+
+Downloads remote changes without merging them into the current branch.
+
+```bash
+git fetch
+```
+
+## Git Pull
+
+Downloads remote changes and integrates them into the current branch.
+
+```bash
+git pull
+```
+
+### Difference
+
+```text
+git fetch
+     ↓
+Download remote changes
+     ↓
+Review changes
+     ↓
+Manual merge if required
+```
+
+Whereas:
+
+```text
+git pull
+     ↓
+git fetch
+     +
+git merge/rebase
+```
+
+---
+
+# ↩️ 8. Git Reset
+
+Git Reset is used to move `HEAD` and/or modify the staging area and working directory depending on the reset mode.
+
+📁 Learning File:
+
+`git-reset/reset.html`
+
+### Important Commands
+
+```bash
+git reset --soft HEAD~1
+git reset --mixed HEAD~1
+git reset --hard HEAD~1
+```
+
+### Reset Modes
+
+| Mode      | HEAD  | Staging | Working Directory |
+| --------- | ----- | ------- | ----------------- |
+| `--soft`  | Reset | Keep    | Keep              |
+| `--mixed` | Reset | Reset   | Keep              |
+| `--hard`  | Reset | Reset   | Reset             |
+
+> ⚠️ `git reset --hard` can permanently discard uncommitted changes. Use it carefully.
+
+---
+
+# ♻️ 9. Git Restore
+
+Git Restore is mainly used to restore files in the working tree or staging area.
+
+📁 Learning File:
+
+`git-restore/restore.html`
+
+### Important Commands
+
+Restore a working-directory file:
+
+```bash
+git restore <file>
+```
+
+Unstage a file:
+
+```bash
+git restore --staged <file>
+```
+
+Example:
+
+```bash
+git restore index.html
+```
+
+---
+
+# ↩️ 10. Git Revert
+
+Git Revert creates a **new commit** that reverses the changes introduced by an earlier commit.
+
+📁 Learning File:
+
+`git-revert/revert.html`
+
+### Command
+
+```bash
+git revert <commit-id>
+```
+
+### Important Difference
+
+```text
+git reset
+    ↓
+Moves repository history/HEAD
+
+git revert
+    ↓
+Creates a new commit
+that reverses previous changes
+```
+
+`git revert` is generally useful when changes have already been shared with a remote repository.
+
+---
+
+# 📁 Project Structure
+
+Current repository structure:
+
+```text
+Learn_Git-Github/
 │
-├── index.html
+├── .gitignore
+├── README.md
+│
 ├── GG.css
-└── GG.js
+├── GG.js
+│
+├── learn_G-GH-1.html
+│
+├── git-ignore.html
+│
+├── Branch/
+│   ├── branch.html
+│   └── first.txt
+│
+├── git-alias/
+│   └── alias.html
+│
+├── git-amend/
+│   └── amend.html
+│
+├── git-clone/
+│   └── clone.html
+│
+├── git-pull-&-fetch/
+│   └── pull-&-fetch.html
+│
+├── git-reset/
+│   └── reset.html
+│
+├── git-restore/
+│   └── restore.html
+│
+└── git-revert/
+    └── revert.html
 ```
-
 
 ---
 
-# 💻 Commands Practiced
+# 📚 Current Learning Progress
+
+| #  | Topic            | Status      | Notes                     |
+| -- | ---------------- | ----------- | ------------------------- |
+| 1  | Git Fundamentals | ✅ Completed | Basic concepts            |
+| 2  | Branch           | ✅ Completed | Branch management         |
+| 3  | Git Alias        | ✅ Completed | Git shortcuts             |
+| 4  | Git Amend        | ✅ Completed | Modify latest commit      |
+| 5  | Git Clone        | ✅ Completed | Clone remote repositories |
+| 6  | Git Ignore       | ✅ Completed | Ignore files/directories  |
+| 7  | Git Pull         | ✅ Completed | Get remote changes        |
+| 8  | Git Fetch        | ✅ Completed | Fetch remote changes      |
+| 9  | Git Reset        | ✅ Completed | Reset repository state    |
+| 10 | Git Restore      | ✅ Completed | Restore files             |
+| 11 | Git Revert       | ✅ Completed | Reverse commits           |
+
+---
+
+# 🧠 Important Git Commands
+
+## Repository Setup
 
 ```bash
 git init
+git clone <url>
+```
+
+## Configuration
+
+```bash
+git config --global user.name "Your Name"
+git config --global user.email "you@example.com"
+git config --list
+```
+
+## Check Repository Status
+
+```bash
 git status
+```
+
+## Add Files
+
+```bash
+git add <file>
 git add .
-git commit -m "Initial commit"
-git branch
-git checkout
-git switch
-git merge
-git clone
-git pull
-git push
+```
+
+## Commit
+
+```bash
+git commit -m "commit message"
+```
+
+## View History
+
+```bash
 git log
+git log --oneline
+git log --graph --oneline --all
+```
+
+## Remote Repository
+
+```bash
 git remote -v
+git remote add origin <url>
+git push -u origin main
+git push
+git pull
+git fetch
+```
+
+## Branches
+
+```bash
+git branch
+git branch -a
+git switch <branch>
+git switch -c <branch>
+git merge <branch>
+git branch -d <branch>
 ```
 
 ---
 
-# 📈 My Learning Progress
+# 🔄 Complete Git Workflow
 
-* [x] Install Git
-* [x] Configure Git
-* [x] Create Local Repository
-* [x] Create GitHub Repository
-* [x] First Commit
-* [x] Push Code to GitHub
-* [ ] Branching
-* [ ] Merge
+A common Git + GitHub workflow:
+
+```text
+              GitHub
+                 ↑
+              git push
+                 ↑
+          Local Repository
+                 ↑
+            git commit
+                 ↑
+           Staging Area
+                 ↑
+             git add
+                 ↑
+          Working Directory
+```
+
+### Typical Commands
+
+```bash
+git status
+
+git add .
+
+git commit -m "Add new feature"
+
+git push origin main
+```
+
+---
+
+# 🌎 Local Repository vs Remote Repository
+
+```text
+┌─────────────────────────────┐
+│       Local Computer        │
+│                             │
+│ Working Directory           │
+│          ↓                  │
+│ Staging Area                │
+│          ↓                  │
+│ Local Repository            │
+└─────────────┬───────────────┘
+              │
+           git push
+              ↓
+┌─────────────────────────────┐
+│          GitHub              │
+│      Remote Repository       │
+└─────────────────────────────┘
+```
+
+For downloading remote changes:
+
+```text
+GitHub
+  ↓
+git fetch / git pull
+  ↓
+Local Repository
+```
+
+---
+
+# 🛠️ Tools Used
+
+* Git
+* GitHub
+* VS Code
+* HTML
+* CSS
+* JavaScript
+* Linux / Ubuntu
+* Git Bash / Terminal
+
+---
+
+# 🎯 Learning Method
+
+For every Git/GitHub topic, I follow this approach:
+
+```text
+1. What is it?
+       ↓
+2. Why is it used?
+       ↓
+3. How does it work?
+       ↓
+4. Syntax
+       ↓
+5. Practical Example
+       ↓
+6. Real-world Use Case
+       ↓
+7. Common Mistakes
+       ↓
+8. Interview Questions
+       ↓
+9. Hands-on Practice
+       ↓
+10. Documentation
+```
+
+---
+
+# 🚀 Upcoming Topics
+
+The repository will be continuously updated with more advanced Git & GitHub concepts.
+
+### Git
+
+* [ ] Git Tags
+* [ ] Git Stash
+* [ ] Git Diff
+* [ ] Git Log Advanced
+* [ ] Git Cherry-pick
+* [ ] Git Rebase
+* [ ] Git Reflog
+* [ ] Git Bisect
+* [ ] Git Worktree
+* [ ] Git Hooks
+* [ ] Git Submodules
+* [ ] Git Archive
+* [ ] Git Blame
+
+### Branching & Collaboration
+
+* [ ] Feature Branch Workflow
+* [ ] Git Merge Strategies
+* [ ] Merge Conflicts
+* [ ] Rebase Workflow
 * [ ] Pull Requests
+* [ ] Code Review
+* [ ] Protected Branches
+
+### GitHub
+
+* [ ] GitHub Repository Management
+* [ ] Pull Requests
+* [ ] Issues
+* [ ] Labels
+* [ ] Milestones
+* [ ] Projects
 * [ ] GitHub Actions
-* [ ] Advanced Git
+* [ ] GitHub Pages
+* [ ] Releases
+* [ ] Secrets & Variables
+* [ ] Branch Protection Rules
+* [ ] GitHub CLI
+* [ ] SSH Authentication
+* [ ] Personal Access Token (PAT)
+
+### Advanced GitHub / DevOps
+
+* [ ] GitHub Actions CI/CD
+* [ ] Automated Testing
+* [ ] Docker + GitHub
+* [ ] GitHub Actions + Docker
+* [ ] GitHub Actions + AWS
+* [ ] GitHub Actions + Kubernetes
+* [ ] GitOps
+* [ ] CI/CD Pipeline Project
 
 ---
 
-# 📖 Why I'm Learning Git
+# 🧪 Practical Projects
 
-Git is one of the most important tools in software development, DevOps, and Cloud Computing. Learning Git helps developers:
+The next phase of this repository will focus on practical projects rather than only individual commands.
 
-* Track code changes
-* Collaborate with teams
-* Maintain project history
-* Recover previous versions
-* Build professional development workflows
+### Project 1 — Git Workflow Project
+
+```text
+Create Repository
+       ↓
+Create Branch
+       ↓
+Make Changes
+       ↓
+git add
+       ↓
+git commit
+       ↓
+git push
+       ↓
+Pull Request
+       ↓
+Merge
+```
+
+### Project 2 — GitHub CI/CD
+
+```text
+Developer
+    ↓
+Git Push
+    ↓
+GitHub
+    ↓
+GitHub Actions
+    ↓
+Build
+    ↓
+Test
+    ↓
+Docker Build
+    ↓
+Deploy
+```
+
+### Project 3 — DevOps Git Workflow
+
+```text
+Git
+ ↓
+GitHub
+ ↓
+GitHub Actions
+ ↓
+Docker
+ ↓
+AWS
+ ↓
+Deployment
+ ↓
+Monitoring
+```
 
 ---
 
-# 🚀 Future Plans
+# 💡 Git Learning Philosophy
 
-I will continue updating this repository as I learn:
+> **Don't just memorize Git commands — understand what happens inside Git.**
 
-* Advanced Git
-* GitHub Actions
-* CI/CD Pipelines
-* Docker
-* Kubernetes
-* Linux Administration
-* Jenkins
-* Terraform
-* AWS Cloud
-* DevOps Projects
+For every command, the goal is to understand:
 
----
-
-# 🤝 Contributions
-
-This repository is primarily for learning and practice. Suggestions, improvements, and constructive feedback are always welcome.
+```text
+Command
+   ↓
+Purpose
+   ↓
+Internal Git Behavior
+   ↓
+Repository State
+   ↓
+Real-world Use
+```
 
 ---
 
-# 📌 Repository Purpose
+# 📈 Progress
 
-This repository serves as my personal learning journal where I regularly practice Git and GitHub concepts and document my progress.
+```text
+Git Basics          ████████████████████ 100%
+Branching           ████████████████████ 100%
+Basic Git Commands  ████████████████████ 100%
+Undo Operations     ████████████████████ 100%
+Remote Operations   ████████████████████ 100%
+Advanced Git        ████░░░░░░░░░░░░░░░░ 20%
+GitHub              ████████░░░░░░░░░░░░ 40%
+GitHub Actions      ░░░░░░░░░░░░░░░░░░░░ 0%
+GitOps              ░░░░░░░░░░░░░░░░░░░░ 0%
+```
+
+> Progress will be updated as new topics are learned and documented.
 
 ---
 
-# ⭐ Thank You
+# 📌 Repository
 
-Thank you for visiting my repository.
+**GitHub Repository:**
+https://github.com/pavandixit02/Learn_Git-Github
 
-If you find this repository helpful, feel free to ⭐ Star the repository and follow my learning journey.
+---
 
-Happy Coding! 🚀
+# 👨‍💻 Author
+
+**Pavan Kumar Dixit**
+
+BCA Graduate | RHCSA | RHCE | Cloud & DevOps Learner
+
+Currently learning:
+
+```text
+Linux
+  ↓
+Git & GitHub
+  ↓
+Docker
+  ↓
+Kubernetes
+  ↓
+CI/CD
+  ↓
+Cloud
+  ↓
+DevOps
+  ↓
+Cloud & DevOps Projects
+```
+
+---
+
+## ⭐ Learning Goal
+
+Build strong practical knowledge of:
+
+**Git → GitHub → CI/CD → Docker → Kubernetes → Cloud → DevOps**
+
+and document the complete learning journey through practical projects and notes.
