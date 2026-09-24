@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Git Amend - Complete Study Material</title>
+<style>
+:root{--bg:#0f172a;--card:#111827;--text:#e5e7eb;--muted:#94a3b8;--accent:#38bdf8;--green:#4ade80;--yellow:#facc15;--red:#fb7185;--purple:#c4b5fd;--border:#334155}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:linear-gradient(135deg,#020617,#0f172a 55%,#111827);color:var(--text);line-height:1.7}
+.container{max-width:1150px;margin:auto;padding:28px 20px 60px}
+header{padding:45px 30px;border:1px solid var(--border);border-radius:22px;background:linear-gradient(135deg,#0c4a6e,#172554);box-shadow:0 15px 45px rgba(0,0,0,.3);margin-bottom:28px}
+header h1{margin:0 0 10px;font-size:44px;color:#fff}
+header p{margin:0;color:#dbeafe;font-size:18px}
+.badge{display:inline-block;background:rgba(56,189,248,.15);border:1px solid rgba(56,189,248,.4);color:#7dd3fc;padding:5px 12px;border-radius:999px;font-size:13px;margin-bottom:14px}
+section{background:rgba(17,24,39,.92);border:1px solid var(--border);border-radius:18px;padding:27px;margin:22px 0}
+h2{color:var(--accent);margin-top:0;border-bottom:1px solid var(--border);padding-bottom:10px}
+h3{color:var(--purple)}
+code{background:#020617;color:#86efac;padding:2px 6px;border-radius:5px;font-family:"Courier New",monospace}
+pre{background:#020617;border:1px solid #1e293b;padding:18px;border-radius:12px;overflow-x:auto;color:#d1fae5;font-family:"Courier New",monospace;font-size:14px}
+.note,.warning,.success,.danger{padding:15px 18px;border-radius:10px;margin:15px 0}
+.note{background:#082f49;border-left:4px solid var(--accent)}
+.warning{background:#422006;border-left:4px solid var(--yellow)}
+.success{background:#052e16;border-left:4px solid var(--green)}
+.danger{background:#450a0a;border-left:4px solid var(--red)}
+table{width:100%;border-collapse:collapse;margin:15px 0}
+th,td{border:1px solid var(--border);padding:12px;text-align:left;vertical-align:top}
+th{background:#1e293b;color:#7dd3fc}
+tr:nth-child(even){background:rgba(30,41,59,.35)}
+.flow{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:center;margin:22px 0}
+.flow span{padding:12px 16px;background:#1e293b;border:1px solid #475569;border-radius:10px}
+.arrow{color:var(--accent);font-size:22px}
+.diagram{background:#020617;border:1px solid var(--border);border-radius:12px;padding:20px;text-align:center;font-family:"Courier New",monospace;overflow-x:auto}
+.quiz{background:#172554;border:1px solid #3730a3;border-radius:12px;padding:16px;margin:12px 0}
+.tip{background:#1c1917;border-left:4px solid #fb923c;padding:15px 18px;border-radius:10px;margin:15px 0}
+footer{text-align:center;color:var(--muted);padding:25px 0;font-size:14px}
+@media(max-width:700px){header h1{font-size:32px}section{padding:20px}}
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+<span class="badge">Git / DevOps Study Material</span>
+<h1>Git Amend</h1>
+<p><code>git commit --amend</code> ko beginner se intermediate level tak samajhne ke liye complete theory + practical guide.</p>
+</header>
+
+<section>
+<h2>1. Git Amend Kya Hota Hai?</h2>
+<p><strong>Git Amend</strong> ka use latest/last commit ko modify ya update karne ke liye hota hai. Iska main command hai:</p>
+<pre>git commit --amend</pre>
+<div class="note"><strong>Simple Definition:</strong><br>
+Amend ka matlab hai last commit ko replace karke uska updated version banana. Iska common use commit message correct karna ya last commit me missed/staged changes add karna hai.</div>
+<p>Amend mainly <strong>current HEAD commit</strong> par kaam karta hai.</p>
+</section>
+
+<section>
+<h2>2. Amend Ki Zarurat Kyu Padti Hai?</h2>
+<p>Suppose aapne commit kiya:</p>
+<pre>git add .
+git commit -m "Add logn feature"</pre>
+<p>Baad me pata chala:</p>
+<ul>
+<li>Commit message me spelling mistake hai.</li>
+<li>Ek file commit me add karna bhool gaye.</li>
+<li>Last commit me ek small correction add karni hai.</li>
+<li>Commit message ko better banana hai.</li>
+</ul>
+<p>Aise case me, agar commit abhi shared history ka part nahi bana hai, to amend useful hota hai.</p>
+</section>
+
+<section>
+<h2>3. Basic Amend Workflow</h2>
+<div class="flow">
+<span>Last Commit</span><span class="arrow">→</span><span>Correction</span><span class="arrow">→</span><span>git add</span><span class="arrow">→</span><span>git commit --amend</span><span class="arrow">→</span><span>Updated Commit</span>
+</div>
+<pre>git status
+git add .
+git commit --amend</pre>
+</section>
+
+<section>
+<h2>4. Sirf Commit Message Change Karna</h2>
+<p>Agar last commit ka message galat hai:</p>
+<pre>git commit --amend -m "Add login feature"</pre>
+<p>Example:</p>
+<pre>git commit -m "Add logn feature"
+git commit --amend -m "Add login feature"</pre>
+<div class="success"><strong>Result:</strong> Last commit ka message update ho jayega.</div>
+</section>
+
+<section>
+<h2>5. Editor Open Karke Message Change Karna</h2>
+<p>Aap message directly <code>-m</code> ke saath de sakte ho:</p>
+<pre>git commit --amend -m "Add login feature"</pre>
+<p>Ya:</p>
+<pre>git commit --amend</pre>
+<p>Isse configured Git editor open ho sakta hai. Message edit karke save/close karne par amended commit create hoga.</p>
+</section>
+
+<section>
+<h2>6. Last Commit Me Missed File Add Karna</h2>
+<p>Suppose:</p>
+<pre>git add app.py
+git commit -m "Add application"</pre>
+<p>Baad me pata chala ki <code>config.yml</code> bhi isi commit me honi chahiye thi.</p>
+<p>Step 1:</p>
+<pre>git add config.yml</pre>
+<p>Step 2:</p>
+<pre>git commit --amend</pre>
+<p>Agar message same rakhna ho:</p>
+<pre>git commit --amend --no-edit</pre>
+<div class="success">Staged <code>config.yml</code> ko latest commit me include kiya ja sakta hai.</div>
+</section>
+
+<section>
+<h2>7. <code>--no-edit</code> Kya Karta Hai?</h2>
+<pre>git add config.yml
+git commit --amend --no-edit</pre>
+<p><code>--no-edit</code> ka matlab hai existing commit message ko preserve karna.</p>
+<table>
+<tr><th>Command</th><th>Result</th></tr>
+<tr><td><code>git commit --amend</code></td><td>Commit amend; message editor open ho sakta hai.</td></tr>
+<tr><td><code>git commit --amend -m "New message"</code></td><td>Message explicitly change.</td></tr>
+<tr><td><code>git commit --amend --no-edit</code></td><td>Existing message same.</td></tr>
+</table>
+</section>
+
+<section>
+<h2>8. Git Add Kyu Zaroori Hai?</h2>
+<p>Amend ke through last commit me new changes include karne ke liye un changes ko pehle stage karna hota hai.</p>
+<div class="diagram">
+Working Directory<br>
+↓<br>
+git add<br>
+↓<br>
+Staging Area<br>
+↓<br>
+git commit --amend<br>
+↓<br>
+Updated HEAD Commit
+</div>
+<p>Check karne ke liye:</p>
+<pre>git diff
+git diff --staged
+git status</pre>
+</section>
+
+<section>
+<h2>9. Real-Life Practical Example</h2>
+<pre>
+mkdir amend-practice
+cd amend-practice
+git init
+
+echo "Login feature" &gt; app.txt
+git add app.txt
+git commit -m "Add logn feature"
+
+# Message correction
+git commit --amend -m "Add login feature"
+
+git log --oneline -1
+</pre>
+<p>Ab last commit ka message corrected form me hoga.</p>
+</section>
+
+<section>
+<h2>10. Missed File Practical Example</h2>
+<pre>
+echo "Application" &gt; app.txt
+git add app.txt
+git commit -m "Add application"
+
+echo "Environment config" &gt; config.txt
+
+git status
+git add config.txt
+git commit --amend --no-edit
+
+git show --stat HEAD
+</pre>
+<p>Is workflow me <code>config.txt</code> ko latest commit me include kiya ja sakta hai.</p>
+</section>
+
+<section>
+<h2>11. Amend Internally Kaise Work Karta Hai?</h2>
+<p>Git commit ko simply text file ki tarah edit nahi karta. Amend ke baad updated commit object create hota hai aur current branch/HEAD updated commit ko point karta hai.</p>
+<div class="diagram">
+Before:<br><br>
+A --- B ← HEAD<br><br>
+After Amend:<br><br>
+A --- B' ← HEAD<br><br>
+B' = updated version of last commit
+</div>
+<p>Isliye amended commit ka hash generally change ho jata hai.</p>
+</section>
+
+<section>
+<h2>12. Commit Hash Kyu Change Hota Hai?</h2>
+<p>Git commit ID/hash commit ke content, metadata aur parent information se derived hoti hai. Jab commit message ya committed content change hota hai, resulting commit ka identity/hash bhi change ho sakta hai.</p>
+<pre>Before:
+a1b2c3d  Add logn feature
+
+After:
+f7e8d9c  Add login feature</pre>
+<div class="warning"><strong>Important:</strong> Amend existing commit hash ko edit nahi karta; updated commit ka naya identity/hash ban sakta hai.</div>
+</section>
+
+<section>
+<h2>13. Amend vs New Commit</h2>
+<table>
+<tr><th>Situation</th><th>Use</th><th>Result</th></tr>
+<tr><td>Last commit me small correction</td><td><code>git commit --amend</code></td><td>Last commit updated</td></tr>
+<tr><td>New independent logical work</td><td><code>git commit -m "..."</code></td><td>New separate commit</td></tr>
+</table>
+<div class="tip"><strong>Rule:</strong> Amend ko last commit ko clean/correct karne ke liye use karna generally easier hota hai; unrelated work ko old commit me unnecessarily mix na karein.</div>
+</section>
+
+<section>
+<h2>14. Amend vs Reset</h2>
+<table>
+<tr><th>Feature</th><th>Amend</th><th>Reset</th></tr>
+<tr><td>Main purpose</td><td>Latest commit update/replace</td><td>HEAD/branch position adjust karna</td></tr>
+<tr><td>Typical use</td><td>Message/file correction</td><td>History ko move/adjust karna</td></tr>
+<tr><td>Modes</td><td><code>--no-edit</code> etc.</td><td><code>--soft</code>, <code>--mixed</code>, <code>--hard</code></td></tr>
+</table>
+</section>
+
+<section>
+<h2>15. Amend vs Revert</h2>
+<table>
+<tr><th>Feature</th><th>Amend</th><th>Revert</th></tr>
+<tr><td>Purpose</td><td>Latest commit ko correct/update</td><td>Existing commit ke changes ko reverse</td></tr>
+<tr><td>Typical use</td><td>Unpublished local correction</td><td>Existing history me change undo</td></tr>
+<tr><td>History effect</td><td>Last commit identity change ho sakti hai</td><td>Original commit history me rehta hai aur new revert commit banta hai</td></tr>
+</table>
+</section>
+
+<section>
+<h2>16. Pushed Commit Ko Amend Karna</h2>
+<p>Agar commit already remote repository par push ho chuka hai, amend ke baad commit hash change ho sakta hai. Isse remote aur local history alag ho sakti hai.</p>
+<div class="danger"><strong>Warning:</strong> Already-pushed shared commit ko amend karke normal push reject ho sakta hai. Force update ki zarurat pad sakti hai, jo shared history ko affect kar sakta hai.</div>
+<p>Is situation me pehle verify karein:</p>
+<pre>git status
+git log --oneline --decorate -5</pre>
+<p>Agar workflow explicitly allow karta ho, to force update ke liye:</p>
+<pre>git push --force-with-lease</pre>
+<div class="note"><strong>Why <code>--force-with-lease</code>?</strong> Ye remote reference me unexpected updates detect karne me help karta hai. Shared branches par phir bhi carefully use karein.</div>
+</section>
+
+<section>
+<h2>17. Amend Se Pehle Useful Commands</h2>
+<table>
+<tr><th>Command</th><th>Purpose</th></tr>
+<tr><td><code>git status</code></td><td>Current repository state check.</td></tr>
+<tr><td><code>git diff</code></td><td>Unstaged changes dekhna.</td></tr>
+<tr><td><code>git diff --staged</code></td><td>Amend hone wale staged changes check karna.</td></tr>
+<tr><td><code>git log --oneline -5</code></td><td>Recent commits check karna.</td></tr>
+<tr><td><code>git show HEAD</code></td><td>Current latest commit details dekhna.</td></tr>
+</table>
+</section>
+
+<section>
+<h2>18. Complete Amend Workflow</h2>
+<pre>
+# 1. Current state
+git status
+
+# 2. Make correction
+# edit your file
+
+# 3. Review
+git diff
+
+# 4. Stage correction
+git add &lt;file&gt;
+
+# 5. Verify staged content
+git diff --staged
+
+# 6. Amend
+git commit --amend --no-edit
+
+# 7. Verify
+git log --oneline -3
+git show --stat HEAD
+</pre>
+</section>
+
+<section>
+<h2>19. Common Mistakes</h2>
+<ol>
+<li><code>git add</code> kiye bina new changes automatically amend hone ki expectation.</li>
+<li>Already-pushed shared commit ko casually amend karna.</li>
+<li>Force push ka impact samjhe bina <code>git push --force</code> use karna.</li>
+<li>Amend ke baad changed commit hash ko ignore karna.</li>
+<li>Unrelated changes ko last commit me add kar dena.</li>
+<li><code>git diff --staged</code> check na karna.</li>
+<li>Current HEAD commit verify kiye bina amend kar dena.</li>
+</ol>
+</section>
+
+<section>
+<h2>20. Practical Lab - Complete Exercise</h2>
+<h3>Step 1: Repository</h3>
+<pre>mkdir git-amend-lab
+cd git-amend-lab
+git init</pre>
+
+<h3>Step 2: First commit</h3>
+<pre>
+echo "Hello Git" &gt; app.txt
+git add app.txt
+git commit -m "Add ap file"
+</pre>
+
+<h3>Step 3: Message fix</h3>
+<pre>git commit --amend -m "Add app file"</pre>
+
+<h3>Step 4: New file</h3>
+<pre>echo "Configuration" &gt; config.txt</pre>
+
+<h3>Step 5: Stage it</h3>
+<pre>git add config.txt</pre>
+
+<h3>Step 6: Add to previous commit</h3>
+<pre>git commit --amend --no-edit</pre>
+
+<h3>Step 7: Verify</h3>
+<pre>
+git status
+git log --oneline -3
+git show --stat HEAD
+</pre>
+<div class="success"><strong>Lab Goal:</strong> Is exercise se aap message correction, missed file inclusion, staging aur amended commit verification practically samajh sakte ho.</div>
+</section>
+
+<section>
+<h2>21. Interview Questions</h2>
+<div class="quiz"><strong>Q1. Git amend kya hota hai?</strong><p>Latest commit ko update/replace karne ka mechanism, commonly <code>git commit --amend</code> se.</p></div>
+<div class="quiz"><strong>Q2. Last commit ka message kaise change karenge?</strong><p><code>git commit --amend -m "New message"</code></p></div>
+<div class="quiz"><strong>Q3. Missed file ko last commit me kaise add karenge?</strong><p>File ko <code>git add</code> karke <code>git commit --amend --no-edit</code> use kar sakte hain.</p></div>
+<div class="quiz"><strong>Q4. <code>--no-edit</code> kya karta hai?</strong><p>Existing commit message ko preserve karta hai.</p></div>
+<div class="quiz"><strong>Q5. Amend ke baad hash kyu change ho sakta hai?</strong><p>Updated commit ka content/message/metadata change hone se commit identity change ho sakti hai.</p></div>
+<div class="quiz"><strong>Q6. Pushed commit amend karna risky kyu hai?</strong><p>Commit history ka reference change ho sakta hai aur remote update ke liye force update ki zarurat pad sakti hai.</p></div>
+<div class="quiz"><strong>Q7. <code>git commit --amend --no-edit</code> kab use karenge?</strong><p>Jab last commit me staged correction/file add karni ho aur message same rakhna ho.</p></div>
+</section>
+
+<section>
+<h2>22. Quick Revision Cheat Sheet</h2>
+<table>
+<tr><th>Task</th><th>Command</th></tr>
+<tr><td>Amend latest commit</td><td><code>git commit --amend</code></td></tr>
+<tr><td>Change message</td><td><code>git commit --amend -m "New message"</code></td></tr>
+<tr><td>Add staged changes, same message</td><td><code>git commit --amend --no-edit</code></td></tr>
+<tr><td>Check staged changes</td><td><code>git diff --staged</code></td></tr>
+<tr><td>Check latest commit</td><td><code>git show HEAD</code></td></tr>
+<tr><td>Recent commits</td><td><code>git log --oneline -5</code></td></tr>
+</table>
+<div class="success"><strong>One-line revision:</strong><br>
+<code>git commit --amend</code> ka use last commit ko modify/update karne ke liye hota hai, especially commit message correct karne ya staged changes ko last commit me include karne ke liye.</div>
+</section>
+
+<section>
+<h2>23. Final Learning Checklist</h2>
+<ul>
+<li>☐ Amend ka meaning samajh liya</li>
+<li>☐ Last commit message change karna aata hai</li>
+<li>☐ Missed file ko last commit me add karna aata hai</li>
+<li>☐ <code>--no-edit</code> samajh liya</li>
+<li>☐ Commit hash change hone ka reason samajh liya</li>
+<li>☐ Amend vs new commit samajh liya</li>
+<li>☐ Amend vs reset samajh liya</li>
+<li>☐ Amend vs revert samajh liya</li>
+<li>☐ Pushed/shared commit ka risk samajh liya</li>
+<li>☐ Practical lab complete kar li</li>
+</ul>
+</section>
+
+</div>
+<footer>Git Amend Complete Study Material • Beginner → Intermediate • DevOps Learning</footer>
+</body>
+</html>
