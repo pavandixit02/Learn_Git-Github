@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GitHub Actions & Workflow — Complete Study Material</title>
+<style>
+:root{
+  --bg:#0b1020;--panel:#11182b;--panel2:#0e1526;--text:#e8edf7;--muted:#aab5c8;
+  --accent:#58a6ff;--accent2:#8b5cf6;--green:#3fb950;--yellow:#d29922;--red:#f85149;
+  --cyan:#39d0d8;--border:#26324a;--code:#080d18;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:linear-gradient(180deg,#080c18,#0b1020 35%,#0a1020);color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif;line-height:1.7}
+a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
+.container{width:min(1180px,92%);margin:auto}
+header{padding:64px 0 42px;border-bottom:1px solid var(--border);background:radial-gradient(circle at 20% 0%,#17254a 0,transparent 38%),radial-gradient(circle at 90% 10%,#27164b 0,transparent 32%)}
+.badge{display:inline-block;padding:6px 12px;border:1px solid #38537a;border-radius:999px;color:#9cc9ff;background:#101c33;font-size:.85rem}
+h1{font-size:clamp(2.1rem,5vw,4rem);line-height:1.1;margin:18px 0 14px}
+h2{font-size:2rem;margin-top:0;color:#fff} h3{color:#dce8ff;margin-top:28px}
+.subtitle{font-size:1.12rem;color:var(--muted);max-width:850px}
+nav{position:sticky;top:0;z-index:10;background:rgba(8,12,24,.9);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+nav .container{display:flex;gap:8px;overflow:auto;padding:10px 0}
+nav a{white-space:nowrap;padding:8px 12px;border-radius:8px;color:#b8c6dc;font-size:.9rem}
+nav a:hover{background:#18233b;color:#fff;text-decoration:none}
+section{padding:54px 0;border-bottom:1px solid var(--border)}
+.card{background:linear-gradient(145deg,var(--panel),var(--panel2));border:1px solid var(--border);border-radius:16px;padding:24px;margin:18px 0;box-shadow:0 12px 35px rgba(0,0,0,.14)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px}
+.callout{border-left:4px solid var(--accent);background:#0d1a30;padding:17px 19px;border-radius:10px;margin:18px 0}
+.success{border-left-color:var(--green);background:#0c1c16}.warn{border-left-color:var(--yellow);background:#211b0d}.danger{border-left-color:var(--red);background:#211112}
+.k{color:#8ec8ff;font-weight:700}.green{color:#65d68d}.yellow{color:#f1c75b}.red{color:#ff8b86}.cyan{color:#69e7eb}
+pre{background:var(--code);border:1px solid #202d45;border-radius:12px;padding:18px;overflow:auto;color:#dce7f7;font-size:.9rem;line-height:1.6}
+code{font-family:"JetBrains Mono","Fira Code",Consolas,monospace}
+.inline{background:#172139;padding:2px 6px;border-radius:5px;color:#9ed0ff}
+table{width:100%;border-collapse:collapse;margin:18px 0;display:block;overflow:auto}
+th,td{border:1px solid var(--border);padding:12px;text-align:left;min-width:150px}
+th{background:#18243b;color:#dce8ff} tr:nth-child(even){background:#0e1628}
+.flow{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:center;margin:25px 0}
+.step{background:#15213a;border:1px solid #345078;padding:14px 18px;border-radius:12px;text-align:center;min-width:150px}
+.arrow{font-size:1.4rem;color:#6f91bb}
+.diagram{background:#080e1b;border:1px solid var(--border);border-radius:14px;padding:22px;overflow:auto}
+.mono{font-family:monospace;white-space:pre}
+.check li{margin:7px 0}
+footer{padding:40px 0;color:var(--muted);text-align:center}
+.small{color:var(--muted);font-size:.92rem}
+</style>
+</head>
+<body>
+
+<header>
+<div class="container">
+<span class="badge">GitHub Actions • GitHub CI/CD • DevOps Learning</span>
+<h1>GitHub Actions & Workflow</h1>
+<p class="subtitle">
+A complete beginner-to-intermediate study guide covering GitHub Actions, GitHub Actions workflows,
+key workflow components, and the complete workflow execution flow—with YAML, real-world examples,
+CI/CD architecture, practical labs, troubleshooting, interview questions and cheat sheets.
+</p>
+</div>
+</header>
+
+<nav>
+<div class="container">
+<a href="#actions">1. GitHub Actions</a>
+<a href="#workflow">2. Workflow</a>
+<a href="#components">3. Components</a>
+<a href="#execution">4. Execution Flow</a>
+<a href="#yaml">YAML Example</a>
+<a href="#lab">Practical Lab</a>
+<a href="#interview">Interview</a>
+<a href="#cheat">Cheat Sheet</a>
+</div>
+</nav>
+
+<main class="container">
+
+<section id="actions">
+<h2>1. GitHub Actions — Kya Hai, Kaise Kaam Karta Hai & Kyu Needed Hai?</h2>
+
+<div class="callout">
+<strong>Simple definition:</strong> GitHub Actions is GitHub ka automation and CI/CD platform hai.
+Iske through repository ke andar hone wale events—jaise <span class="inline">push</span>,
+<span class="inline">pull_request</span>, release, schedule, ya manual trigger—ke basis par
+automated tasks run karwa sakte ho.
+</div>
+
+<h3>GitHub Actions ko simple language mein samjho</h3>
+<p>
+Suppose tumne code GitHub par push kiya. Normally tumhe manually:
+build karna, tests run karna, Docker image banana, server par deploy karna aur notification bhejna pad sakta hai.
+GitHub Actions in steps ko automatically execute kar sakta hai.
+</p>
+
+<div class="flow">
+<div class="step"><b>Developer</b><br>Code change</div><div class="arrow">→</div>
+<div class="step"><b>GitHub</b><br>Push / PR</div><div class="arrow">→</div>
+<div class="step"><b>Workflow</b><br>Triggered</div><div class="arrow">→</div>
+<div class="step"><b>Runner</b><br>Executes jobs</div><div class="arrow">→</div>
+<div class="step"><b>Result</b><br>Test / Build / Deploy</div>
+</div>
+
+<h3>GitHub Actions ki need kyu hoti hai?</h3>
+<div class="grid">
+<div class="card"><h3>⚙️ Automation</h3><p>Repeated manual tasks ko automatically run karna.</p></div>
+<div class="card"><h3>🧪 Continuous Testing</h3><p>Har push/PR par automated tests run karna.</p></div>
+<div class="card"><h3>🔨 Continuous Integration</h3><p>New code ko automatically build aur validate karna.</p></div>
+<div class="card"><h3>🚀 Continuous Delivery</h3><p>Validated application ko deployment process tak le jana.</p></div>
+<div class="card"><h3>🐳 Docker</h3><p>Docker image build, tag aur registry push automate karna.</p></div>
+<div class="card"><h3>☁️ Cloud Deployment</h3><p>AWS, Azure, GCP ya other environments ke deployment steps automate karna.</p></div>
+</div>
+
+<h3>Real-life analogy</h3>
+<div class="card">
+<p><b>Restaurant analogy:</b></p>
+<p>
+Customer order deta hai → order kitchen ko milta hai → ingredients prepare hote hain →
+food cook hota hai → quality check hota hai → waiter serve karta hai.
+</p>
+<p>
+GitHub Actions mein: <b>event → workflow → jobs → steps → validation/deployment</b>.
+Har stage predefined instructions ke according automatically execute ho sakti hai.
+</p>
+</div>
+
+<h3>GitHub Actions vs Git vs GitHub</h3>
+<table>
+<tr><th>Technology</th><th>Main Purpose</th></tr>
+<tr><td>Git</td><td>Version control; code/file changes track karna.</td></tr>
+<tr><td>GitHub</td><td>Git repositories host, collaborate aur manage karna.</td></tr>
+<tr><td>GitHub Actions</td><td>Repository events ke basis par automation aur CI/CD workflows run karna.</td></tr>
+</table>
+
+<h3>GitHub Actions se kya-kya automate kar sakte ho?</h3>
+<ul>
+<li>Linting and formatting</li>
+<li>Unit/integration tests</li>
+<li>Application build</li>
+<li>Docker image build & push</li>
+<li>Security/scanning checks</li>
+<li>Release creation</li>
+<li>Package publishing</li>
+<li>Cloud deployment</li>
+<li>Infrastructure automation</li>
+<li>Notifications and reports</li>
+<li>Scheduled maintenance jobs</li>
+</ul>
+
+<div class="callout success">
+<strong>DevOps point:</strong> GitHub Actions sirf “code run karne ka tool” nahi hai.
+Ye source control ke saath automation ko connect karke CI/CD pipeline implement karne ka practical mechanism hai.
+</div>
+</section>
+
+<section id="workflow">
+<h2>2. GitHub Actions Workflow — Kya Hota Hai?</h2>
+
+<div class="callout">
+<strong>Definition:</strong> Workflow ek YAML file hoti hai jo define karti hai ki
+<strong>kab</strong> automation start hogi, <strong>kis runner/environment</strong> par chalegi,
+<strong>kaunse jobs</strong> run honge, aur har job ke andar <strong>kaunse steps</strong> execute honge.
+</div>
+
+<h3>Workflow file kaha hoti hai?</h3>
+<pre><code>.github/
+└── workflows/
+    └── ci.yml</code></pre>
+
+<p>GitHub repository ke root ke andar <span class="inline">.github/workflows/</span> directory mein
+YAML workflow files rakhi jati hain.</p>
+
+<h3>Workflow ki need kyu?</h3>
+<p>
+Agar automation rules scattered scripts mein rakhe hon, to team ke liye samajhna aur maintain karna difficult ho sakta hai.
+Workflow ek declarative definition deta hai: event aane par kya automation execute honi chahiye.
+</p>
+
+<h3>Workflow ka basic structure</h3>
+<pre><code>name: CI
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run tests
+        run: npm test</code></pre>
+
+<h3>Is example ko line-by-line samjho</h3>
+<table>
+<tr><th>Line</th><th>Meaning</th></tr>
+<tr><td><span class="inline">name</span></td><td>Workflow ka human-readable naam.</td></tr>
+<tr><td><span class="inline">on</span></td><td>Workflow ko trigger karne wale event(s).</td></tr>
+<tr><td><span class="inline">jobs</span></td><td>Workflow ke andar executable jobs ka collection.</td></tr>
+<tr><td><span class="inline">test</span></td><td>Job ka identifier.</td></tr>
+<tr><td><span class="inline">runs-on</span></td><td>Job kis runner environment par execute hoga.</td></tr>
+<tr><td><span class="inline">steps</span></td><td>Job ke andar sequential actions/commands.</td></tr>
+<tr><td><span class="inline">uses</span></td><td>Existing GitHub Action ko use karna.</td></tr>
+<tr><td><span class="inline">run</span></td><td>Shell command execute karna.</td></tr>
+</table>
+
+<h3>Workflow ke common triggers</h3>
+<table>
+<tr><th>Trigger</th><th>Use case</th></tr>
+<tr><td>push</td><td>Code push hone par CI run karna.</td></tr>
+<tr><td>pull_request</td><td>PR validation / testing.</td></tr>
+<tr><td>workflow_dispatch</td><td>Manual workflow execution.</td></tr>
+<tr><td>schedule</td><td>Scheduled automation via cron.</td></tr>
+<tr><td>release</td><td>Release-related automation.</td></tr>
+<tr><td>workflow_call</td><td>Reusable workflow invocation.</td></tr>
+</table>
+
+<h3>Workflow aur CI/CD pipeline mein relation</h3>
+<div class="diagram mono">
+Developer
+   |
+   | git push / pull request
+   v
+GitHub Repository
+   |
+   | event
+   v
+Workflow Trigger
+   |
+   v
+Jobs
+   |
+   +--> Build
+   |
+   +--> Test
+   |
+   +--> Security Check
+   |
+   +--> Package / Docker
+   |
+   v
+Deploy / Release
+</div>
+</section>
+
+<section id="components">
+<h2>3. Key Components of a GitHub Actions Workflow</h2>
+
+<p>
+Workflow ko deeply samajhne ke liye uske building blocks ko samjho:
+<strong>Workflow → Events → Jobs → Runner → Steps → Actions → Commands → Artifacts/Outputs → Secrets/Variables</strong>.
+</p>
+
+<h3>3.1 Workflow</h3>
+<p>Complete automation definition. Ek repository mein multiple workflows ho sakte hain.</p>
+<pre><code>.github/workflows/ci.yml
+.github/workflows/deploy.yml
+.github/workflows/security.yml</code></pre>
+
+<h3>3.2 Events / Triggers — <span class="inline">on</span></h3>
+<p>Event decide karta hai ki workflow kab start hoga.</p>
+<pre><code>on:
+  push:
+    branches: [ main ]
+
+  pull_request:
+    branches: [ main ]
+
+  workflow_dispatch:</code></pre>
+
+<div class="callout warn">
+<strong>Important:</strong> Trigger ko “workflow ka first gate” samjho. Event match nahi hua to workflow normally start nahi hoga.
+</div>
+
+<h3>3.3 Jobs</h3>
+<p>
+Job ek logical unit of work hai. Ek workflow mein one or more jobs ho sakte hain.
+Jobs by default independent run kar sakte hain; dependencies define karke order bhi control kar sakte ho.
+</p>
+<pre><code>jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - run: npm ci
+      - run: npm run build
+
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - run: npm test</code></pre>
+
+<h3>3.4 Runner</h3>
+<p>
+Runner woh compute environment hai jahan job actually execute hoti hai.
+GitHub-hosted runners common operating systems ke environments provide karte hain; organizations
+self-hosted runners bhi use kar sakti hain.
+</p>
+<pre><code>runs-on: ubuntu-latest</code></pre>
+
+<h3>3.5 Steps</h3>
+<p>Steps job ke andar execution units hain. Ye order mein execute hote hain.</p>
+<pre><code>steps:
+  - name: Checkout
+    uses: actions/checkout@v4
+
+  - name: Install dependencies
+    run: npm ci
+
+  - name: Test
+    run: npm test</code></pre>
+
+<h3>3.6 Actions — <span class="inline">uses</span></h3>
+<p>
+Action reusable automation component hota hai. Example: repository checkout karne ke liye
+<code>actions/checkout</code>.
+</p>
+<pre><code>- uses: actions/checkout@v4</code></pre>
+
+<p><strong>Yaad rakho:</strong> <span class="inline">uses</span> reusable action ko call karta hai,
+jabki <span class="inline">run</span> shell command execute karta hai.</p>
+
+<h3>3.7 Shell Commands — <span class="inline">run</span></h3>
+<pre><code>- name: Check Node version
+  run: node --version
+
+- name: Run tests
+  run: npm test</code></pre>
+
+<h3>3.8 Dependencies — <span class="inline">needs</span></h3>
+<p>Ek job ko dusri job ke successful completion ke baad run karwana ho to <span class="inline">needs</span> use kar sakte ho.</p>
+<pre><code>jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Build"
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Deploy"</code></pre>
+
+<h3>3.9 Environment Variables — <span class="inline">env</span></h3>
+<pre><code>env:
+  NODE_ENV: production
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      APP_NAME: demo-app
+    steps:
+      - run: echo "$APP_NAME"</code></pre>
+
+<h3>3.10 Secrets</h3>
+<p>
+Sensitive values—jaise cloud credentials, API tokens, deployment credentials—ko repository code mein hard-code nahi karna chahiye.
+GitHub Secrets/appropriate identity mechanisms ka use karo.
+</p>
+<pre><code>env:
+  API_TOKEN: ${{ secrets.API_TOKEN }}</code></pre>
+
+<div class="callout danger">
+<strong>Security rule:</strong> Passwords, private keys, cloud access keys aur tokens ko YAML file mein directly commit mat karo.
+Least privilege aur short-lived/managed credentials ko prefer karo.
+</div>
+
+<h3>3.11 Outputs</h3>
+<p>Ek step/job ka generated value next step/job ko pass karne ke liye outputs useful hote hain.</p>
+
+<h3>3.12 Artifacts</h3>
+<p>
+Build/test output ko workflow ke baad inspect ya download karne ke liye artifacts use kiye ja sakte hain,
+jaise test reports, binaries, build packages.
+</p>
+
+<h3>3.13 Conditions — <span class="inline">if</span></h3>
+<pre><code>if: github.ref == 'refs/heads/main'</code>
+
+<p>Condition true hone par step/job execute ho sakta hai.</p>
+
+<h3>3.14 Matrix Strategy</h3>
+<p>
+Same tests ko multiple versions/operating systems par run karne ke liye matrix strategy useful hai.
+</p>
+<pre><code>strategy:
+  matrix:
+    os: [ubuntu-latest, windows-latest]
+    node: [20, 22]
+
+runs-on: ${{ matrix.os }}</code></pre>
+
+<h3>Component relationship</h3>
+<div class="flow">
+<div class="step">Event</div><div class="arrow">→</div>
+<div class="step">Workflow</div><div class="arrow">→</div>
+<div class="step">Job</div><div class="arrow">→</div>
+<div class="step">Runner</div><div class="arrow">→</div>
+<div class="step">Steps</div><div class="arrow">→</div>
+<div class="step">Action / Command</div>
+</div>
+</section>
+
+<section id="execution">
+<h2>4. Workflow Execution Flow — Detailed</h2>
+
+<div class="callout">
+<strong>Core execution idea:</strong>
+Event trigger hota hai → GitHub workflow identify karta hai → run create hota hai →
+jobs schedule hote hain → runner provision/allocate hota hai → steps execute hote hain →
+logs/results generate hote hain → dependencies/conditions ke basis par next jobs run hote hain →
+workflow success/failure state par end hota hai.
+</div>
+
+<h3>Complete execution flow</h3>
+<div class="diagram mono">
+┌───────────────────────┐
+│ 1. Repository Event   │
+│ push / PR / manual    │
+└───────────┬───────────┘
+            │
+            v
+┌───────────────────────┐
+│ 2. Trigger Matching   │
+│ Does event match `on`?│
+└───────────┬───────────┘
+            │ Yes
+            v
+┌───────────────────────┐
+│ 3. Workflow Run       │
+│ GitHub creates run    │
+└───────────┬───────────┘
+            │
+            v
+┌───────────────────────┐
+│ 4. Job Scheduling     │
+│ dependencies/if check │
+└───────────┬───────────┘
+            │
+            v
+┌───────────────────────┐
+│ 5. Runner             │
+│ environment selected  │
+└───────────┬───────────┘
+            │
+            v
+┌───────────────────────┐
+│ 6. Steps              │
+│ checkout → setup →    │
+│ install → test → build│
+└───────────┬───────────┘
+            │
+            v
+┌───────────────────────┐
+│ 7. Logs / Outputs     │
+│ status + artifacts    │
+└───────────┬───────────┘
+            │
+            v
+┌───────────────────────┐
+│ 8. Next Job?          │
+│ needs / conditions    │
+└───────┬─────────┬─────┘
+        │ Yes     │ No
+        v         v
+   Next Job     Workflow End
+        │
+        v
+   Deploy / Release
+</div>
+
+<h3>Step-by-step example</h3>
+<h3>Step 1 — Developer pushes code</h3>
+<pre><code>git add .
+git commit -m "Add login feature"
+git push origin main</code></pre>
+
+<h3>Step 2 — GitHub receives the event</h3>
+<p>
+Repository ko <span class="inline">push</span> event milta hai. GitHub check karta hai ki kisi workflow ka
+trigger is event se match karta hai ya nahi.
+</p>
+
+<h3>Step 3 — Workflow starts</h3>
+<pre><code>on:
+  push:
+    branches: [ main ]</code></pre>
+
+<p>Push agar <span class="inline">main</span> branch par hua hai, workflow eligible ho sakta hai.</p>
+
+<h3>Step 4 — Jobs are scheduled</h3>
+<p>
+GitHub workflow ke jobs ko evaluate karta hai. <span class="inline">needs</span> dependencies,
+<span class="inline">if</span> conditions aur strategy configuration execution order/eligibility ko affect kar sakte hain.
+</p>
+
+<h3>Step 5 — Runner executes a job</h3>
+<pre><code>runs-on: ubuntu-latest</code></pre>
+<p>Selected runner par job ke steps execute hone lagte hain.</p>
+
+<h3>Step 6 — Repository checkout</h3>
+<pre><code>- uses: actions/checkout@v4</code></pre>
+<p>Workflow environment mein repository content available karaya jata hai.</p>
+
+<h3>Step 7 — Environment setup</h3>
+<pre><code>- uses: actions/setup-node@v4
+  with:
+    node-version: 22</code></pre>
+
+<h3>Step 8 — Dependencies install</h3>
+<pre><code>- run: npm ci</code></pre>
+
+<h3>Step 9 — Tests run</h3>
+<pre><code>- run: npm test</code></pre>
+
+<p>
+Agar test command non-zero exit status ke saath fail hota hai, default behavior mein affected step/job fail ho sakta hai,
+aur dependent jobs normally execute nahi karengi unless workflow logic explicitly allows otherwise.
+</p>
+
+<h3>Step 10 — Build</h3>
+<pre><code>- run: npm run build</code></pre>
+
+<h3>Step 11 — Deploy</h3>
+<pre><code>deploy:
+  needs: build
+  runs-on: ubuntu-latest
+  steps:
+    - run: echo "Deploy application"</code></pre>
+
+<h3>Parallel vs Sequential jobs</h3>
+<table>
+<tr><th>Pattern</th><th>Example</th><th>Use</th></tr>
+<tr><td>Parallel</td><td>lint + test + security</td><td>Independent checks ko faster run karna.</td></tr>
+<tr><td>Sequential</td><td>build → deploy</td><td>Deploy ko build ke baad run karna.</td></tr>
+<tr><td>Mixed</td><td>lint/test parallel → package → deploy</td><td>Real CI/CD pipelines.</td></tr>
+</table>
+
+<div class="diagram mono">
+                  ┌── Lint ───────┐
+Push / PR ────────┼── Test ────────┼──> Build ──> Deploy
+                  └── Security ───┘
+                    parallel          sequential
+</div>
+
+<h3>Success and failure flow</h3>
+<div class="grid">
+<div class="card success"><h3>✅ Success</h3><p>Required steps pass → dependent jobs eligible → artifact/deployment can proceed.</p></div>
+<div class="card danger"><h3>❌ Failure</h3><p>A required step fails → job generally fails → dependent jobs may be skipped unless conditions alter behavior.</p></div>
+<div class="card warn"><h3>⚠️ Conditional</h3><p><span class="inline">if</span>, <span class="inline">needs</span>, matrix and other workflow logic execution ko control kar sakte hain.</p></div>
+</div>
+</section>
+
+<section id="yaml">
+<h2>Complete Practical CI Workflow Example</h2>
+
+<pre><code>name: Node CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+
+      - name: Build application
+        run: npm run build
+
+  deploy:
+    needs: test
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deployment placeholder
+        run: echo "Deploy application here"</code></pre>
+
+<h3>Is workflow ka flow</h3>
+<div class="flow">
+<div class="step">Push / PR</div><div class="arrow">→</div>
+<div class="step">test job</div><div class="arrow">→</div>
+<div class="step">checkout</div><div class="arrow">→</div>
+<div class="step">setup Node</div><div class="arrow">→</div>
+<div class="step">npm ci</div><div class="arrow">→</div>
+<div class="step">test</div><div class="arrow">→</div>
+<div class="step">build</div><div class="arrow">→</div>
+<div class="step">deploy*</div>
+</div>
+<p class="small">*Deploy job yahan main branch condition ke example ke roop mein diya gaya hai.</p>
+
+<h3>Typical DevOps pipeline</h3>
+<pre><code>Code Push
+   ↓
+Checkout
+   ↓
+Lint
+   ↓
+Unit Tests
+   ↓
+Build
+   ↓
+Security Scan
+   ↓
+Docker Build
+   ↓
+Push Image to Registry
+   ↓
+Deploy to Environment
+   ↓
+Smoke Test
+   ↓
+Notification</code></pre>
+</section>
+
+<section id="lab">
+<h2>Practical Lab — Apna First GitHub Actions Workflow</h2>
+
+<h3>Step 1 — Repository create/clone</h3>
+<pre><code>git clone &lt;your-repository-url&gt;
+cd your-repository</code></pre>
+
+<h3>Step 2 — Workflow directory</h3>
+<pre><code>mkdir -p .github/workflows</code></pre>
+
+<h3>Step 3 — Workflow file</h3>
+<p>Create:</p>
+<pre><code>.github/workflows/hello.yml</code></pre>
+
+<pre><code>name: Hello GitHub Actions
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  hello:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Show information
+        run: |
+          echo "Hello from GitHub Actions"
+          echo "Repository: $GITHUB_REPOSITORY"
+          echo "Branch/Ref: $GITHUB_REF"
+
+      - name: Check system
+        run: |
+          uname -a
+          git --version</code></pre>
+
+<h3>Step 4 — Commit and push</h3>
+<pre><code>git add .github/workflows/hello.yml
+git commit -m "Add first GitHub Actions workflow"
+git push origin main</code></pre>
+
+<h3>Step 5 — GitHub par result dekho</h3>
+<ol>
+<li>Repository open karo.</li>
+<li><b>Actions</b> tab open karo.</li>
+<li><b>Hello GitHub Actions</b> workflow select karo.</li>
+<li>Latest workflow run open karo.</li>
+<li>Job open karke individual step logs dekho.</li>
+</ol>
+
+<div class="callout success">
+<strong>Practice challenge:</strong> Workflow mein ek step add karo jo Node/Python version print kare,
+phir ek test command run karo, aur finally ek artifact upload karne ka experiment karo.
+</div>
+</section>
+
+<section>
+<h2>Common Mistakes & Troubleshooting</h2>
+<table>
+<tr><th>Problem</th><th>Likely Cause</th><th>Check</th></tr>
+<tr><td>Workflow doesn't start</td><td>Trigger/branch/path mismatch</td><td><span class="inline">on</span> configuration check karo.</td></tr>
+<tr><td>YAML error</td><td>Indentation/syntax</td><td>Spaces aur YAML structure validate karo.</td></tr>
+<tr><td>Command not found</td><td>Runtime/tool setup missing</td><td>Setup action/version add karo.</td></tr>
+<tr><td>Permission denied</td><td>Workflow permissions/credentials issue</td><td><span class="inline">permissions</span> and authentication check karo.</td></tr>
+<tr><td>Secret empty</td><td>Secret name/reference mismatch</td><td><span class="inline">secrets.NAME</span> spelling check karo.</td></tr>
+<tr><td>Deploy runs on PR</td><td>Missing branch/environment condition</td><td><span class="inline">if</span>, environments and trigger logic check karo.</td></tr>
+<tr><td>Dependent job skipped</td><td>Required job failed/skipped</td><td><span class="inline">needs</span> chain aur conditions inspect karo.</td></tr>
+<tr><td>Slow workflow</td><td>Unnecessary sequential jobs</td><td>Independent jobs ko parallelize karne par consider karo.</td></tr>
+</table>
+
+<div class="callout danger">
+<strong>Security mistakes avoid karo:</strong> secrets ko logs mein print mat karo, credentials ko source code mein commit mat karo,
+unnecessary write permissions mat do, aur third-party actions ko blindly trust mat karo.
+</div>
+</section>
+
+<section id="interview">
+<h2>Interview Questions</h2>
+
+<div class="card">
+<h3>Q1. GitHub Actions kya hai?</h3>
+<p>GitHub Actions GitHub ka automation/CI/CD platform hai jo repository events ke response mein workflows execute karta hai.</p>
+
+<h3>Q2. Workflow kya hota hai?</h3>
+<p>YAML-defined automation process jo trigger, jobs, runners aur steps define karta hai.</p>
+
+<h3>Q3. Workflow file kaha store hoti hai?</h3>
+<p><span class="inline">.github/workflows/</span> directory mein.</p>
+
+<h3>Q4. <code>on</code> ka kya purpose hai?</h3>
+<p>Workflow ko trigger karne wale events define karta hai.</p>
+
+<h3>Q5. Job aur step mein difference?</h3>
+<p>Job logical execution unit hai; step us job ke andar individual action/command hai.</p>
+
+<h3>Q6. <code>uses</code> aur <code>run</code> mein difference?</h3>
+<p><code>uses</code> reusable action invoke karta hai; <code>run</code> shell command execute karta hai.</p>
+
+<h3>Q7. Runner kya hai?</h3>
+<p>Runner woh machine/environment hai jahan job ke steps execute hote hain.</p>
+
+<h3>Q8. <code>needs</code> ka use?</h3>
+<p>Job dependency define karne ke liye; dependent job required job ke completion ke baad eligible hoti hai.</p>
+
+<h3>Q9. Secrets kyu use karte hain?</h3>
+<p>Sensitive credentials ko workflow source code mein hard-code karne se bachane ke liye.</p>
+
+<h3>Q10. GitHub Actions CI/CD mein kaha fit hota hai?</h3>
+<p>Git repository events ko automated build, test, security, packaging, release aur deployment processes se connect karta hai.</p>
+
+<h3>Q11. Jobs parallel kab run kar sakti hain?</h3>
+<p>Jab unke beech dependency nahi ho aur workflow configuration unhe independently schedule karne de.</p>
+
+<h3>Q12. Workflow manually kaise run kar sakte hain?</h3>
+<p><span class="inline">workflow_dispatch</span> trigger configure karke GitHub UI/API se manual execution enable ki ja sakti hai.</p>
+</div>
+</section>
+
+<section id="cheat">
+<h2>Quick Revision Cheat Sheet</h2>
+<table>
+<tr><th>Keyword</th><th>Remember</th></tr>
+<tr><td><code>name</code></td><td>Workflow name</td></tr>
+<tr><td><code>on</code></td><td>Trigger/event</td></tr>
+<tr><td><code>jobs</code></td><td>Work units</td></tr>
+<tr><td><code>runs-on</code></td><td>Runner environment</td></tr>
+<tr><td><code>steps</code></td><td>Execution sequence</td></tr>
+<tr><td><code>uses</code></td><td>Reusable action</td></tr>
+<tr><td><code>run</code></td><td>Shell command</td></tr>
+<tr><td><code>needs</code></td><td>Job dependency</td></tr>
+<tr><td><code>if</code></td><td>Condition</td></tr>
+<tr><td><code>env</code></td><td>Environment variables</td></tr>
+<tr><td><code>secrets</code></td><td>Sensitive values</td></tr>
+<tr><td><code>strategy.matrix</code></td><td>Multiple combinations</td></tr>
+<tr><td><code>permissions</code></td><td>Workflow token permissions</td></tr>
+<tr><td><code>workflow_dispatch</code></td><td>Manual trigger</td></tr>
+</table>
+
+<h3>Golden formula</h3>
+<div class="callout success">
+<strong>GitHub Actions = Event → Workflow → Job → Runner → Steps → Actions/Commands → Result</strong>
+</div>
+
+<h3>Professional CI/CD formula</h3>
+<div class="callout">
+<strong>Push/PR → Validate → Test → Build → Scan → Package → Deploy → Verify → Report</strong>
+</div>
+
+<h3>Final Learning Checklist</h3>
+<ul class="check">
+<li>□ GitHub Actions kya hai samjha</li>
+<li>□ GitHub Actions ki need samjhi</li>
+<li>□ Workflow definition aur location samjhi</li>
+<li>□ <code>on</code> triggers samjhe</li>
+<li>□ Jobs aur runners samjhe</li>
+<li>□ Steps, <code>uses</code> aur <code>run</code> ka difference samjha</li>
+<li>□ <code>needs</code> dependencies samjhi</li>
+<li>□ <code>if</code>, env aur secrets samjhe</li>
+<li>□ Matrix strategy ka basic idea samjha</li>
+<li>□ Workflow execution flow samjha</li>
+<li>□ First workflow GitHub par run kiya</li>
+<li>□ Logs aur failures troubleshoot karna practice kiya</li>
+<li>□ CI/CD pipeline architecture samjhi</li>
+</ul>
+
+<div class="callout warn">
+<strong>Next recommended step:</strong> Is topic ke baad Docker image build/push, GitHub Actions CI pipeline,
+GitHub Actions CD pipeline, GitHub Container Registry, AWS deployment, environments, approvals,
+OIDC authentication aur reusable workflows ko practice karo.
+</div>
+</section>
+
+</main>
+
+<footer>
+<div class="container">
+<p><strong>GitHub Actions & Workflow — Complete Study Material</strong></p>
+<p>Designed for beginner → DevOps-ready learning • Practice the YAML, then build a real CI/CD pipeline.</p>
+</div>
+</footer>
+</body>
+</html>
