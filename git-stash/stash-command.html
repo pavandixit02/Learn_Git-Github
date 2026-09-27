@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Git Stash - Complete Study Material</title>
+<style>
+:root{
+  --bg:#0b1020; --card:#121a2b; --card2:#0f1728; --text:#e8eefc;
+  --muted:#a9b5cc; --accent:#67e8f9; --accent2:#8b5cf6;
+  --green:#4ade80; --yellow:#facc15; --red:#fb7185; --border:#26324a;
+  --code:#080d18;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; font-family:Inter,Segoe UI,Arial,sans-serif;
+  background:linear-gradient(180deg,#080d18,#0b1020 30%,#0b1020);
+  color:var(--text); line-height:1.7;
+}
+.container{max-width:1180px;margin:auto;padding:28px 20px 60px}
+.hero{
+  padding:42px 28px; border:1px solid var(--border); border-radius:22px;
+  background:linear-gradient(135deg,#121a2b,#111827 55%,#17112d);
+  box-shadow:0 20px 60px rgba(0,0,0,.25);
+}
+.badge{display:inline-block;padding:6px 12px;border-radius:999px;background:#17243c;color:var(--accent);font-size:13px;font-weight:700}
+h1{font-size:clamp(32px,5vw,56px);line-height:1.08;margin:16px 0 12px}
+h2{font-size:30px;margin-top:48px;border-bottom:1px solid var(--border);padding-bottom:10px}
+h3{font-size:21px;color:var(--accent);margin-top:28px}
+p{color:#d5dced}
+a{color:var(--accent);text-decoration:none}
+nav{
+  position:sticky;top:10px;z-index:10;margin:20px 0;padding:12px;
+  background:rgba(15,23,40,.92);backdrop-filter:blur(12px);
+  border:1px solid var(--border);border-radius:14px;
+  display:flex;gap:8px;flex-wrap:wrap
+}
+nav a{padding:7px 10px;border-radius:8px;background:#141e32;font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.card{
+  background:var(--card);border:1px solid var(--border);border-radius:16px;
+  padding:20px;margin:18px 0
+}
+.callout{border-left:4px solid var(--accent);background:#101b2e;padding:16px 18px;border-radius:10px;margin:18px 0}
+.success{border-left-color:var(--green)}
+.warning{border-left-color:var(--yellow)}
+.danger{border-left-color:var(--red)}
+code{
+  font-family:"Cascadia Code","Fira Code",Consolas,monospace;
+  background:#182238;padding:2px 6px;border-radius:5px;color:#d8f8ff
+}
+pre{
+  background:var(--code);border:1px solid #202b42;border-radius:13px;
+  padding:18px;overflow:auto;color:#dce7ff;font-size:14px;line-height:1.6
+}
+pre code{background:none;padding:0;color:inherit}
+table{width:100%;border-collapse:collapse;margin:18px 0;background:var(--card)}
+th,td{border:1px solid var(--border);padding:12px;text-align:left;vertical-align:top}
+th{background:#172138;color:var(--accent)}
+tr:nth-child(even){background:#10182a}
+.flow{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin:22px 0}
+.node{padding:13px 18px;border:1px solid var(--border);border-radius:12px;background:#151f34;text-align:center}
+.arrow{font-size:24px;color:var(--accent)}
+.kbd{font-family:monospace;background:#202b42;padding:3px 7px;border-radius:5px}
+.small{font-size:14px;color:var(--muted)}
+ul,ol{padding-left:24px}
+li{margin:7px 0}
+.checklist li{list-style:none}
+.checklist li::before{content:"☐ ";color:var(--accent)}
+.answer{background:#0d1627;border-radius:10px;padding:13px 15px;margin-top:8px}
+.tag{display:inline-block;font-size:12px;padding:4px 8px;border-radius:6px;background:#1b2740;color:#c9d7f5;margin:2px}
+footer{margin-top:55px;padding-top:20px;border-top:1px solid var(--border);color:var(--muted);text-align:center}
+@media(max-width:800px){.grid,.grid3{grid-template-columns:1fr}.container{padding:18px 13px 45px}.hero{padding:30px 20px}h2{font-size:25px}}
+</style>
+</head>
+<body>
+<div class="container">
+
+<section class="hero">
+  <span class="badge">GIT • COMPLETE STUDY MATERIAL</span>
+  <h1>Git Stash</h1>
+  <p style="font-size:19px">
+    Temporary changes ko safely side me rakhna, clean working tree banana,
+    branch switch karna aur baad me changes wapas lana — <strong>Git Stash</strong> isi problem ko solve karta hai.
+  </p>
+  <div>
+    <span class="tag">git stash</span>
+    <span class="tag">stash push</span>
+    <span class="tag">stash list</span>
+    <span class="tag">stash apply</span>
+    <span class="tag">stash pop</span>
+    <span class="tag">stash drop</span>
+    <span class="tag">stash branch</span>
+  </div>
+</section>
+
+<nav>
+  <a href="#what">What is Stash?</a>
+  <a href="#why">Why?</a>
+  <a href="#model">Mental Model</a>
+  <a href="#commands">Commands</a>
+  <a href="#workflow">Workflow</a>
+  <a href="#tracked">Tracked/Untracked</a>
+  <a href="#conflicts">Conflicts</a>
+  <a href="#advanced">Advanced</a>
+  <a href="#devops">DevOps</a>
+  <a href="#lab">Practical Lab</a>
+  <a href="#interview">Interview</a>
+  <a href="#cheat">Cheat Sheet</a>
+</nav>
+
+<section id="what">
+<h2>1. Git Stash kya hota hai?</h2>
+<div class="card">
+<p><strong>Git Stash</strong> Git ka mechanism hai jo aapke current working changes ko temporarily save karke working directory ko clean state me la sakta hai.</p>
+<p>Simple language me:</p>
+<div class="callout success">
+<strong>“Kaam adhura hai, commit nahi karna, lekin mujhe abhi branch switch ya koi urgent Git operation karna hai — changes ko temporarily side me rakh do.”</strong>
+</div>
+<p>Example: Aap feature par kaam kar rahe ho, lekin suddenly production bug fix karne ke liye <code>main</code> branch par jaana hai. Aap adhura code commit nahi karna chahte. Yahan <code>git stash</code> useful hai.</p>
+</div>
+</section>
+
+<section id="why">
+<h2>2. Git Stash ki zarurat kyu padti hai?</h2>
+<div class="grid">
+<div class="card">
+<h3>🔀 Branch switch</h3>
+<p>Current changes ko commit kiye bina temporarily side me rakhkar doosri branch par kaam kar sakte ho.</p>
+</div>
+<div class="card">
+<h3>🚨 Urgent bug fix</h3>
+<p>Feature work ko temporarily park karke hotfix branch par switch kar sakte ho.</p>
+</div>
+<div class="card">
+<h3>🧹 Clean working tree</h3>
+<p>Git commands ya workflows jahan clean working tree useful hai, wahan stash help karta hai.</p>
+</div>
+<div class="card">
+<h3>💾 Temporary checkpoint</h3>
+<p>Changes ko permanent commit banaye bina temporary snapshot ki tarah store kar sakte ho.</p>
+</div>
+</div>
+</section>
+
+<section id="model">
+<h2>3. Real-Life Analogy</h2>
+<div class="card">
+<p>Imagine aap desk par important documents arrange kar rahe ho. Suddenly koi urgent kaam aa gaya.</p>
+<div class="flow">
+  <div class="node">Current Work</div>
+  <div class="arrow">→</div>
+  <div class="node">Temporary Folder<br><small>Stash</small></div>
+  <div class="arrow">→</div>
+  <div class="node">Urgent Work</div>
+  <div class="arrow">→</div>
+  <div class="node">Take Documents Back</div>
+</div>
+<p>Git me bhi same idea hai: current changes ko stash me temporarily park karo, urgent task complete karo, phir stash se changes wapas lao.</p>
+</div>
+
+<h2>4. Git ka 3-State Model</h2>
+<div class="flow">
+  <div class="node"><strong>Working Tree</strong><br>Modified files</div>
+  <div class="arrow">→</div>
+  <div class="node"><strong>Staging Area</strong><br>Index</div>
+  <div class="arrow">→</div>
+  <div class="node"><strong>Repository</strong><br>Commits / HEAD</div>
+</div>
+<div class="callout warning">
+<strong>Important:</strong> Stash koi normal branch nahi hai. Git stash ek temporary storage mechanism hai jo stash entries ko repository ke Git objects ke form me store karta hai.
+</div>
+</section>
+
+<section id="commands">
+<h2>5. Basic Git Stash Command</h2>
+
+<h3>5.1 Current changes stash karna</h3>
+<pre><code>git stash</code></pre>
+<p>Ye commonly tracked files ke working changes ko stash karke working tree ko clean karta hai.</p>
+
+<h3>5.2 Recommended explicit form</h3>
+<pre><code>git stash push</code></pre>
+<p>Modern Git workflows me <code>git stash push</code> explicit aur readable form hai.</p>
+
+<h3>5.3 Message ke saath stash</h3>
+<pre><code>git stash push -m "WIP: login page changes"</code></pre>
+<p>Message dene se baad me stash identify karna easy hota hai.</p>
+
+<h3>5.4 Stash list dekhna</h3>
+<pre><code>git stash list</code></pre>
+<p>Example:</p>
+<pre><code>stash@{0}: On feature/login: WIP: login page changes
+stash@{1}: On main: WIP: navbar update
+stash@{2}: On dev: API integration work</code></pre>
+
+<div class="callout">
+<strong>Index samjho:</strong> <code>stash@{0}</code> newest stash hota hai. Number badhne par older stash entries hoti hain.
+</div>
+
+<h3>5.5 Stash details dekhna</h3>
+<pre><code>git stash show
+git stash show -p</code></pre>
+<p><code>-p</code> patch/diff details show karta hai.</p>
+
+<h3>5.6 Latest stash apply karna</h3>
+<pre><code>git stash apply</code></pre>
+<p>Default me latest stash ko apply karta hai, lekin stash entry ko delete nahi karta.</p>
+
+<h3>5.7 Specific stash apply karna</h3>
+<pre><code>git stash apply stash@{1}</code></pre>
+
+<h3>5.8 Latest stash pop karna</h3>
+<pre><code>git stash pop</code></pre>
+<p><code>pop</code> changes ko apply karta hai aur successful application ke baad stash entry ko remove karne ki koshish karta hai.</p>
+
+<h3>5.9 Specific stash pop</h3>
+<pre><code>git stash pop stash@{1}</code></pre>
+
+<h3>5.10 Stash delete karna</h3>
+<pre><code>git stash drop stash@{1}</code></pre>
+
+<h3>5.11 Latest stash delete karna</h3>
+<pre><code>git stash drop</code></pre>
+
+<h3>5.12 All stashes delete karna</h3>
+<pre><code>git stash clear</code></pre>
+<div class="callout danger">
+<strong>Warning:</strong> <code>git stash clear</code> sabhi stash entries remove kar deta hai. Is command ko carefully use karo.
+</div>
+</section>
+
+<section id="workflow">
+<h2>6. Most Important Workflow: Stash → Switch → Work → Return → Apply</h2>
+<div class="card">
+<h3>Scenario</h3>
+<p>Aap <code>feature/login</code> par kaam kar rahe ho. Changes incomplete hain. Suddenly <code>main</code> par urgent work karna hai.</p>
+
+<pre><code># 1. Current status check
+git status
+
+# 2. Current changes temporarily save
+git stash push -m "WIP: login feature"
+
+# 3. Branch switch
+git switch main
+
+# 4. Urgent work
+# ... edit files ...
+
+# 5. Apna feature branch wapas
+git switch feature/login
+
+# 6. Stash list
+git stash list
+
+# 7. Changes restore
+git stash pop</code></pre>
+</div>
+
+<div class="callout success">
+<strong>Mental formula:</strong><br>
+<strong>Work → Stash → Switch → Fix → Switch Back → Apply/Pop</strong>
+</div>
+
+<h2>7. <code>apply</code> vs <code>pop</code></h2>
+<table>
+<tr><th>Command</th><th>Changes Restore?</th><th>Stash Entry Remove?</th><th>Use Case</th></tr>
+<tr><td><code>git stash apply</code></td><td>Yes</td><td>No</td><td>Safe restore; stash ko backup ki tarah rakhna</td></tr>
+<tr><td><code>git stash pop</code></td><td>Yes</td><td>Usually yes after successful application</td><td>Restore karke stash list se hata dena</td></tr>
+</table>
+
+<div class="callout warning">
+Agar conflict ho jaye, <code>apply</code> useful ho sakta hai kyunki stash entry preserve rehti hai. <code>pop</code> ke behavior ko conflict ke case me blindly assume mat karo; Git successful application ke baad hi stash ko remove karta hai.
+</div>
+</section>
+
+<section id="tracked">
+<h2>8. Tracked aur Untracked Files ka Important Concept</h2>
+
+<div class="card">
+<h3>8.1 Default stash</h3>
+<pre><code>git stash push</code></pre>
+<p>Default behavior me tracked files ke changes stash hote hain. New/untracked files automatically include nahi hote.</p>
+
+<h3>8.2 Untracked files bhi stash karna</h3>
+<pre><code>git stash push -u</code></pre>
+<p><code>-u</code> = <strong>--include-untracked</strong></p>
+
+<h3>8.3 Ignored files bhi include karna</h3>
+<pre><code>git stash push -a</code></pre>
+<p><code>-a</code> = <strong>--all</strong>. Isme untracked aur ignored files bhi include ho sakti hain.</p>
+
+<table>
+<tr><th>Command</th><th>Tracked Changes</th><th>Untracked</th><th>Ignored</th></tr>
+<tr><td><code>git stash push</code></td><td>✅</td><td>❌</td><td>❌</td></tr>
+<tr><td><code>git stash push -u</code></td><td>✅</td><td>✅</td><td>❌</td></tr>
+<tr><td><code>git stash push -a</code></td><td>✅</td><td>✅</td><td>✅</td></tr>
+</table>
+
+<div class="callout danger">
+Ignored files ko stash karte waqt carefully socho, kyunki <code>-a</code> build artifacts, generated files ya local ignored data ko bhi stash scope me la sakta hai.
+</div>
+</div>
+
+<h2>9. Staged vs Unstaged Changes</h2>
+<p>Git stash working tree ke saath staging/index state ko bhi preserve kar sakta hai. Agar aapko staged state ko bhi restore karna ho to <code>--index</code> useful hai.</p>
+<pre><code>git stash push -m "WIP"
+git stash apply --index</code></pre>
+<div class="callout">
+<strong>Note:</strong> <code>--index</code> ka purpose sirf files restore karna nahi, balki original staged state ko bhi restore karne ki koshish karna hai.
+</div>
+</section>
+
+<section>
+<h2>10. Specific Files ko Stash karna</h2>
+<p>Aap poori working tree ke bajay selected paths ko stash kar sakte ho.</p>
+<pre><code>git stash push -- path/to/file.txt
+
+git stash push -- src/app.js src/style.css</code></pre>
+
+<p>Interactive selection ke liye:</p>
+<pre><code>git stash push -p</code></pre>
+<p><code>-p</code> interactive patch mode deta hai, jisse aap hunks select kar sakte ho.</p>
+</section>
+
+<section id="conflicts">
+<h2>11. Stash Apply karte waqt Conflict</h2>
+<p>Stash jis state se banaya gaya tha aur current branch ki state me changes overlap kar sakte hain. Aise case me conflict aa sakta hai.</p>
+
+<pre><code>git stash apply stash@{0}</code></pre>
+
+<p>Agar conflict aaye:</p>
+<pre><code>git status</code></pre>
+
+<p>Conflicted files open karke conflict markers resolve karo:</p>
+<pre><code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+current branch changes
+=======
+stashed changes
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; stash</code></pre>
+
+<p>Resolution ke baad:</p>
+<pre><code>git add &lt;resolved-file&gt;
+git status</code></pre>
+
+<p>Phir normal commit workflow continue kar sakte ho:</p>
+<pre><code>git commit -m "Resolve stash conflict"</code></pre>
+
+<div class="callout warning">
+<strong>Important:</strong> Stash apply conflict ko <code>git merge --abort</code> ya <code>git rebase --abort</code> samajhna galat hai. Stash application ko undo karne ke liye context-specific manual cleanup ya known restore workflow ki zarurat ho sakti hai.
+</div>
+</section>
+
+<section id="advanced">
+<h2>12. Advanced Stash Commands</h2>
+
+<h3>12.1 Stash with a clear message</h3>
+<pre><code>git stash push -m "WIP: payment API integration"</code></pre>
+
+<h3>12.2 Latest stash inspect</h3>
+<pre><code>git stash show stash@{0}
+git stash show -p stash@{0}</code></pre>
+
+<h3>12.3 Stash ko new branch me convert karna</h3>
+<pre><code>git stash branch feature/payment stash@{0}</code></pre>
+<p>Ye useful hai jab stash ko jis base par create kiya gaya tha us context me directly new branch par continue karna ho.</p>
+
+<h3>12.4 Stash entry remove</h3>
+<pre><code>git stash drop stash@{0}</code></pre>
+
+<h3>12.5 All stash entries remove</h3>
+<pre><code>git stash clear</code></pre>
+
+<h3>12.6 Stash ref details</h3>
+<pre><code>git rev-parse --verify refs/stash</code></pre>
+<p>Advanced Git understanding ke liye <code>refs/stash</code> ek useful concept hai. Stash entries reflog-like reference ke through track hoti hain.</p>
+
+<h2>13. Git Stash Internally kaise kaam karta hai?</h2>
+<div class="card">
+<p>Beginner level par aap ise temporary storage samjho. Internally Git stash ko Git objects aur a stash reference ke through manage karta hai.</p>
+<div class="flow">
+<div class="node">Working Tree</div>
+<div class="arrow">→</div>
+<div class="node">Stash Snapshot(s)</div>
+<div class="arrow">→</div>
+<div class="node">refs/stash</div>
+</div>
+<p>Stash commit-like objects/snapshots ke form me current state ko preserve kar sakta hai, jisse baad me changes restore kiye ja sakte hain.</p>
+</div>
+
+<h2>14. Stash vs Commit</h2>
+<table>
+<tr><th>Feature</th><th>Git Stash</th><th>Git Commit</th></tr>
+<tr><td>Purpose</td><td>Temporary work storage</td><td>Permanent project history point</td></tr>
+<tr><td>Normal workflow</td><td>Short-term / WIP</td><td>Intentional project change</td></tr>
+<tr><td>Visible branch history</td><td>Normal log me branch commit ki tarah nahi</td><td>Yes</td></tr>
+<tr><td>Push to remote</td><td>Normally pushed as stash nahi</td><td>Yes</td></tr>
+<tr><td>Collaboration</td><td>Primarily local</td><td>Team collaboration ke liye suitable</td></tr>
+</table>
+
+<div class="callout success">
+<strong>Rule:</strong> Stash ko permanent backup ya team handoff mechanism mat samjho. Long-term important work ke liye meaningful commit/branch better hota hai.
+</div>
+
+<h2>15. Stash vs Temporary Commit</h2>
+<table>
+<tr><th>Situation</th><th>Better Approach</th></tr>
+<tr><td>Few minutes ke liye changes side me rakhne hain</td><td>Stash</td></tr>
+<tr><td>Work meaningful milestone tak pahunch gaya</td><td>Commit</td></tr>
+<tr><td>Team member ko work share karna hai</td><td>Branch + Push</td></tr>
+<tr><td>Experimental work safely preserve karna hai</td><td>Branch + Commit</td></tr>
+<tr><td>Urgent branch switch karna hai</td><td>Stash / commit depending on state</td></tr>
+</table>
+</section>
+
+<section>
+<h2>16. Git Stash vs Git Reset / Restore / Revert</h2>
+<table>
+<tr><th>Command</th><th>Main Purpose</th></tr>
+<tr><td><code>git stash</code></td><td>Current uncommitted work temporarily save/park karna</td></tr>
+<tr><td><code>git restore</code></td><td>Working tree/staging changes restore/unstage karna</td></tr>
+<tr><td><code>git reset</code></td><td>HEAD/index/working tree state ko move/reset karna</td></tr>
+<tr><td><code>git revert</code></td><td>Existing commit ke effect ko reverse karne wala new commit banana</td></tr>
+</table>
+</section>
+
+<section id="devops">
+<h2>17. DevOps me Git Stash ka Use</h2>
+<div class="grid3">
+<div class="card">
+<h3>☁️ Infrastructure</h3>
+<p>Terraform/IaC changes ke beech urgent branch switch karna ho to temporary WIP changes park kiye ja sakte hain.</p>
+</div>
+<div class="card">
+<h3>🐳 Docker</h3>
+<p>Dockerfile, Compose ya deployment config par incomplete changes ko temporarily stash karke hotfix inspect kiya ja sakta hai.</p>
+</div>
+<div class="card">
+<h3>⚙️ CI/CD</h3>
+<p>Pipeline configuration par local experiments ko temporarily side me rakhkar stable branch ke workflow par kaam kar sakte ho.</p>
+</div>
+<div class="card">
+<h3>☸️ Kubernetes</h3>
+<p>Manifest changes incomplete hon aur kisi aur environment/config branch par switch karna ho to stash useful ho sakta hai.</p>
+</div>
+<div class="card">
+<h3>🔧 Configuration</h3>
+<p>Environment/config files ke tracked modifications ko temporarily park kiya ja sakta hai.</p>
+</div>
+<div class="card">
+<h3>🚨 Hotfix</h3>
+<p>Feature development se urgent production fix workflow par temporarily switch karna common scenario hai.</p>
+</div>
+</div>
+
+<div class="callout warning">
+<strong>Security:</strong> Stash me sensitive local changes aa sakte hain. Secrets, passwords, tokens aur private keys ko Git me store karna avoid karo. <code>.gitignore</code> aur proper secret-management tools use karo.
+</div>
+</section>
+
+<section id="lab">
+<h2>18. Complete Practical Lab</h2>
+
+<h3>Lab 1 — Basic Stash</h3>
+<pre><code># Repository create/open
+mkdir stash-demo
+cd stash-demo
+
+git init
+
+echo "Version 1" &gt; app.txt
+git add app.txt
+git commit -m "Initial commit"
+
+# File modify
+echo "Feature A" &gt;&gt; app.txt
+
+# Check
+git status
+git diff
+
+# Stash
+git stash push -m "WIP: Feature A"
+
+# Verify clean state
+git status
+
+# View stash
+git stash list
+
+# Restore
+git stash pop
+
+# Verify
+git status
+git diff</code></pre>
+
+<h3>Lab 2 — Untracked File ke saath</h3>
+<pre><code>echo "tracked change" &gt;&gt; app.txt
+echo "new file" &gt; notes.txt
+
+git status
+
+# Default stash
+git stash push -m "Test tracked changes"
+
+git status
+# notes.txt generally remains untracked
+
+# Restore latest stash
+git stash pop
+
+# Now include untracked
+git stash push -u -m "Tracked + untracked"
+
+git status
+git stash list</code></pre>
+
+<h3>Lab 3 — Multiple Stashes</h3>
+<pre><code>git stash push -m "WIP: login"
+# make another change
+
+git stash push -m "WIP: navbar"
+
+git stash list
+
+git stash show -p stash@{0}
+git stash show -p stash@{1}
+
+git stash apply stash@{1}</code></pre>
+</section>
+
+<section>
+<h2>19. Professional Workflow Example</h2>
+<pre><code># You are working on feature
+git switch feature/login
+
+# See current work
+git status
+git diff
+
+# Save incomplete work
+git stash push -u -m "WIP: login validation"
+
+# Move to hotfix
+git switch main
+git pull --ff-only
+
+# Create hotfix branch
+git switch -c hotfix/navbar
+
+# Fix issue
+git add .
+git commit -m "Fix navbar issue"
+
+# Return to feature
+git switch feature/login
+
+# Check available stash
+git stash list
+
+# Restore safely
+git stash apply stash@{0}
+
+# Inspect result
+git status
+git diff
+
+# After confirming everything
+git stash drop stash@{0}</code></pre>
+</section>
+
+<section>
+<h2>20. Common Mistakes</h2>
+<div class="card">
+<h3>❌ Mistake 1: Untracked file automatically stash ho jayegi</h3>
+<p>Default stash me new untracked file usually include nahi hoti.</p>
+<p>Use:</p>
+<pre><code>git stash push -u</code></pre>
+</div>
+
+<div class="card">
+<h3>❌ Mistake 2: <code>pop</code> ko backup samajhna</h3>
+<p><code>pop</code> successful restore ke baad stash entry remove kar sakta hai. Important stash ke liye pehle <code>apply</code> use karna safer ho sakta hai.</p>
+</div>
+
+<div class="card">
+<h3>❌ Mistake 3: Stash list clean na rakhna</h3>
+<p>Bahut saare unnamed stashes confusing ho sakte hain.</p>
+<p>Better:</p>
+<pre><code>git stash push -m "WIP: payment API"</code></pre>
+</div>
+
+<div class="card">
+<h3>❌ Mistake 4: <code>git stash clear</code> casually run karna</h3>
+<p>Ye sab stash entries remove kar deta hai.</p>
+</div>
+
+<div class="card">
+<h3>❌ Mistake 5: Stash ko remote backup samajhna</h3>
+<p>Stash primarily local workflow tool hai. Team ke saath work share karne ke liye branch + commit + push better approach hai.</p>
+</div>
+</section>
+
+<section>
+<h2>21. Troubleshooting</h2>
+<table>
+<tr><th>Problem</th><th>Possible Reason</th><th>What to Check</th></tr>
+<tr><td>New file stash nahi hui</td><td>File untracked thi</td><td><code>git stash push -u</code></td></tr>
+<tr><td>Pop/apply conflict</td><td>Current changes overlap</td><td><code>git status</code>, conflicts resolve karo</td></tr>
+<tr><td>Expected stash nahi mil raha</td><td>Wrong stash index</td><td><code>git stash list</code></td></tr>
+<tr><td>Stash delete ho gaya</td><td>Drop/clear/pop behavior</td><td>Recovery advanced Git/reflog knowledge par depend kar sakti hai</td></tr>
+<tr><td>Ignored file stash nahi hui</td><td>Ignored files default scope me nahi</td><td><code>git stash push -a</code></td></tr>
+</table>
+</section>
+
+<section id="interview">
+<h2>22. Git Stash Interview Questions</h2>
+
+<div class="card">
+<h3>Q1. What is git stash?</h3>
+<div class="answer">Git stash uncommitted work ko temporarily store karke working tree ko clean karne ka mechanism hai.</div>
+</div>
+
+<div class="card">
+<h3>Q2. <code>git stash</code> kab use karte hain?</h3>
+<div class="answer">Jab current changes incomplete hon aur commit kiye bina branch switch ya urgent task perform karna ho.</div>
+</div>
+
+<div class="card">
+<h3>Q3. <code>git stash apply</code> vs <code>git stash pop</code>?</h3>
+<div class="answer"><code>apply</code> stash ko apply karta hai aur entry retain karta hai. <code>pop</code> apply karke successful application ke baad entry remove kar sakta hai.</div>
+</div>
+
+<div class="card">
+<h3>Q4. Untracked files stash kaise karenge?</h3>
+<div class="answer"><code>git stash push -u</code> ya <code>git stash push --include-untracked</code>.</div>
+</div>
+
+<div class="card">
+<h3>Q5. Ignored files bhi stash kaise karenge?</h3>
+<div class="answer"><code>git stash push -a</code> / <code>--all</code>.</div>
+</div>
+
+<div class="card">
+<h3>Q6. Stash list kaise dekhenge?</h3>
+<div class="answer"><code>git stash list</code>.</div>
+</div>
+
+<div class="card">
+<h3>Q7. Specific stash kaise apply karenge?</h3>
+<div class="answer"><code>git stash apply stash@{1}</code>.</div>
+</div>
+
+<div class="card">
+<h3>Q8. Stash ko branch me directly continue kaise karenge?</h3>
+<div class="answer"><code>git stash branch &lt;branch-name&gt; &lt;stash&gt;</code>.</div>
+</div>
+
+<div class="card">
+<h3>Q9. Kya stash remote repository me push hota hai?</h3>
+<div class="answer">Normal branch commits ki tarah stash workflow remote collaboration ke liye designed nahi hai. Stash primarily local temporary work storage hai.</div>
+</div>
+
+<div class="card">
+<h3>Q10. Stash aur commit me difference?</h3>
+<div class="answer">Stash temporary WIP parking ke liye hota hai; commit project history me intentional change record karta hai.</div>
+</div>
+
+<div class="card">
+<h3>Q11. Stash conflict kaise resolve karenge?</h3>
+<div class="answer">Conflicted files identify karo, conflict markers resolve karo, <code>git add</code> se resolved files stage karo, phir normal commit workflow continue karo.</div>
+</div>
+
+<div class="card">
+<h3>Q12. <code>git stash clear</code> kya karta hai?</h3>
+<div class="answer">Repository ki stash entries ko clear/remove karta hai. Isliye carefully use karna chahiye.</div>
+</div>
+</section>
+
+<section>
+<h2>23. Quick Revision</h2>
+<table>
+<tr><th>Task</th><th>Command</th></tr>
+<tr><td>Stash current changes</td><td><code>git stash</code></td></tr>
+<tr><td>Explicit stash</td><td><code>git stash push</code></td></tr>
+<tr><td>Stash with message</td><td><code>git stash push -m "message"</code></td></tr>
+<tr><td>List stashes</td><td><code>git stash list</code></td></tr>
+<tr><td>Show latest stash summary</td><td><code>git stash show</code></td></tr>
+<tr><td>Show full patch</td><td><code>git stash show -p</code></td></tr>
+<tr><td>Include untracked</td><td><code>git stash push -u</code></td></tr>
+<tr><td>Include ignored too</td><td><code>git stash push -a</code></td></tr>
+<tr><td>Apply latest</td><td><code>git stash apply</code></td></tr>
+<tr><td>Apply specific</td><td><code>git stash apply stash@{1}</code></td></tr>
+<tr><td>Apply + remove after success</td><td><code>git stash pop</code></td></tr>
+<tr><td>Drop one stash</td><td><code>git stash drop stash@{0}</code></td></tr>
+<tr><td>Clear all stashes</td><td><code>git stash clear</code></td></tr>
+<tr><td>Restore staged state too</td><td><code>git stash apply --index</code></td></tr>
+<tr><td>Interactive stash</td><td><code>git stash push -p</code></td></tr>
+<tr><td>Create branch from stash</td><td><code>git stash branch branch-name stash@{0}</code></td></tr>
+</table>
+</section>
+
+<section id="cheat">
+<h2>24. One-Page Mental Model</h2>
+<div class="card">
+<div class="flow">
+<div class="node"><strong>Working</strong><br>Uncommitted changes</div>
+<div class="arrow">→</div>
+<div class="node"><strong>stash push</strong><br>Temporary parking</div>
+<div class="arrow">→</div>
+<div class="node"><strong>Clean Tree</strong><br>Switch / Fix / Pull</div>
+<div class="arrow">→</div>
+<div class="node"><strong>apply / pop</strong><br>Bring work back</div>
+</div>
+
+<pre><code># Remember this workflow
+
+git status
+git stash push -m "WIP: my feature"
+
+git switch main
+# do urgent work
+
+git switch feature/my-feature
+git stash list
+git stash apply stash@{0}
+
+# verify
+git status
+git diff
+
+# after confirming
+git stash drop stash@{0}</code></pre>
+</div>
+
+<h2>25. Best Practices</h2>
+<ul>
+<li>Temporary work ke liye stash use karo; long-term work ke liye commits/branches use karo.</li>
+<li>Important stash ko meaningful message do.</li>
+<li>Restore karne se pehle <code>git stash list</code> check karo.</li>
+<li>Important stash ke liye <code>apply</code> ko <code>pop</code> se prefer kar sakte ho.</li>
+<li>Untracked files ke liye <code>-u</code> ya ignored files ke liye <code>-a</code> consciously choose karo.</li>
+<li><code>git stash clear</code> carefully use karo.</li>
+<li>Stash me secrets accidentally store karne se bacho.</li>
+<li>Team collaboration ke liye branch + commit + push workflow use karo.</li>
+</ul>
+
+<h2>26. Learning Checklist</h2>
+<ul class="checklist">
+<li>Git stash ka purpose samajh liya</li>
+<li>Working Tree aur Staging Area ka relation samajh liya</li>
+<li><code>git stash</code> use karna aata hai</li>
+<li><code>git stash push -m</code> samajh liya</li>
+<li><code>git stash list</code> use karna aata hai</li>
+<li><code>apply</code> aur <code>pop</code> ka difference clear hai</li>
+<li>Specific stash apply karna aata hai</li>
+<li>Untracked files ke liye <code>-u</code> samajh liya</li>
+<li>Ignored files ke liye <code>-a</code> samajh liya</li>
+<li>Stash conflict handling samajh li</li>
+<li><code>stash branch</code> samajh liya</li>
+<li>Stash vs commit/reset/restore/revert clear hai</li>
+<li>Practical lab khud run kiya</li>
+<li>Interview questions revise kiye</li>
+</ul>
+</section>
+
+<footer>
+  <p><strong>Git Stash — Complete Study Material</strong></p>
+  <p>Learn → Practice → Break → Fix → Restore → Repeat 🚀</p>
+  <p class="small">Part of your Git & GitHub learning journey.</p>
+</footer>
+
+</div>
+</body>
+</html>
