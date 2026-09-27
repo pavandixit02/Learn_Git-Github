@@ -12,6 +12,7 @@ This repository is created to document my complete journey of learning **Git & G
 
 Here I maintain:
 
+<<<<<<< HEAD
 * 📖 Git & GitHub concepts
 * 💻 Important Git commands
 * 🧪 Practical examples
@@ -24,6 +25,20 @@ Here I maintain:
 * 📥 Clone, Fetch & Pull
 * 🧩 Git reset, restore & revert
 * 📚 Personal notes and HTML-based learning pages
+=======
+- 📖 Git & GitHub concepts
+- 💻 Important Git commands
+- 🧪 Practical examples
+- 🌿 Branching & branch management
+- 🔄 Git workflow
+- ↩️ Undoing changes
+- 🔗 Remote repository operations
+- 📝 Git configuration & aliases
+- 🚫 `.gitignore`
+- 📥 Clone, Fetch & Pull
+- 🧩 Git reset, restore & revert
+- 📚 Personal notes and HTML-based learning pages
+>>>>>>> a456f53 (Mid Update README.md File)
 
 The main goal is to build a **strong practical understanding of Git and GitHub** rather than only memorizing commands.
 
@@ -33,6 +48,7 @@ The main goal is to build a **strong practical understanding of Git and GitHub**
 
 ## 1. Git Fundamentals
 
+<<<<<<< HEAD
 * [x] What is Git?
 * [x] What is GitHub?
 * [x] Git vs GitHub
@@ -41,6 +57,16 @@ The main goal is to build a **strong practical understanding of Git and GitHub**
 * [x] Staging Area
 * [x] Git Commit
 * [x] Basic Git Workflow
+=======
+- [x] What is Git?
+- [x] What is GitHub?
+- [x] Git vs GitHub
+- [x] Git Repository
+- [x] Working Directory
+- [x] Staging Area
+- [x] Git Commit
+- [x] Basic Git Workflow
+>>>>>>> a456f53 (Mid Update README.md File)
 
 ### Basic Workflow
 
@@ -73,6 +99,7 @@ Branching allows us to work on different features or versions of a project indep
 
 ### Topics
 
+<<<<<<< HEAD
 * What is a branch?
 * Create a branch
 * Check branches
@@ -81,6 +108,16 @@ Branching allows us to work on different features or versions of a project indep
 * Delete branches
 * Merge branches
 * Branch workflow
+=======
+- What is a branch?
+- Create a branch
+- Check branches
+- Switch branches
+- Rename branches
+- Delete branches
+- Merge branches
+- Branch workflow
+>>>>>>> a456f53 (Mid Update README.md File)
 
 ### Important Commands
 
@@ -143,9 +180,15 @@ git commit --amend
 
 ### Common Use Cases
 
+<<<<<<< HEAD
 * Correct the latest commit message
 * Add forgotten files to the latest commit
 * Modify the latest commit before pushing
+=======
+- Correct the latest commit message
+- Add forgotten files to the latest commit
+- Modify the latest commit before pushing
+>>>>>>> a456f53 (Mid Update README.md File)
 
 Example:
 
@@ -288,11 +331,19 @@ git reset --hard HEAD~1
 
 ### Reset Modes
 
+<<<<<<< HEAD
 | Mode      | HEAD  | Staging | Working Directory |
 | --------- | ----- | ------- | ----------------- |
 | `--soft`  | Reset | Keep    | Keep              |
 | `--mixed` | Reset | Reset   | Keep              |
 | `--hard`  | Reset | Reset   | Reset             |
+=======
+| Mode | HEAD | Staging | Working Directory |
+|---|---|---|---|
+| `--soft` | Reset | Keep | Keep |
+| `--mixed` | Reset | Reset | Keep |
+| `--hard` | Reset | Reset | Reset |
+>>>>>>> a456f53 (Mid Update README.md File)
 
 > ⚠️ `git reset --hard` can permanently discard uncommitted changes. Use it carefully.
 
@@ -406,6 +457,7 @@ Learn_Git-Github/
 
 # 📚 Current Learning Progress
 
+<<<<<<< HEAD
 | #  | Topic            | Status      | Notes                     |
 | -- | ---------------- | ----------- | ------------------------- |
 | 1  | Git Fundamentals | ✅ Completed | Basic concepts            |
@@ -419,6 +471,21 @@ Learn_Git-Github/
 | 9  | Git Reset        | ✅ Completed | Reset repository state    |
 | 10 | Git Restore      | ✅ Completed | Restore files             |
 | 11 | Git Revert       | ✅ Completed | Reverse commits           |
+=======
+| # | Topic | Status | Notes |
+|---|---|---|---|
+| 1 | Git Fundamentals | ✅ Completed | Basic concepts |
+| 2 | Branch | ✅ Completed | Branch management |
+| 3 | Git Alias | ✅ Completed | Git shortcuts |
+| 4 | Git Amend | ✅ Completed | Modify latest commit |
+| 5 | Git Clone | ✅ Completed | Clone remote repositories |
+| 6 | Git Ignore | ✅ Completed | Ignore files/directories |
+| 7 | Git Pull | ✅ Completed | Get remote changes |
+| 8 | Git Fetch | ✅ Completed | Fetch remote changes |
+| 9 | Git Reset | ✅ Completed | Reset repository state |
+| 10 | Git Restore | ✅ Completed | Restore files |
+| 11 | Git Revert | ✅ Completed | Reverse commits |
+>>>>>>> a456f53 (Mid Update README.md File)
 
 ---
 
@@ -521,6 +588,7 @@ git commit -m "Add new feature"
 
 git push origin main
 ```
+<<<<<<< HEAD
 
 ---
 
@@ -718,10 +786,45 @@ AWS
 Deployment
  ↓
 Monitoring
+=======
+
+---
+
+# 🌎 Local Repository vs Remote Repository
+
+```text
+┌─────────────────────────────┐
+│       Local Computer        │
+│                             │
+│ Working Directory           │
+│          ↓                  │
+│ Staging Area                │
+│          ↓                  │
+│ Local Repository            │
+└─────────────┬───────────────┘
+              │
+           git push
+              ↓
+┌─────────────────────────────┐
+│          GitHub              │
+│      Remote Repository       │
+└─────────────────────────────┘
+```
+
+For downloading remote changes:
+
+```text
+GitHub
+  ↓
+git fetch / git pull
+  ↓
+Local Repository
+>>>>>>> a456f53 (Mid Update README.md File)
 ```
 
 ---
 
+<<<<<<< HEAD
 # 💡 Git Learning Philosophy
 
 > **Don't just memorize Git commands — understand what happens inside Git.**
@@ -773,6 +876,224 @@ https://github.com/pavandixit02/Learn_Git-Github
 
 BCA Graduate | RHCSA | RHCE | Cloud & DevOps Learner
 
+=======
+# 🛠️ Tools Used
+
+- Git
+- GitHub
+- VS Code
+- HTML
+- CSS
+- JavaScript
+- Linux / Ubuntu
+- Git Bash / Terminal
+
+---
+
+# 🎯 Learning Method
+
+For every Git/GitHub topic, I follow this approach:
+
+```text
+1. What is it?
+       ↓
+2. Why is it used?
+       ↓
+3. How does it work?
+       ↓
+4. Syntax
+       ↓
+5. Practical Example
+       ↓
+6. Real-world Use Case
+       ↓
+7. Common Mistakes
+       ↓
+8. Interview Questions
+       ↓
+9. Hands-on Practice
+       ↓
+10. Documentation
+```
+
+---
+
+# 🚀 Upcoming Topics
+
+The repository will be continuously updated with more advanced Git & GitHub concepts.
+
+### Git
+
+- [ ] Git Tags
+- [ ] Git Stash
+- [ ] Git Diff
+- [ ] Git Log Advanced
+- [ ] Git Cherry-pick
+- [ ] Git Rebase
+- [ ] Git Reflog
+- [ ] Git Bisect
+- [ ] Git Worktree
+- [ ] Git Hooks
+- [ ] Git Submodules
+- [ ] Git Archive
+- [ ] Git Blame
+
+### Branching & Collaboration
+
+- [ ] Feature Branch Workflow
+- [ ] Git Merge Strategies
+- [ ] Merge Conflicts
+- [ ] Rebase Workflow
+- [ ] Pull Requests
+- [ ] Code Review
+- [ ] Protected Branches
+
+### GitHub
+
+- [ ] GitHub Repository Management
+- [ ] Pull Requests
+- [ ] Issues
+- [ ] Labels
+- [ ] Milestones
+- [ ] Projects
+- [ ] GitHub Actions
+- [ ] GitHub Pages
+- [ ] Releases
+- [ ] Secrets & Variables
+- [ ] Branch Protection Rules
+- [ ] GitHub CLI
+- [ ] SSH Authentication
+- [ ] Personal Access Token (PAT)
+
+### Advanced GitHub / DevOps
+
+- [ ] GitHub Actions CI/CD
+- [ ] Automated Testing
+- [ ] Docker + GitHub
+- [ ] GitHub Actions + Docker
+- [ ] GitHub Actions + AWS
+- [ ] GitHub Actions + Kubernetes
+- [ ] GitOps
+- [ ] CI/CD Pipeline Project
+
+---
+
+# 🧪 Practical Projects
+
+The next phase of this repository will focus on practical projects rather than only individual commands.
+
+### Project 1 — Git Workflow Project
+
+```text
+Create Repository
+       ↓
+Create Branch
+       ↓
+Make Changes
+       ↓
+git add
+       ↓
+git commit
+       ↓
+git push
+       ↓
+Pull Request
+       ↓
+Merge
+```
+
+### Project 2 — GitHub CI/CD
+
+```text
+Developer
+    ↓
+Git Push
+    ↓
+GitHub
+    ↓
+GitHub Actions
+    ↓
+Build
+    ↓
+Test
+    ↓
+Docker Build
+    ↓
+Deploy
+```
+
+### Project 3 — DevOps Git Workflow
+
+```text
+Git
+ ↓
+GitHub
+ ↓
+GitHub Actions
+ ↓
+Docker
+ ↓
+AWS
+ ↓
+Deployment
+ ↓
+Monitoring
+```
+
+---
+
+# 💡 Git Learning Philosophy
+
+> **Don't just memorize Git commands — understand what happens inside Git.**
+
+For every command, the goal is to understand:
+
+```text
+Command
+   ↓
+Purpose
+   ↓
+Internal Git Behavior
+   ↓
+Repository State
+   ↓
+Real-world Use
+```
+
+---
+
+# 📈 Progress
+
+```text
+Git Basics          ████████████████████ 100%
+Branching           ████████████████████ 100%
+Basic Git Commands  ████████████████████ 100%
+Undo Operations     ████████████████████ 100%
+Remote Operations   ████████████████████ 100%
+Advanced Git        ████░░░░░░░░░░░░░░░░ 20%
+GitHub              ████████░░░░░░░░░░░░ 40%
+GitHub Actions      ░░░░░░░░░░░░░░░░░░░░ 0%
+GitOps              ░░░░░░░░░░░░░░░░░░░░ 0%
+```
+
+> Progress will be updated as new topics are learned and documented.
+
+---
+
+# 📌 Repository
+
+**GitHub Repository:**  
+https://github.com/pavandixit02/Learn_Git-Github
+
+---
+
+# 👨‍💻 Author
+
+**Pavan Kumar Dixit**
+
+BCA Graduate | RHCSA | RHCE | Cloud & DevOps Learner
+
+>>>>>>> a456f53 (Mid Update README.md File)
 Currently learning:
 
 ```text
@@ -801,4 +1122,8 @@ Build strong practical knowledge of:
 
 **Git → GitHub → CI/CD → Docker → Kubernetes → Cloud → DevOps**
 
+<<<<<<< HEAD
 and document the complete learning journey through practical projects and notes.
+=======
+and document the complete learning journey through practical projects and notes.
+>>>>>>> a456f53 (Mid Update README.md File)
