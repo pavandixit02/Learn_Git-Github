@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Static Website & GitHub Pages Deployment</title>
+<style>
+:root{--bg:#0b1020;--panel:#121a2d;--panel2:#17223a;--text:#e8eefc;--muted:#aab6cf;--a:#66d9ef;--g:#67e8a5;--y:#facc15;--r:#fb7185;--b:#263554;--code:#090d18}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:linear-gradient(180deg,#080d19,#0b1020);color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif;line-height:1.7}
+.container{max-width:1180px;margin:auto;padding:28px 20px 70px}.hero,section{background:rgba(18,26,45,.94);border:1px solid var(--b);border-radius:18px;padding:28px;margin:20px 0}.hero{background:linear-gradient(135deg,#121d35,#182545);box-shadow:0 18px 60px rgba(0,0,0,.28)}
+h1{font-size:clamp(30px,5vw,52px);line-height:1.1;margin:0 0 14px}h2{font-size:30px;margin-top:0;color:#dce8ff}h3{color:#dce8ff;margin-top:24px}p{color:#c3cee4}.lead{font-size:18px}
+.badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}.badge{padding:7px 12px;border-radius:999px;background:#101a30;border:1px solid var(--b);color:#b9c9e8;font-size:13px}
+nav{position:sticky;top:0;z-index:10;background:rgba(8,13,25,.9);backdrop-filter:blur(14px);border-bottom:1px solid var(--b);padding:12px 0}
+nav .navin{max-width:1180px;margin:auto;padding:0 20px;display:flex;gap:8px;overflow:auto}nav a{white-space:nowrap;text-decoration:none;color:#b9c8e6;padding:7px 10px;border-radius:8px;font-size:13px}nav a:hover{background:#182440;color:#fff}
+.cardgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:15px}.card{background:var(--panel2);border:1px solid var(--b);border-radius:14px;padding:18px}.card strong{color:#fff}
+.callout{border-left:4px solid var(--a);background:#101a2d;padding:16px 18px;border-radius:10px;margin:18px 0}.success{border-left-color:var(--g)}.warning{border-left-color:var(--y)}.danger{border-left-color:var(--r)}
+pre{background:var(--code);border:1px solid #202d49;border-radius:12px;padding:18px;overflow:auto;color:#dce8ff;font-size:14px;line-height:1.6}code{font-family:"Cascadia Code","Fira Code",Consolas,monospace}.inline{background:#0a1222;border:1px solid #243452;padding:2px 6px;border-radius:5px;color:#8fe7ff}
+table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}th,td{border:1px solid var(--b);padding:12px;text-align:left;vertical-align:top}th{background:#18243c;color:#eaf1ff}td{color:#c5d0e5}
+.step{display:grid;grid-template-columns:48px 1fr;gap:15px;margin:18px 0}.num{width:42px;height:42px;border-radius:50%;background:#1b2b4c;border:1px solid #36527f;display:grid;place-items:center;color:#8fe7ff;font-weight:700}
+.flow{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:20px 0}.flow .box{padding:10px 13px;background:#15223b;border:1px solid #31476d;border-radius:9px}.arrow{color:var(--a);font-weight:bold}
+.term{color:#8fe7ff;font-weight:600}.small{font-size:13px;color:var(--muted)}li{margin:7px 0}.checklist li{list-style:"☐  "}footer{text-align:center;color:#7786a5;padding:30px 0}
+@media(max-width:700px){section,.hero{padding:20px 16px}h2{font-size:25px}table{display:block;overflow-x:auto}}
+</style>
+</head>
+<body>
+<nav><div class="navin">
+<a href="#static">Static Website</a><a href="#pages">GitHub Pages</a><a href="#deploy">Deployment</a><a href="#concepts">Concepts</a><a href="#domain">Domain/HTTPS</a><a href="#errors">Errors</a><a href="#devops">DevOps</a><a href="#interview">Interview</a><a href="#checklist">Checklist</a>
+</div></nav>
+<div class="container">
+
+<header class="hero">
+<h1>Static Website & GitHub Pages Deployment</h1>
+<p class="lead">Beginner → Intermediate complete study material for understanding static websites and deploying them on GitHub Pages.</p>
+<div class="badges"><span class="badge">HTML</span><span class="badge">CSS</span><span class="badge">JavaScript</span><span class="badge">Git</span><span class="badge">GitHub</span><span class="badge">GitHub Pages</span><span class="badge">Deployment</span><span class="badge">DevOps</span></div>
+<div class="callout success"><strong>Core idea:</strong> Code → Git → GitHub → GitHub Pages → Public URL.</div>
+</header>
+
+<section id="static">
+<h2>1. Static Website Kya Hoti Hai?</h2>
+<p><span class="term">Static website</span> wo website hoti hai jisme server-side par har request ke liye database ya backend code se page generate karna zaroori nahi hota. Usually ready-made HTML, CSS, JavaScript aur assets directly serve kiye jaate hain.</p>
+<div class="cardgrid">
+<div class="card"><strong>HTML</strong><p>Structure aur content.</p></div><div class="card"><strong>CSS</strong><p>Design, layout, colors aur responsive UI.</p></div><div class="card"><strong>JavaScript</strong><p>Browser-side interaction aur logic.</p></div><div class="card"><strong>Assets</strong><p>Images, icons, fonts, PDFs etc.</p></div>
+</div>
+<h3>Real-Life Analogy</h3><p>Static website ko ek <strong>printed brochure</strong> ki tarah samjho: content pehle se prepared hai aur server mainly prepared files deliver karta hai.</p>
+<div class="flow"><div class="box">Browser</div><div class="arrow">→</div><div class="box">Web Server/CDN</div><div class="arrow">→</div><div class="box">HTML + CSS + JS</div><div class="arrow">→</div><div class="box">Rendered Page</div></div>
+<h3>Static vs Dynamic</h3>
+<table><tr><th>Feature</th><th>Static</th><th>Dynamic</th></tr><tr><td>Typical files</td><td>HTML/CSS/JS/assets</td><td>Frontend + backend + database</td></tr><tr><td>Server processing</td><td>Usually minimal for page generation</td><td>Commonly required</td></tr><tr><td>Database</td><td>Not required for basic site</td><td>Often used</td></tr><tr><td>Examples</td><td>Portfolio, docs, landing page</td><td>E-commerce, social network, banking app</td></tr></table>
+<div class="callout warning"><strong>Important:</strong> Static ka matlab “non-interactive” nahi hai. Browser-side JavaScript menus, animations, calculators aur API calls kar sakta hai.</div>
+</section>
+
+<section>
+<h2>2. Static Website ke Common Examples</h2>
+<div class="cardgrid"><div class="card"><strong>Portfolio</strong><p>About, skills, projects, resume.</p></div><div class="card"><strong>Documentation</strong><p>Project docs and tutorials.</p></div><div class="card"><strong>Landing Page</strong><p>Product/service introduction.</p></div><div class="card"><strong>Resume Website</strong><p>Online CV and profile.</p></div><div class="card"><strong>Project Website</strong><p>Open-source project page.</p></div><div class="card"><strong>Static Blog</strong><p>Pre-generated content based blog.</p></div></div>
+</section>
+
+<section id="pages">
+<h2>3. GitHub Pages Kya Hai?</h2>
+<p><span class="term">GitHub Pages</span> GitHub repositories se static websites publish karne ki hosting service hai. Repository mein website files rakhkar Pages ke through public URL par serve kiya ja sakta hai.</p>
+<div class="flow"><div class="box">Local Project</div><div class="arrow">→</div><div class="box">Git Repository</div><div class="arrow">→</div><div class="box">GitHub Repository</div><div class="arrow">→</div><div class="box">GitHub Pages</div><div class="arrow">→</div><div class="box">Website</div></div>
+<h3>Important Concepts</h3><ul><li><strong>Repository:</strong> Source files and Git history.</li><li><strong>Branch:</strong> Development/source line.</li><li><strong>Publishing source:</strong> Pages settings mein branch/folder selection.</li><li><strong>index.html:</strong> Common entry document.</li><li><strong>Custom domain:</strong> Apna domain configure kar sakte ho.</li><li><strong>HTTPS:</strong> Secure web connection configuration.</li></ul>
+</section>
+
+<section id="deploy">
+<h2>4. Full Process: Static Website ko GitHub par Deploy Karna</h2>
+<div class="callout"><strong>Prerequisites:</strong> Git installed, GitHub account aur static website ready.</div>
+
+<div class="step"><div class="num">1</div><div><h3>Project Structure</h3><pre><code>my-static-site/
+├── index.html
+├── about.html
+├── contact.html
+├── css/
+│   └── style.css
+├── js/
+│   └── script.js
+├── images/
+│   └── profile.jpg
+└── README.md</code></pre></div></div>
+
+<div class="step"><div class="num">2</div><div><h3>index.html Banao</h3><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+  &lt;title&gt;My Portfolio&lt;/title&gt;
+  &lt;link rel="stylesheet" href="css/style.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;Hello, GitHub Pages!&lt;/h1&gt;
+  &lt;p&gt;My first deployed static website.&lt;/p&gt;
+  &lt;script src="js/script.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div></div>
+
+<div class="step"><div class="num">3</div><div><h3>Local Testing</h3><pre><code>cd my-static-site
+python3 -m http.server 8000</code></pre><p>Browser: <span class="inline">http://localhost:8000</span></p></div></div>
+
+<div class="step"><div class="num">4</div><div><h3>Git Initialize</h3><pre><code>cd my-static-site
+git init
+git status</code></pre></div></div>
+
+<div class="step"><div class="num">5</div><div><h3>.gitignore</h3><pre><code>.DS_Store
+.vscode/
+*.log
+.env
+node_modules/</code></pre><div class="callout danger"><strong>Never commit secrets:</strong> API keys, passwords and private tokens ko public repository mein upload mat karo.</div></div></div>
+
+<div class="step"><div class="num">6</div><div><h3>Stage & Commit</h3><pre><code>git add .
+git status
+git commit -m "Initial static website"</code></pre></div></div>
+
+<div class="step"><div class="num">7</div><div><h3>GitHub Repository Create Karo</h3><ol><li>GitHub open karo.</li><li><strong>New repository</strong> select karo.</li><li>Name set karo, e.g. <span class="inline">my-static-site</span>.</li><li>Visibility choose karo.</li><li>Existing local project hone par unnecessary auto-created files se initial history conflict avoid kiya ja sakta hai.</li><li>Repository create karo.</li></ol></div></div>
+
+<div class="step"><div class="num">8</div><div><h3>Remote Add Karo</h3><pre><code>git remote add origin https://github.com/YOUR-USERNAME/my-static-site.git
+git remote -v</code></pre></div></div>
+
+<div class="step"><div class="num">9</div><div><h3>Main Branch & Push</h3><pre><code>git branch -M main
+git push -u origin main</code></pre><p><span class="inline">-u</span> upstream tracking set karta hai.</p></div></div>
+
+<div class="step"><div class="num">10</div><div><h3>GitHub Pages Enable Karo</h3><ol><li>Repository → <strong>Settings</strong>.</li><li><strong>Pages</strong> section open karo.</li><li>Publishing source/configuration choose karo.</li><li>Branch: <strong>main</strong>.</li><li>Folder: <strong>/(root)</strong> if files root mein hain.</li><li>Save/Apply karo.</li></ol></div></div>
+
+<div class="step"><div class="num">11</div><div><h3>Deployment Verify Karo</h3><p>Pages section mein published URL check karo. Website open karke HTML, CSS, JS, images, links, responsiveness aur browser console verify karo.</p></div></div>
+</section>
+
+<section>
+<h2>5. Future Updates ka Git Workflow</h2>
+<div class="flow"><div class="box">Edit</div><div class="arrow">→</div><div class="box">git status</div><div class="arrow">→</div><div class="box">git add .</div><div class="arrow">→</div><div class="box">git commit</div><div class="arrow">→</div><div class="box">git push</div><div class="arrow">→</div><div class="box">Pages Update</div></div>
+<pre><code>git status
+git add .
+git commit -m "Update portfolio"
+git push</code></pre>
+<div class="callout success"><strong>Key point:</strong> Configured Pages source par changes push hone ke baad deployment update ho sakta hai; har update par Pages manually recreate karna nahi hota.</div>
+</section>
+
+<section id="concepts">
+<h2>6. All Important GitHub Static Deployment Concepts</h2>
+<h3>6.1 Local vs Remote Repository</h3><table><tr><th>Local</th><th>Remote</th></tr><tr><td>Aapke computer par Git repository</td><td>GitHub par hosted repository</td></tr><tr><td>Local commits</td><td>Push kiye commits</td></tr><tr><td>Development</td><td>Collaboration/deployment source</td></tr></table>
+<h3>6.2 Branch</h3><p>Branch development line hai. Pages configured source branch/folder se website publish kar sakta hai.</p>
+<h3>6.3 Root Folder vs /docs</h3><p>Agar publishing source <span class="inline">/(root)</span> hai to files selected branch ke root mein expected hoti hain. Kuch configurations mein <span class="inline">/docs</span> folder publishing source banaya ja sakta hai.</p>
+<h3>6.4 Relative Paths</h3><pre><code>&lt;link rel="stylesheet" href="css/style.css"&gt;
+&lt;img src="images/logo.png" alt="Logo"&gt;</code></pre><p>Project-site subpaths ke context mein relative paths often safer hote hain.</p>
+<h3>6.5 Case Sensitivity</h3><p>Linux-based hosting par filename case matter kar sakta hai: <code>Profile.jpg</code> aur <code>profile.jpg</code> ko same assume mat karo.</p>
+<h3>6.6 Repository vs Pages</h3><table><tr><th>GitHub Repository</th><th>GitHub Pages</th></tr><tr><td>Code/files/history store</td><td>Static website publish</td></tr><tr><td>Version control/collaboration</td><td>Web hosting/publishing</td></tr></table>
+<h3>6.7 GitHub Actions</h3><p>Advanced workflow mein Actions build, test aur deploy automate kar sakta hai—especially jab source ko build step ki zaroorat ho.</p>
+<h3>6.8 Static Site Generators</h3><p>Jekyll historically GitHub Pages ecosystem ka important part raha hai. Simple HTML/CSS/JS site ke liye Jekyll mandatory nahi hai.</p>
+<h3>6.9 Public/Private & Publishing</h3><p>Repository visibility aur published website visibility ko separate concepts samjho. Current GitHub account/plan/configuration ke according Pages availability vary kar sakti hai.</p>
+</section>
+
+<section id="domain">
+<h2>7. Custom Domain & HTTPS</h2>
+<p>Aap default Pages address ki jagah apna domain configure kar sakte ho. Isme registrar ke DNS records aur GitHub Pages custom-domain settings coordinate hoti hain.</p>
+<div class="flow"><div class="box">Your Domain</div><div class="arrow">→</div><div class="box">DNS</div><div class="arrow">→</div><div class="box">GitHub Pages</div><div class="arrow">→</div><div class="box">Website</div></div>
+<div class="callout warning"><strong>DNS caution:</strong> Existing email/other services ke DNS records ko accidentally overwrite mat karo.</div>
+<p><strong>HTTPS</strong> browser aur website ke beech encrypted connection provide karta hai. Pages settings mein HTTPS/custom-domain status verify karo.</p>
+</section>
+
+<section>
+<h2>8. GitHub Pages par Kya Deploy Kar Sakte Ho?</h2>
+<div class="cardgrid"><div class="card"><strong>HTML/CSS</strong><p>Static pages and styles.</p></div><div class="card"><strong>JavaScript</strong><p>Client-side interaction.</p></div><div class="card"><strong>Images/Fonts</strong><p>Static assets.</p></div><div class="card"><strong>Documentation</strong><p>Project docs and guides.</p></div><div class="card"><strong>Static Builds</strong><p>Frameworks ke static output, suitable configuration ke saath.</p></div></div>
+<h3>What it is NOT</h3><ul><li>Traditional persistent Node.js/Python/Java backend runtime.</li><li>Database server.</li><li>Secure place for frontend API secrets.</li><li>Every full-stack architecture ka replacement.</li></ul>
+</section>
+
+<section>
+<h2>9. JavaScript API Calls & Secrets</h2>
+<p>Static frontend browser se API call kar sakta hai, lekin frontend mein shipped secret secure nahi hota.</p>
+<pre><code>fetch("https://api.example.com/data")
+  .then(response =&gt; response.json())
+  .then(data =&gt; console.log(data));</code></pre>
+<div class="callout danger"><strong>Never expose secrets:</strong><pre><code>const API_KEY = "MY_SECRET_API_KEY";</code></pre>Browser-delivered values user inspect kar sakta hai. Sensitive credentials backend/secure secret-management architecture mein rakho.</div>
+</section>
+
+<section id="errors">
+<h2>10. Common Errors & Troubleshooting</h2>
+<h3>404 / Page Not Found</h3><ul><li>Pages enabled?</li><li>Correct branch?</li><li>Correct folder?</li><li><code>index.html</code> correct location?</li><li>Correct URL?</li></ul>
+<h3>CSS/JS/Images Missing</h3><ul><li>Path exact match?</li><li>Filename case correct?</li><li>File committed/pushed?</li><li>Browser Network/Console check?</li></ul>
+<h3>Local Works, GitHub Pages Doesn't</h3><p>Deployment path, case sensitivity, missing files, asset URLs, branch/source folder aur build configuration investigate karo.</p>
+<h3>Push Rejected</h3><pre><code>git pull --rebase origin main
+git push</code></pre><p>Commands blindly run mat karo; remote/local history aur possible conflicts samjho.</p>
+<h3>Authentication Error</h3><p>GitHub HTTPS operations ke liye modern credential/token mechanisms use hote hain; SSH key authentication bhi common hai.</p>
+</section>
+
+<section>
+<h2>11. HTTPS vs SSH Remote</h2>
+<table><tr><th>HTTPS</th><th>SSH</th></tr><tr><td>https:// URL</td><td>git@github.com:... URL</td></tr><tr><td>Token/credential based flow</td><td>SSH key based authentication</td></tr><tr><td>Beginner friendly</td><td>Long-term developer workflow mein useful</td></tr></table>
+<pre><code>https://github.com/USERNAME/repo.git
+git@github.com:USERNAME/repo.git</code></pre>
+</section>
+
+<section id="devops">
+<h2>12. DevOps Perspective</h2>
+<p>Static website deployment Git, GitHub aur CI/CD fundamentals practice karne ke liye excellent beginner project hai.</p>
+<div class="flow"><div class="box">Developer</div><div class="arrow">→</div><div class="box">Commit</div><div class="arrow">→</div><div class="box">GitHub Push</div><div class="arrow">→</div><div class="box">Build/Deploy</div><div class="arrow">→</div><div class="box">Pages</div><div class="arrow">→</div><div class="box">Users</div></div>
+<div class="cardgrid"><div class="card">Git</div><div class="card">GitHub</div><div class="card">Branching</div><div class="card">Authentication</div><div class="card">Deployment</div><div class="card">CI/CD</div><div class="card">DNS</div><div class="card">HTTPS</div></div>
+<pre><code>Feature work
+   ↓
+Local testing
+   ↓
+git add → git commit → git push
+   ↓
+CI/CD or Pages deployment
+   ↓
+Production website</code></pre>
+</section>
+
+<section>
+<h2>13. Practical Project — Your Portfolio</h2>
+<pre><code>pavan-portfolio/
+├── index.html
+├── about.html
+├── projects.html
+├── certifications.html
+├── contact.html
+├── css/style.css
+├── js/script.js
+├── images/profile.jpg
+├── .gitignore
+└── README.md</code></pre>
+<h3>Recommended Sections</h3><ul><li>Hero/Introduction</li><li>About Me</li><li>Cloud & DevOps Skills</li><li>RHCSA & RHCE Certifications</li><li>Git/GitHub Projects</li><li>Cloud Projects</li><li>Resume</li><li>Contact</li></ul>
+<div class="callout success"><strong>Learning objective:</strong> Git → GitHub → Branch → Commit → Push → Deployment → DNS → HTTPS → CI/CD fundamentals ko ek project mein practice karo.</div>
+</section>
+
+<section>
+<h2>14. GitHub Pages vs Other Static Hosting</h2>
+<table><tr><th>Concept</th><th>GitHub Pages</th><th>Other Static Hosts</th></tr><tr><td>Git integration</td><td>Strong GitHub integration</td><td>Provider dependent</td></tr><tr><td>Simple HTML</td><td>Supported</td><td>Usually supported</td></tr><tr><td>Custom domain</td><td>Supported</td><td>Commonly supported</td></tr><tr><td>Backend</td><td>Not its main purpose</td><td>Provider dependent</td></tr><tr><td>CI/CD</td><td>GitHub Actions integration possible</td><td>Provider-specific</td></tr></table>
+<p>Other common static-hosting options include Netlify, Vercel and Cloudflare Pages; choice architecture aur workflow par depend karta hai.</p>
+</section>
+
+<section>
+<h2>15. Useful Commands — Quick Reference</h2>
+<table><tr><th>Command</th><th>Purpose</th></tr>
+<tr><td><code>git init</code></td><td>Repository initialize</td></tr><tr><td><code>git status</code></td><td>Status check</td></tr><tr><td><code>git add .</code></td><td>Changes stage</td></tr><tr><td><code>git commit -m "message"</code></td><td>Commit create</td></tr><tr><td><code>git branch -M main</code></td><td>Branch rename</td></tr><tr><td><code>git remote add origin URL</code></td><td>Remote add</td></tr><tr><td><code>git remote -v</code></td><td>Remote check</td></tr><tr><td><code>git push -u origin main</code></td><td>First push + upstream</td></tr><tr><td><code>git push</code></td><td>Later push</td></tr><tr><td><code>git pull</code></td><td>Remote changes fetch + integrate</td></tr></table>
+</section>
+
+<section id="interview">
+<h2>16. Interview Questions</h2>
+<ol>
+<li><strong>Static website kya hoti hai?</strong> Pre-built web files that can be served without per-request server-side page generation.</li>
+<li><strong>GitHub Pages kya hai?</strong> GitHub repository source se static websites publish karne ki hosting service.</li>
+<li><strong>Repository vs Pages?</strong> Repository source/version-control location; Pages website publishing mechanism.</li>
+<li><strong>index.html important kyun?</strong> Common default entry document.</li>
+<li><strong>Backend GitHub Pages par run kar sakte hain?</strong> Traditional persistent backend runtime iska purpose nahi hai.</li>
+<li><strong>Static site mein JavaScript?</strong> Yes, browser-side JavaScript use ho sakta hai.</li>
+<li><strong>git push?</strong> Local commits ko remote repository par send karta hai.</li>
+<li><strong>Deployment mein branch ka role?</strong> Configured publishing source branch/folder se Pages publish kar sakta hai.</li>
+<li><strong>CSS load nahi?</strong> Path, case, repository contents, source branch/folder aur browser Network/Console check.</li>
+<li><strong>DevOps learning value?</strong> Git, remote repo, deployment, automation aur CI/CD fundamentals practice.</li>
+</ol>
+</section>
+
+<section>
+<h2>17. Common Mistakes</h2>
+<ul><li>Wrong branch/source folder</li><li>Missing <code>index.html</code></li><li>Incorrect CSS/JS/image paths</li><li>Filename case mismatch</li><li>Changes commit/push na karna</li><li>Secrets/API keys public repo/frontend mein rakhna</li><li>Huge unoptimized assets</li><li>Sirf localhost test karna</li></ul>
+</section>
+
+<section id="checklist">
+<h2>18. Deployment Checklist</h2>
+<ul class="checklist"><li>Website locally working</li><li><code>index.html</code> ready</li><li>CSS/JS/images verified</li><li><code>.gitignore</code> configured</li><li>No secrets committed</li><li><code>git status</code> checked</li><li>Commit created</li><li>GitHub repository created</li><li>Remote configured</li><li>Correct branch pushed</li><li>GitHub Pages enabled</li><li>Correct source branch/folder selected</li><li>Published URL tested</li><li>Console checked</li><li>Mobile responsiveness tested</li><li>Custom domain/DNS checked if applicable</li></ul>
+</section>
+
+<section>
+<h2>19. One-Minute Revision</h2>
+<div class="callout"><p><strong>Static Website</strong> = Mainly pre-built HTML/CSS/JS/assets.</p><p><strong>Git</strong> = Version control system.</p><p><strong>GitHub</strong> = Git repositories + collaboration platform.</p><p><strong>GitHub Pages</strong> = Repository source ko static website ke roop mein publish karne ka hosting mechanism.</p><p><strong>Deployment flow</strong> = Local Code → Git → Commit → GitHub → Pages → Public URL.</p><p><strong>Update flow</strong> = Edit → Add → Commit → Push → Pages deployment update.</p></div>
+</section>
+
+<section>
+<h2>20. Final Mental Model</h2>
+<pre><code>
+                 STATIC WEBSITE
+                       │
+          ┌────────────┴────────────┐
+          │                         │
+      Frontend                    Assets
+    HTML/CSS/JS              Images/Fonts/etc.
+          │
+          ▼
+     Local Project
+          │
+      git init
+          │
+      git add .
+          │
+     git commit
+          │
+      git push
+          │
+          ▼
+   GitHub Repository
+          │
+    GitHub Pages
+          │
+          ▼
+    Public Website
+          │
+          ▼
+        Users
+</code></pre>
+</section>
+
+<footer><p>Static Website & GitHub Pages — Complete Study Material</p><p class="small">Beginner → Intermediate | Git + GitHub + Deployment + DevOps concepts</p></footer>
+</div>
+</body>
+</html>
