@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Git Diff — Complete Study Material</title>
+<style>
+:root{
+  --bg:#080d18;--panel:#111a2d;--panel2:#17233c;--text:#eaf0ff;--muted:#aebbd4;
+  --cyan:#67e8f9;--green:#6ee7a0;--yellow:#facc15;--red:#fb7185;--blue:#8bb8ff;
+  --border:#293958;--code:#070b14;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:linear-gradient(180deg,#070c16,#0b1120 45%,#08101d);
+  color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif;line-height:1.72
+}
+.container{max-width:1180px;margin:auto;padding:28px 20px 70px}
+.hero,section{
+  background:rgba(17,26,45,.96);border:1px solid var(--border);
+  border-radius:20px;padding:28px;margin:20px 0
+}
+.hero{background:linear-gradient(135deg,#111c34,#182747);box-shadow:0 20px 70px rgba(0,0,0,.28)}
+h1{font-size:clamp(30px,5vw,54px);line-height:1.08;margin:0 0 14px}
+h2{font-size:30px;color:#dfeaff;margin-top:0}
+h3{color:#dce8ff;margin-top:25px}
+p{color:#c5d0e5}.lead{font-size:18px;color:#d0dcf1}
+nav{
+  position:sticky;top:0;z-index:20;background:rgba(7,12,22,.92);
+  backdrop-filter:blur(14px);border-bottom:1px solid var(--border);padding:11px 0
+}
+.navin{max-width:1180px;margin:auto;padding:0 20px;display:flex;gap:7px;overflow:auto}
+nav a{color:#b9c8e5;text-decoration:none;white-space:nowrap;padding:7px 10px;border-radius:8px;font-size:13px}
+nav a:hover{background:#1a2946;color:white}
+.badges{display:flex;flex-wrap:wrap;gap:9px;margin-top:20px}
+.badge{padding:6px 11px;border:1px solid var(--border);border-radius:999px;background:#0e172a;color:#bcd0f0;font-size:13px}
+.cardgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(235px,1fr));gap:14px}
+.card{background:var(--panel2);border:1px solid var(--border);border-radius:14px;padding:17px}
+.card strong{color:white}.term{color:var(--cyan);font-weight:650}
+.callout{padding:16px 18px;border-left:4px solid var(--cyan);background:#0d1729;border-radius:10px;margin:18px 0}
+.success{border-left-color:var(--green)}.warning{border-left-color:var(--yellow)}.danger{border-left-color:var(--red)}
+pre{
+  background:var(--code);border:1px solid #24324e;border-radius:12px;
+  padding:18px;overflow:auto;color:#dce8ff;font-size:14px;line-height:1.62
+}
+code{font-family:"Cascadia Code","Fira Code",Consolas,monospace}
+.inline{background:#091322;border:1px solid #2b3b5b;border-radius:5px;padding:2px 6px;color:#8fefff}
+table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}
+th,td{border:1px solid var(--border);padding:11px 12px;text-align:left;vertical-align:top}
+th{background:#182540;color:#edf3ff}td{color:#c7d2e7}
+.flow{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:20px 0}
+.box{background:#14223b;border:1px solid #354b70;border-radius:9px;padding:9px 13px}
+.arrow{color:var(--cyan);font-weight:bold}
+.step{display:grid;grid-template-columns:48px 1fr;gap:14px;margin:19px 0}
+.num{
+  width:42px;height:42px;border-radius:50%;display:grid;place-items:center;
+  background:#1b2c4c;border:1px solid #3a5682;color:#8fefff;font-weight:700
+}
+.diffadd{color:#6ee7a0}.diffdel{color:#fb7185}.diffmeta{color:#8bb8ff}
+.small{font-size:13px;color:var(--muted)}li{margin:7px 0}
+.checklist li{list-style:"☐  "}
+footer{text-align:center;color:#7786a4;padding:30px 0}
+@media(max-width:700px){.hero,section{padding:20px 16px}h2{font-size:25px}table{display:block;overflow-x:auto}}
+</style>
+</head>
+<body>
+
+<nav>
+<div class="navin">
+<a href="#intro">Git Diff</a>
+<a href="#mental">Mental Model</a>
+<a href="#syntax">Syntax</a>
+<a href="#examples">Examples</a>
+<a href="#staging">Staging</a>
+<a href="#commits">Commits</a>
+<a href="#options">Options</a>
+<a href="#workflow">Workflow</a>
+<a href="#advanced">Advanced</a>
+<a href="#errors">Errors</a>
+<a href="#interview">Interview</a>
+</div>
+</nav>
+
+<div class="container">
+
+<header class="hero">
+<h1>Git Diff Command</h1>
+<p class="lead">Complete Beginner → Intermediate study material for understanding, reading and using <code>git diff</code> effectively.</p>
+<div class="badges">
+<span class="badge">Git</span>
+<span class="badge">git diff</span>
+<span class="badge">Working Tree</span>
+<span class="badge">Staging Area</span>
+<span class="badge">HEAD</span>
+<span class="badge">Commits</span>
+<span class="badge">Code Review</span>
+<span class="badge">DevOps</span>
+</div>
+<div class="callout success">
+<strong>Core idea:</strong> <code>git diff</code> ka main kaam hai Git ke different states ke beech changes ko compare karke dikhana.
+</div>
+</header>
+
+<section id="intro">
+<h2>1. Git Diff Kya Hai?</h2>
+<p><span class="term">git diff</span> Git ka ek comparison command hai. Iska use files/code mein hue changes ko dekhne ke liye kiya jata hai.</p>
+
+<p>Simple language mein:</p>
+<div class="callout">
+<strong>git diff = “Maine kya change kiya hai?”</strong>
+</div>
+
+<p>Jab aap kisi tracked file ko edit karte ho, Git purane committed/staged version aur current version ke differences ko identify kar sakta hai. <code>git diff</code> un differences ko line-by-line show karta hai.</p>
+
+<h3>Real-Life Analogy</h3>
+<p>Imagine karo aapke paas ek document ka old version hai aur aapne usme kuch lines change kar di. Ab aap compare karna chahte ho ki <strong>exactly kya add, delete ya modify hua</strong>. Git diff wahi comparison karta hai.</p>
+
+<div class="flow">
+<div class="box">Old Version</div>
+<div class="arrow">↔</div>
+<div class="box">Current Version</div>
+<div class="arrow">→</div>
+<div class="box">Differences</div>
+</div>
+</section>
+
+<section>
+<h2>2. Git ke 3 Important Areas</h2>
+<p><code>git diff</code> ko samajhne ke liye Git ke three-state model ko samajhna bahut important hai.</p>
+
+<div class="cardgrid">
+<div class="card">
+<strong>Working Tree</strong>
+<p>Actual files jinke andar aap currently changes kar rahe ho.</p>
+</div>
+<div class="card">
+<strong>Staging Area</strong>
+<p>Changes jo next commit ke liye <code>git add</code> se stage kiye gaye hain.</p>
+</div>
+<div class="card">
+<strong>Repository / HEAD</strong>
+<p>Committed history. <code>HEAD</code> current commit ko refer karta hai.</p>
+</div>
+</div>
+
+<div class="flow">
+<div class="box">HEAD / Last Commit</div>
+<div class="arrow">→</div>
+<div class="box">Staging Area</div>
+<div class="arrow">→</div>
+<div class="box">Working Tree</div>
+</div>
+
+<div class="callout warning">
+<strong>Most important:</strong> Different <code>git diff</code> forms different areas ko compare karte hain. Isi wajah se <code>git diff</code>, <code>git diff --staged</code> aur <code>git diff HEAD</code> ke results different ho sakte hain.
+</div>
+</section>
+
+<section id="mental">
+<h2>3. Git Diff ka Mental Model</h2>
+
+<table>
+<tr><th>Command</th><th>Comparison</th><th>Meaning</th></tr>
+<tr>
+<td><code>git diff</code></td>
+<td>Working Tree ↔ Index/Staging Area</td>
+<td>Unstaged changes dekho.</td>
+</tr>
+<tr>
+<td><code>git diff --staged</code></td>
+<td>Staging Area ↔ HEAD</td>
+<td>Next commit mein kya jayega, dekho.</td>
+</tr>
+<tr>
+<td><code>git diff HEAD</code></td>
+<td>Working Tree ↔ HEAD</td>
+<td>Last commit ke comparison mein total local changes dekho.</td>
+</tr>
+<tr>
+<td><code>git diff HEAD~1 HEAD</code></td>
+<td>Two commits</td>
+<td>Do commits ke beech difference dekho.</td>
+</tr>
+</table>
+
+<div class="callout success">
+<strong>Golden Rule:</strong><br>
+<code>git diff</code> → unstaged changes<br>
+<code>git diff --staged</code> → staged changes<br>
+<code>git diff HEAD</code> → staged + unstaged changes relative to HEAD
+</div>
+</section>
+
+<section id="syntax">
+<h2>4. Basic Syntax</h2>
+
+<pre><code>git diff</code></pre>
+
+<p>Specific file ke liye:</p>
+<pre><code>git diff filename.txt</code></pre>
+
+<p>Specific directory ke liye:</p>
+<pre><code>git diff path/to/directory/</code></pre>
+
+<p>Staged changes:</p>
+<pre><code>git diff --staged</code></pre>
+
+<p>Ya:</p>
+<pre><code>git diff --cached</code></pre>
+
+<p>HEAD ke against:</p>
+<pre><code>git diff HEAD</code></pre>
+</section>
+
+<section id="examples">
+<h2>5. Practical Example — Basic git diff</h2>
+
+<h3>Step 1: Repository Status</h3>
+<pre><code>git status</code></pre>
+
+<p>Suppose output:</p>
+<pre><code>On branch main
+Changes not staged for commit:
+  modified:   app.js</code></pre>
+
+<h3>Step 2: Diff Dekho</h3>
+<pre><code>git diff</code></pre>
+
+<p>Example output:</p>
+<pre><code>diff --git a/app.js b/app.js
+index 123abcd..789efgh 100644
+--- a/app.js
++++ b/app.js
+@@ -1,5 +1,5 @@
+ function greet() {
+-  console.log("Hello");
++  console.log("Hello, Pavan!");
+ }</code></pre>
+
+<h3>Is Output ko Kaise Padhein?</h3>
+<table>
+<tr><th>Symbol/Line</th><th>Meaning</th></tr>
+<tr><td><code>diff --git</code></td><td>Comparison information.</td></tr>
+<tr><td><code>--- a/app.js</code></td><td>Old version/file side.</td></tr>
+<tr><td><code>+++ b/app.js</code></td><td>New/current version side.</td></tr>
+<tr><td><code>-</code></td><td>Old line / removed line.</td></tr>
+<tr><td><code>+</code></td><td>New line / added line.</td></tr>
+<tr><td><code>@@ ... @@</code></td><td>Hunk location/context information.</td></tr>
+</table>
+</section>
+
+<section>
+<h2>6. Added vs Deleted Lines</h2>
+
+<pre><code>function calculate(a, b) {
+-  return a - b;
++  return a + b;
+}</code></pre>
+
+<p>Yahaan:</p>
+<ul>
+<li class="diffdel"><strong>- return a - b;</strong> → old line removed/replaced.</li>
+<li class="diffadd"><strong>+ return a + b;</strong> → new line added.</li>
+</ul>
+
+<div class="callout">
+<strong>Important:</strong> Diff mein <code>+</code> aur <code>-</code> ko blindly “file mein plus/minus” mat samjho. Ye comparison output ke markers hain: new side par added line aur old side par removed line.
+</div>
+</section>
+
+<section>
+<h2>7. What is a Hunk?</h2>
+<p>Diff output mein <span class="term">hunk</span> ek particular area ka change block hota hai.</p>
+
+<pre><code>@@ -10,7 +10,8 @@
+ const user = getUser();
+
+ function login() {
+-  return false;
++  validateUser(user);
++  return true;
+ }</code></pre>
+
+<p><code>@@ -10,7 +10,8 @@</code> change ke location aur old/new line ranges ke baare mein information deta hai.</p>
+
+<div class="callout">
+<strong>Interview point:</strong> Hunk diff ka ek localized block of changes hota hai, jisme surrounding context lines bhi ho sakti hain.
+</div>
+</section>
+
+<section id="staging">
+<h2>8. git diff vs git diff --staged</h2>
+
+<h3>Scenario</h3>
+<pre><code>echo "Line 1" &gt; demo.txt
+git add demo.txt
+
+# Ab file ko aur edit karo
+echo "Line 2" &gt;&gt; demo.txt</code></pre>
+
+<p>Ab file ke do versions ho sakte hain:</p>
+<ul>
+<li>Staging area mein: Line 1</li>
+<li>Working tree mein: Line 1 + Line 2</li>
+</ul>
+
+<h3>Normal Diff</h3>
+<pre><code>git diff</code></pre>
+<p>Ye staging ke comparison mein working tree ke unstaged change ko show karega.</p>
+
+<h3>Staged Diff</h3>
+<pre><code>git diff --staged</code></pre>
+<p>Ye HEAD ke comparison mein staged change ko show karega.</p>
+
+<div class="flow">
+<div class="box">HEAD</div>
+<div class="arrow">↔</div>
+<div class="box">Staged</div>
+<div class="arrow">↔</div>
+<div class="box">Working Tree</div>
+</div>
+</section>
+
+<section>
+<h2>9. git diff --cached</h2>
+<p><code>--cached</code> aur <code>--staged</code> commonly same purpose ke liye use hote hain.</p>
+
+<pre><code>git diff --cached</code></pre>
+
+<p>Ye staged changes ko current <code>HEAD</code> ke comparison mein dikhata hai.</p>
+
+<div class="callout success">
+<strong>Pre-commit review:</strong> <code>git diff --staged</code> ka use karke commit karne se pehle verify karo ki exactly kya commit hone wala hai.
+</div>
+</section>
+
+<section>
+<h2>10. git diff HEAD</h2>
+<pre><code>git diff HEAD</code></pre>
+
+<p>Ye current <code>HEAD</code> aur working tree ke beech overall difference dekhne ke liye useful hai. Isme staged aur unstaged local changes ka combined picture mil sakta hai.</p>
+
+<div class="callout">
+<strong>Use case:</strong> “Last commit ke baad maine overall kya-kya change kiya hai?” → <code>git diff HEAD</code>
+</div>
+</section>
+
+<section id="commits">
+<h2>11. Do Commits ke Beech Difference</h2>
+
+<p>Specific commits compare karne ke liye:</p>
+<pre><code>git diff COMMIT1 COMMIT2</code></pre>
+
+<p>Example:</p>
+<pre><code>git diff abc1234 def5678</code></pre>
+
+<p>Recent commits ke beech:</p>
+<pre><code>git diff HEAD~1 HEAD</code></pre>
+
+<p>Do commits ke beech changed files ka summary:</p>
+<pre><code>git diff --stat HEAD~1 HEAD</code></pre>
+
+<div class="callout warning">
+<strong>Direction matters:</strong> <code>git diff A B</code> mein comparison A se B ki taraf interpret kiya jata hai. Order reverse karne par added/deleted perspective reverse ho sakta hai.
+</div>
+</section>
+
+<section>
+<h2>12. Commit vs Commit Example</h2>
+<pre><code>git log --oneline --max-count=4</code></pre>
+
+<p>Suppose:</p>
+<pre><code>f5a9c21 Update login
+c82b711 Add login
+a102f90 Initial commit</code></pre>
+
+<p>First two commits compare:</p>
+<pre><code>git diff c82b711 f5a9c21</code></pre>
+
+<p>Last commit ka change:</p>
+<pre><code>git diff HEAD~1 HEAD</code></pre>
+</section>
+
+<section>
+<h2>13. Commit Range: Two Common Forms</h2>
+<h3>Two endpoints compare karna</h3>
+<pre><code>git diff A B</code></pre>
+<p>Ye A aur B ke resulting trees ka difference compare karta hai.</p>
+
+<h3>Changes introduced after a base</h3>
+<pre><code>git diff A..B</code></pre>
+<p><code>git diff</code> ke context mein <code>A..B</code> ko commit-tree comparison ke perspective se samjho. Ye <code>git log A..B</code> ke meaning se automatically identical nahi hai.</p>
+
+<div class="callout">
+<strong>Beginner tip:</strong> Initially <code>git diff A B</code> aur <code>git diff HEAD~1 HEAD</code> ko master karo. Range notation baad mein deeply practice karo.
+</div>
+</section>
+
+<section id="options">
+<h2>14. Important git diff Options</h2>
+
+<table>
+<tr><th>Command</th><th>Purpose</th></tr>
+<tr><td><code>git diff --staged</code></td><td>Staged changes vs HEAD.</td></tr>
+<tr><td><code>git diff --cached</code></td><td>Same staged comparison form.</td></tr>
+<tr><td><code>git diff HEAD</code></td><td>Working tree vs HEAD.</td></tr>
+<tr><td><code>git diff --stat</code></td><td>Short file/change statistics.</td></tr>
+<tr><td><code>git diff --name-only</code></td><td>Changed file names only.</td></tr>
+<tr><td><code>git diff --name-status</code></td><td>File names + change status.</td></tr>
+<tr><td><code>git diff --color-words</code></td><td>Word-level changes highlight.</td></tr>
+<tr><td><code>git diff -w</code></td><td>Whitespace changes ignore.</td></tr>
+<tr><td><code>git diff --check</code></td><td>Potential whitespace errors check.</td></tr>
+<tr><td><code>git diff --word-diff</code></td><td>Word-level diff representation.</td></tr>
+<tr><td><code>git diff --no-index A B</code></td><td>Git repository ke bahar bhi two files/directories compare kar sakta hai.</td></tr>
+</table>
+</section>
+
+<section>
+<h2>15. git diff --stat</h2>
+<pre><code>git diff --stat</code></pre>
+
+<p>Detailed line-by-line diff ke bajay summary deta hai.</p>
+
+<pre><code> src/app.js      | 12 ++++++------
+ src/style.css   |  8 ++++++++
+ README.md       |  3 ++-
+ 3 files changed, 14 insertions(+), 9 deletions(-)</code></pre>
+
+<p>Useful when a project mein bahut files changed hain aur pehle high-level overview chahiye.</p>
+</section>
+
+<section>
+<h2>16. git diff --name-only</h2>
+<pre><code>git diff --name-only</code></pre>
+
+<p>Sirf changed file names:</p>
+<pre><code>src/App.jsx
+src/index.css
+README.md</code></pre>
+
+<div class="callout">
+<strong>Use case:</strong> “Kaunsi files change hui hain?” — without reading every line.
+</div>
+</section>
+
+<section>
+<h2>17. git diff --name-status</h2>
+<pre><code>git diff --name-status</code></pre>
+
+<p>Example:</p>
+<pre><code>M       src/App.jsx
+A       src/components/Card.jsx
+D       old-file.js</code></pre>
+
+<table>
+<tr><th>Status</th><th>Meaning</th></tr>
+<tr><td>M</td><td>Modified</td></tr>
+<tr><td>A</td><td>Added</td></tr>
+<tr><td>D</td><td>Deleted</td></tr>
+<tr><td>R</td><td>Renamed</td></tr>
+</table>
+</section>
+
+<section>
+<h2>18. git diff --check</h2>
+<pre><code>git diff --check</code></pre>
+
+<p>Potential whitespace errors identify karne mein help karta hai.</p>
+
+<div class="callout success">
+<strong>Good habit:</strong> Commit se pehle <code>git diff --check</code> run karna useful ho sakta hai, especially collaborative repositories mein.
+</div>
+</section>
+
+<section>
+<h2>19. Whitespace Ignore Karna</h2>
+<p>Kabhi-kabhi actual code logic change nahi hua hota, sirf indentation/whitespace change hua hota hai.</p>
+
+<pre><code>git diff -w</code></pre>
+
+<p>Ya:</p>
+<pre><code>git diff --ignore-space-at-eol</code></pre>
+
+<div class="callout warning">
+<strong>Caution:</strong> Whitespace ignore options review ke liye useful hain, but actual formatting changes accidentally hide bhi ho sakte hain. Critical code review mein normal diff bhi check karo.
+</div>
+</section>
+
+<section>
+<h2>20. Word-Level Diff</h2>
+<pre><code>git diff --word-diff</code></pre>
+
+<p>Example conceptual change:</p>
+<pre><code>The server is running
+        ↓
+The server is stopped</code></pre>
+
+<p>Large text/Markdown/config changes mein word-level comparison useful ho sakta hai.</p>
+</section>
+
+<section>
+<h2>21. Specific File ka Diff</h2>
+<pre><code>git diff README.md</code></pre>
+
+<p>Multiple files mein changes hon, lekin sirf ek file inspect karni ho to filename specify karo.</p>
+
+<pre><code>git diff src/App.jsx</code></pre>
+
+<p>Multiple files:</p>
+<pre><code>git diff src/App.jsx src/main.jsx</code></pre>
+</section>
+
+<section>
+<h2>22. Directory ka Diff</h2>
+<pre><code>git diff src/</code></pre>
+
+<p>Ye directory ke andar relevant tracked changes ko inspect karne mein useful hai.</p>
+</section>
+
+<section>
+<h2>23. Diff aur Git Status mein Difference</h2>
+<table>
+<tr><th><code>git status</code></th><th><code>git diff</code></th></tr>
+<tr><td>Repository state ka overview</td><td>Actual content changes</td></tr>
+<tr><td>Kaunsi files modified/staged hain</td><td>Kaunsi lines changed hain</td></tr>
+<tr><td>Short/high-level</td><td>Detailed comparison</td></tr>
+<tr><td>“What state?”</td><td>“What exactly changed?”</td></tr>
+</table>
+
+<div class="flow">
+<div class="box">git status</div><div class="arrow">→</div>
+<div class="box">Which files?</div><div class="arrow">→</div>
+<div class="box">git diff</div><div class="arrow">→</div>
+<div class="box">Exact changes?</div>
+</div>
+</section>
+
+<section>
+<h2>24. Diff aur git show mein Difference</h2>
+<table>
+<tr><th>Command</th><th>Typical purpose</th></tr>
+<tr><td><code>git diff</code></td><td>Current states/selected commits ke differences compare.</td></tr>
+<tr><td><code>git show COMMIT</code></td><td>Specific commit ka metadata + patch/content changes.</td></tr>
+<tr><td><code>git log</code></td><td>Commit history.</td></tr>
+</table>
+
+<p>Example:</p>
+<pre><code>git show HEAD
+git diff HEAD~1 HEAD
+git log --oneline</code></pre>
+</section>
+
+<section>
+<h2>25. Diff aur git log ka Relationship</h2>
+<p><code>git log</code> se aap identify karte ho <strong>kya commits hue</strong>, aur <code>git diff</code> se identify karte ho <strong>un states/commits ke beech kya code difference hai</strong>.</p>
+
+<pre><code>git log --oneline
+git diff HEAD~1 HEAD</code></pre>
+</section>
+
+<section id="workflow">
+<h2>26. Best Practical Workflow — Commit se Pehle Diff Review</h2>
+
+<div class="step"><div class="num">1</div><div>
+<h3>File Edit Karo</h3>
+<p>Code/config/documentation mein changes karo.</p>
+</div></div>
+
+<div class="step"><div class="num">2</div><div>
+<h3>Status Check</h3>
+<pre><code>git status</code></pre>
+</div></div>
+
+<div class="step"><div class="num">3</div><div>
+<h3>Unstaged Changes Review</h3>
+<pre><code>git diff</code></pre>
+</div></div>
+
+<div class="step"><div class="num">4</div><div>
+<h3>Stage Changes</h3>
+<pre><code>git add .</code></pre>
+</div></div>
+
+<div class="step"><div class="num">5</div><div>
+<h3>Staged Changes Review</h3>
+<pre><code>git diff --staged</code></pre>
+</div></div>
+
+<div class="step"><div class="num">6</div><div>
+<h3>Optional Whitespace Check</h3>
+<pre><code>git diff --check</code></pre>
+</div></div>
+
+<div class="step"><div class="num">7</div><div>
+<h3>Commit</h3>
+<pre><code>git commit -m "Update application"</code></pre>
+</div></div>
+
+<div class="callout success">
+<strong>Professional habit:</strong> “Edit → diff → stage → staged diff → commit” workflow accidental changes ko catch karne mein bahut useful hai.
+</div>
+</section>
+
+<section>
+<h2>27. Practical Lab — Learn git diff Properly</h2>
+
+<h3>Step 1: Repository</h3>
+<pre><code>mkdir git-diff-lab
+cd git-diff-lab
+git init</code></pre>
+
+<h3>Step 2: File Create</h3>
+<pre><code>printf "Hello\nWorld\n" &gt; demo.txt
+git add demo.txt
+git commit -m "Initial file"</code></pre>
+
+<h3>Step 3: Edit</h3>
+<pre><code>printf "Hello Git\nWorld\nGit Diff\n" &gt; demo.txt</code></pre>
+
+<h3>Step 4: Status</h3>
+<pre><code>git status</code></pre>
+
+<h3>Step 5: Diff</h3>
+<pre><code>git diff</code></pre>
+
+<h3>Step 6: Stage</h3>
+<pre><code>git add demo.txt</code></pre>
+
+<h3>Step 7: Staged Diff</h3>
+<pre><code>git diff --staged</code></pre>
+
+<h3>Step 8: Commit</h3>
+<pre><code>git commit -m "Update demo file"</code></pre>
+
+<h3>Step 9: Commit Comparison</h3>
+<pre><code>git diff HEAD~1 HEAD</code></pre>
+</section>
+
+<section>
+<h2>28. Git Diff in a Team / Code Review</h2>
+<p>Git diff code review ka fundamental concept hai.</p>
+
+<div class="flow">
+<div class="box">Developer Changes</div><div class="arrow">→</div>
+<div class="box">Git Diff</div><div class="arrow">→</div>
+<div class="box">Review Changes</div><div class="arrow">→</div>
+<div class="box">Commit / PR</div><div class="arrow">→</div>
+<div class="box">Merge</div>
+</div>
+
+<p>Pull Request ke context mein reviewers changes ko diff format mein inspect karte hain—kaunsi line add, remove ya modify hui.</p>
+</section>
+
+<section>
+<h2>29. Git Diff in DevOps</h2>
+<p>DevOps mein diff sirf application code ke liye nahi, balki configuration aur infrastructure changes ke liye bhi important hai.</p>
+
+<div class="cardgrid">
+<div class="card"><strong>Application Code</strong><p>JavaScript, Python, Java, Go etc. changes.</p></div>
+<div class="card"><strong>Docker</strong><p>Dockerfile changes inspect karna.</p></div>
+<div class="card"><strong>Kubernetes</strong><p>YAML manifest changes review karna.</p></div>
+<div class="card"><strong>Terraform</strong><p>Infrastructure configuration changes review karna.</p></div>
+<div class="card"><strong>CI/CD</strong><p>GitHub Actions/Jenkins pipeline files compare karna.</p></div>
+<div class="card"><strong>Documentation</strong><p>README/runbook changes inspect karna.</p></div>
+</div>
+
+<div class="callout">
+<strong>DevOps mindset:</strong> Production-impacting configuration ko commit/push karne se pehle diff read karna accidental infrastructure changes prevent karne mein help karta hai.
+</div>
+</section>
+
+<section id="advanced">
+<h2>30. Advanced — Comparing a File with Another Commit</h2>
+
+<pre><code>git diff HEAD~1 -- README.md</code></pre>
+
+<p>Iska meaning: current HEAD se previous commit context ke comparison mein <code>README.md</code> ka difference inspect karna.</p>
+
+<p>Specific commit ke file version ko compare:</p>
+<pre><code>git diff COMMIT1 COMMIT2 -- path/to/file</code></pre>
+
+<p><code>--</code> separator Git ko clearly batata hai ki iske baad pathspec/file paths hain.</p>
+</section>
+
+<section>
+<h2>31. Advanced — Diff Between Branches</h2>
+
+<pre><code>git diff main feature/login</code></pre>
+
+<p>Do branch tips ke resulting tree differences compare kiye ja sakte hain.</p>
+
+<p>Specific files:</p>
+<pre><code>git diff main feature/login -- src/</code></pre>
+
+<div class="callout warning">
+<strong>Important:</strong> Branch diff ko “commits ki list” mat samjho. <code>git diff</code> primarily content/tree difference compare karta hai. Commit history dekhne ke liye <code>git log</code> better tool hai.
+</div>
+</section>
+
+<section>
+<h2>32. Advanced — Remote Branch ke Saath Diff</h2>
+
+<p>Remote branch ke latest state ke against comparison se pehle remote references update karna useful hai:</p>
+<pre><code>git fetch origin</code></pre>
+
+<p>Then:</p>
+<pre><code>git diff HEAD origin/main</code></pre>
+
+<p>Ya branches ke context mein:</p>
+<pre><code>git diff main origin/main</code></pre>
+
+<div class="callout">
+<strong>Concept:</strong> <code>git fetch</code> remote information update karta hai without automatically merging it into your current branch. Uske baad diff se local vs remote state inspect kar sakte ho.
+</div>
+</section>
+
+<section>
+<h2>33. Binary Files ka Diff</h2>
+<p>Text files ke unlike binary files—jaise kuch images, compiled files, archives—ka normal line-by-line diff meaningful nahi hota.</p>
+
+<p>Git binary files ke liye usually textual patch ke bajay binary change information show karta hai.</p>
+
+<div class="callout">
+<strong>Remember:</strong> <code>git diff</code> ka strongest use text-based source/config/documentation changes ke inspection mein hota hai.
+</div>
+</section>
+
+<section>
+<h2>34. Diff Exit Status / Automation Concept</h2>
+<p>Automation scripts mein diff ka exit status bhi useful ho sakta hai. Exact behavior command/options ke according interpret karna chahiye.</p>
+
+<p>Example concept:</p>
+<pre><code>git diff --quiet
+echo $?</code></pre>
+
+<p>Iska use scripts mein “difference exists or not” check karne ke liye kiya ja sakta hai.</p>
+</section>
+
+<section>
+<h2>35. Common Mistakes</h2>
+<ul>
+<li><strong><code>git diff</code> mein kuch nahi dikh raha:</strong> Changes already staged ho sakte hain. <code>git diff --staged</code> try karo.</li>
+<li><strong>Staged changes nahi dikh rahe:</strong> <code>git diff</code> ke bajay <code>git diff --staged</code> use karo.</li>
+<li><strong>Commit ke baad diff empty:</strong> Current working tree clean ho sakta hai.</li>
+<li><strong>Wrong branch compare:</strong> Branch names verify karo.</li>
+<li><strong>Whitespace noise:</strong> <code>-w</code> useful ho sakta hai, but normal diff bhi inspect karo.</li>
+<li><strong>Large diff:</strong> <code>--stat</code>, <code>--name-only</code> se overview lo.</li>
+<li><strong>Diff ko history samajhna:</strong> History ke liye <code>git log</code> use karo.</li>
+<li><strong>Diff ko restore command samajhna:</strong> <code>git diff</code> changes ko modify nahi karta; primarily comparison/read operation hai.</li>
+</ul>
+</section>
+
+<section>
+<h2>36. git diff Safe Hai?</h2>
+<div class="callout success">
+<strong>Normally yes:</strong> <code>git diff</code> ek inspection/comparison command hai. Ye aapke files ko automatically modify, commit, stage ya push nahi karta.
+</div>
+
+<p>Contrast:</p>
+<table>
+<tr><th>Command</th><th>Main action</th></tr>
+<tr><td><code>git diff</code></td><td>Compare / inspect</td></tr>
+<tr><td><code>git add</code></td><td>Stage</td></tr>
+<tr><td><code>git commit</code></td><td>Commit</td></tr>
+<tr><td><code>git restore</code></td><td>Restore/discard selected changes</td></tr>
+<tr><td><code>git reset</code></td><td>Move/reset refs and/or staging state depending on mode</td></tr>
+<tr><td><code>git revert</code></td><td>New commit se previous change reverse</td></tr>
+</table>
+</section>
+
+<section>
+<h2>37. Git Diff vs Git Restore</h2>
+<p>Ye distinction beginner ke liye important hai.</p>
+
+<div class="flow">
+<div class="box">git diff</div><div class="arrow">→</div><div class="box">Dekho kya change hua</div>
+</div>
+
+<div class="flow">
+<div class="box">git restore</div><div class="arrow">→</div><div class="box">Selected changes restore/discard karo</div>
+</div>
+
+<p>Example:</p>
+<pre><code>git diff
+git restore app.js</code></pre>
+
+<div class="callout danger">
+<strong>Caution:</strong> <code>git restore</code> actual local changes discard kar sakta hai. Isliye pehle <code>git diff</code> se changes inspect karna useful habit hai.
+</div>
+</section>
+
+<section>
+<h2>38. Git Diff vs Git Revert</h2>
+<table>
+<tr><th>git diff</th><th>git revert</th></tr>
+<tr><td>Changes compare karta hai</td><td>Existing commit ke effect ko reverse karne ke liye new commit banata hai</td></tr>
+<tr><td>Inspection</td><td>History-changing operation</td></tr>
+<tr><td>Normally working files modify nahi karta</td><td>New commit create karta hai</td></tr>
+</table>
+</section>
+
+<section>
+<h2>39. Git Diff vs Git Reset</h2>
+<table>
+<tr><th>git diff</th><th>git reset</th></tr>
+<tr><td>Changes inspect</td><td>HEAD/staging/worktree state manipulate kar sakta hai</td></tr>
+<tr><td>Normally safe read operation</td><td>Mode ke according destructive ho sakta hai</td></tr>
+<tr><td>No commit/history movement</td><td>Branch/HEAD state affect kar sakta hai</td></tr>
+</table>
+</section>
+
+<section>
+<h2>40. Quick Revision Table</h2>
+<table>
+<tr><th>Need</th><th>Command</th></tr>
+<tr><td>Unstaged changes</td><td><code>git diff</code></td></tr>
+<tr><td>Staged changes</td><td><code>git diff --staged</code></td></tr>
+<tr><td>Staged changes alternative</td><td><code>git diff --cached</code></td></tr>
+<tr><td>All local changes vs HEAD</td><td><code>git diff HEAD</code></td></tr>
+<tr><td>Two commits</td><td><code>git diff A B</code></td></tr>
+<tr><td>Previous vs current commit</td><td><code>git diff HEAD~1 HEAD</code></td></tr>
+<tr><td>Changed file names</td><td><code>git diff --name-only</code></td></tr>
+<tr><td>File status + names</td><td><code>git diff --name-status</code></td></tr>
+<tr><td>Change statistics</td><td><code>git diff --stat</code></td></tr>
+<tr><td>Whitespace check</td><td><code>git diff --check</code></td></tr>
+<tr><td>Ignore whitespace</td><td><code>git diff -w</code></td></tr>
+<tr><td>Word-level comparison</td><td><code>git diff --word-diff</code></td></tr>
+<tr><td>Specific file</td><td><code>git diff -- file</code></td></tr>
+</table>
+</section>
+
+<section id="interview">
+<h2>41. Interview Questions</h2>
+<ol>
+<li><strong>git diff kya karta hai?</strong><br>Git states, files ya commits ke beech content differences show karta hai.</li>
+<li><strong>git diff aur git status mein difference?</strong><br><code>status</code> repository state/files ka overview deta hai; <code>diff</code> actual content changes show karta hai.</li>
+<li><strong>git diff aur git diff --staged mein difference?</strong><br>Normal diff unstaged working-tree changes vs index compare karta hai; staged diff index vs HEAD compare karta hai.</li>
+<li><strong>git diff HEAD kya karta hai?</strong><br>Working tree ke content ko current HEAD ke against compare karta hai.</li>
+<li><strong>git diff --cached kya hai?</strong><br>Staged changes ko HEAD ke against inspect karta hai.</li>
+<li><strong>+</strong> aur <strong>-</strong> ka meaning?</li>
+<li><strong>Hunk kya hai?</strong><br>Diff output ka localized block of changes with context.</li>
+<li><strong>Do commits compare kaise karoge?</strong><br><code>git diff COMMIT1 COMMIT2</code>.</li>
+<li><strong>Only changed file names?</strong><br><code>git diff --name-only</code>.</li>
+<li><strong>Summary statistics?</strong><br><code>git diff --stat</code>.</li>
+<li><strong>Whitespace issues check?</strong><br><code>git diff --check</code>.</li>
+<li><strong>git diff kya files ko change karta hai?</strong><br>Normally nahi; ye comparison/inspection command hai.</li>
+<li><strong>Code review mein git diff kyun important hai?</strong><br>Exact additions, deletions aur modifications inspect karne ke liye.</li>
+<li><strong>DevOps mein diff ka use?</strong><br>Code, Dockerfile, Kubernetes YAML, Terraform, CI/CD configuration aur documentation changes review karne ke liye.</li>
+</ol>
+</section>
+
+<section>
+<h2>42. Interview Scenario</h2>
+<div class="callout">
+<strong>Question:</strong> “Aapne <code>git add .</code> kar diya hai aur ab aap dekhna chahte ho ki commit mein exactly kya jayega. Kya command use karoge?”
+</div>
+
+<pre><code>git diff --staged</code></pre>
+
+<div class="callout success">
+<strong>Answer logic:</strong> <code>git add</code> ke baad changes staging area mein hain, isliye staged changes ko HEAD ke against compare karna hai.
+</div>
+</section>
+
+<section>
+<h2>43. Professional Git Workflow</h2>
+<pre><code>
+Edit files
+   ↓
+git status
+   ↓
+git diff
+   ↓
+Review unstaged changes
+   ↓
+git add
+   ↓
+git diff --staged
+   ↓
+Review commit content
+   ↓
+git diff --check
+   ↓
+git commit
+   ↓
+git push
+</code></pre>
+
+<div class="callout success">
+<strong>Golden workflow:</strong> Commit karne se pehle diff review karna ek strong Git habit hai.
+</div>
+</section>
+
+<section>
+<h2>44. Final Mental Model</h2>
+<pre><code>
+                    GIT DIFF
+                       │
+          ┌────────────┼────────────┐
+          │            │            │
+      git diff    --staged       HEAD
+          │            │            │
+          ▼            ▼            ▼
+      Working      Staging       Working
+       Tree          vs            vs
+        vs           HEAD          HEAD
+      Staging
+          │            │            │
+          └────────────┴────────────┘
+                       │
+                       ▼
+                "WHAT CHANGED?"
+</code></pre>
+</section>
+
+<section>
+<h2>45. Final Checklist</h2>
+<ul class="checklist">
+<li>Git three-state model samjha</li>
+<li>Working Tree samjha</li>
+<li>Staging Area samjha</li>
+<li>HEAD samjha</li>
+<li><code>git diff</code> practice kiya</li>
+<li><code>git diff --staged</code> practice kiya</li>
+<li><code>git diff --cached</code> samjha</li>
+<li><code>git diff HEAD</code> samjha</li>
+<li>Commit-to-commit diff practice kiya</li>
+<li>Branch-to-branch diff samjha</li>
+<li><code>--stat</code> samjha</li>
+<li><code>--name-only</code> samjha</li>
+<li><code>--name-status</code> samjha</li>
+<li><code>--check</code> samjha</li>
+<li>Whitespace options samjhe</li>
+<li>Word diff samjha</li>
+<li>Hunk samjha</li>
+<li>Code review use case samjha</li>
+<li>DevOps use cases samjhe</li>
+<li>Commit se pehle diff review workflow practice kiya</li>
+</ul>
+</section>
+
+<footer>
+<p>Git Diff — Complete Beginner → Intermediate Study Material</p>
+<p class="small">Git • Working Tree • Staging • HEAD • Commits • Branches • Code Review • DevOps</p>
+</footer>
+
+</div>
+</body>
+</html>
