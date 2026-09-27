@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Collaborate on GitHub - Complete Study Material</title>
+<style>
+:root{
+  --bg:#0b1020;--card:#121a2b;--card2:#0f1728;--text:#e8eefc;--muted:#a9b5cc;
+  --accent:#67e8f9;--purple:#a78bfa;--green:#4ade80;--yellow:#facc15;--red:#fb7185;
+  --border:#26324a;--code:#080d18
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:linear-gradient(180deg,#080d18,#0b1020 35%,#0b1020);color:var(--text);line-height:1.7}
+.container{max-width:1200px;margin:auto;padding:28px 20px 60px}
+.hero{padding:44px 30px;border:1px solid var(--border);border-radius:22px;background:linear-gradient(135deg,#121a2b,#111827 55%,#17112d);box-shadow:0 20px 60px rgba(0,0,0,.25)}
+.badge{display:inline-block;padding:6px 12px;border-radius:999px;background:#17243c;color:var(--accent);font-size:13px;font-weight:700}
+h1{font-size:clamp(32px,5vw,58px);line-height:1.08;margin:16px 0 12px}
+h2{font-size:30px;margin-top:48px;border-bottom:1px solid var(--border);padding-bottom:10px}
+h3{font-size:21px;color:var(--accent);margin-top:28px}
+p{color:#d5dced}
+a{color:var(--accent);text-decoration:none}
+nav{position:sticky;top:10px;z-index:10;margin:20px 0;padding:12px;background:rgba(15,23,40,.94);backdrop-filter:blur(12px);border:1px solid var(--border);border-radius:14px;display:flex;gap:8px;flex-wrap:wrap}
+nav a{padding:7px 10px;border-radius:8px;background:#141e32;font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;margin:18px 0}
+.callout{border-left:4px solid var(--accent);background:#101b2e;padding:16px 18px;border-radius:10px;margin:18px 0}
+.success{border-left-color:var(--green)}.warning{border-left-color:var(--yellow)}.danger{border-left-color:var(--red)}
+pre{background:var(--code);border:1px solid #202b42;border-radius:13px;padding:18px;overflow:auto;color:#dce7ff;font-size:14px;line-height:1.6}
+code{font-family:"Cascadia Code","Fira Code",Consolas,monospace;background:#182238;padding:2px 6px;border-radius:5px;color:#d8f8ff}
+pre code{background:none;padding:0;color:inherit}
+table{width:100%;border-collapse:collapse;margin:18px 0;background:var(--card)}
+th,td{border:1px solid var(--border);padding:12px;text-align:left;vertical-align:top}
+th{background:#172138;color:var(--accent)}
+tr:nth-child(even){background:#10182a}
+.flow{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin:22px 0}
+.node{padding:13px 18px;border:1px solid var(--border);border-radius:12px;background:#151f34;text-align:center}
+.arrow{font-size:24px;color:var(--accent)}
+.tag{display:inline-block;font-size:12px;padding:4px 8px;border-radius:6px;background:#1b2740;color:#c9d7f5;margin:2px}
+.small{font-size:14px;color:var(--muted)}
+.answer{background:#0d1627;border-radius:10px;padding:13px 15px;margin-top:8px}
+.checklist li{list-style:none}.checklist li::before{content:"☐ ";color:var(--accent)}
+footer{margin-top:55px;padding-top:20px;border-top:1px solid var(--border);color:var(--muted);text-align:center}
+@media(max-width:800px){.grid,.grid3{grid-template-columns:1fr}.container{padding:18px 13px 45px}.hero{padding:30px 20px}h2{font-size:25px}}
+</style>
+</head>
+<body>
+<div class="container">
+
+<section class="hero">
+<span class="badge">GIT & GITHUB • COMPLETE STUDY MATERIAL</span>
+<h1>Collaborate on GitHub</h1>
+<p style="font-size:19px">
+GitHub par multiple developers kaise ek hi project par safely aur systematically kaam karte hain —
+<strong>repository, branches, commits, push, pull/fetch, Pull Requests, reviews, merge, conflicts, permissions, forks aur team workflow</strong>
+sab kuch yahan step-by-step.
+</p>
+<div>
+<span class="tag">Repository</span><span class="tag">Branch</span><span class="tag">Commit</span>
+<span class="tag">Push</span><span class="tag">Pull</span><span class="tag">Pull Request</span>
+<span class="tag">Code Review</span><span class="tag">Merge</span><span class="tag">Fork</span>
+</div>
+</section>
+
+<nav>
+<a href="#what">What is Collaboration?</a>
+<a href="#architecture">Git + GitHub</a>
+<a href="#repo">Repository Setup</a>
+<a href="#access">Access & Permissions</a>
+<a href="#workflow">Team Workflow</a>
+<a href="#branch">Branches</a>
+<a href="#pr">Pull Request</a>
+<a href="#review">Review</a>
+<a href="#conflict">Conflicts</a>
+<a href="#fork">Fork Workflow</a>
+<a href="#devops">DevOps</a>
+<a href="#security">Security</a>
+<a href="#lab">Practical Lab</a>
+<a href="#interview">Interview</a>
+<a href="#cheat">Cheat Sheet</a>
+</nav>
+
+<section id="what">
+<h2>1. Collaborate on GitHub kya hota hai?</h2>
+<div class="card">
+<p><strong>GitHub Collaboration</strong> ka matlab hai ki multiple developers/team members ek shared GitHub repository ke around code ko develop, review, discuss aur merge karte hain.</p>
+<div class="callout success">
+<strong>Simple idea:</strong> Ek developer apne branch par change karta hai → GitHub par push karta hai → Pull Request banata hai → team review karti hai → approved changes target branch me merge hote hain.
+</div>
+<p>Collaboration sirf code upload karna nahi hai. Isme <strong>version control + branch strategy + code review + permissions + communication + CI/CD</strong> sab involved ho sakte hain.</p>
+</div>
+
+<h2>2. Real-Life Analogy</h2>
+<div class="card">
+<p>Imagine ek team ek building bana rahi hai:</p>
+<div class="flow">
+<div class="node">Main Blueprint<br><small>main branch</small></div>
+<div class="arrow">←</div>
+<div class="node">Developer A<br><small>feature branch</small></div>
+<div class="arrow">←</div>
+<div class="node">Code Review</div>
+<div class="arrow">←</div>
+<div class="node">Approved</div>
+</div>
+<p>Har developer directly main structure ko modify nahi karta. Apne work area me changes karta hai, review ke liye submit karta hai, aur approval ke baad final structure me integrate hota hai.</p>
+</div>
+</section>
+
+<section id="architecture">
+<h2>3. Git aur GitHub ka Collaboration me Role</h2>
+<table>
+<tr><th>Concept</th><th>Role</th></tr>
+<tr><td>Git</td><td>Local version control system; commits, branches, merge, rebase, diff etc.</td></tr>
+<tr><td>GitHub</td><td>Git repositories hosting + collaboration platform.</td></tr>
+<tr><td>Remote Repository</td><td>Team ke shared code/history ka remote location.</td></tr>
+<tr><td>Branch</td><td>Independent line of development.</td></tr>
+<tr><td>Commit</td><td>Changes ka recorded snapshot.</td></tr>
+<tr><td>Push</td><td>Local commits ko remote repository par bhejna.</td></tr>
+<tr><td>Fetch</td><td>Remote updates ko local remote-tracking refs me lana.</td></tr>
+<tr><td>Pull</td><td>Remote changes fetch karke integrate karna.</td></tr>
+<tr><td>Pull Request</td><td>Proposed changes ko review aur merge ke liye request karna.</td></tr>
+</table>
+
+<div class="flow">
+<div class="node">Developer Laptop<br>Git</div>
+<div class="arrow">↕</div>
+<div class="node">GitHub<br>Remote Repository</div>
+<div class="arrow">↕</div>
+<div class="node">Other Developers<br>Git</div>
+</div>
+</section>
+
+<section id="repo">
+<h2>4. Collaboration start karne ke liye Repository</h2>
+<h3>Option A — Existing GitHub Repository Clone</h3>
+<pre><code>git clone https://github.com/OWNER/REPOSITORY.git
+cd REPOSITORY</code></pre>
+
+<h3>Option B — SSH</h3>
+<pre><code>git clone git@github.com:OWNER/REPOSITORY.git
+cd REPOSITORY</code></pre>
+
+<div class="callout warning">
+<strong>HTTPS vs SSH:</strong> Dono remote communication ke methods hain. SSH key-based authentication development environments me convenient hoti hai; HTTPS credential/token based authentication use kar sakta hai.
+</div>
+
+<h3>Remote verify karna</h3>
+<pre><code>git remote -v
+git remote show origin</code></pre>
+
+<h3>Repository status</h3>
+<pre><code>git status
+git branch
+git branch -a</code></pre>
+</section>
+
+<section id="access">
+<h2>5. GitHub Repository Access & Permissions</h2>
+<p>Team collaboration me har person ko same level ka access dena zaroori nahi hota.</p>
+
+<table>
+<tr><th>Access Concept</th><th>Meaning</th></tr>
+<tr><td>Read</td><td>Repository ko dekh/clone karna.</td></tr>
+<tr><td>Triage</td><td>Issues/discussions ko manage karne jaisi limited collaboration capabilities.</td></tr>
+<tr><td>Write</td><td>Repository me changes push karne ki capability, subject to branch rules.</td></tr>
+<tr><td>Maintain</td><td>Repository management ki broader capabilities, sensitive administration ke bina.</td></tr>
+<tr><td>Admin</td><td>Repository/settings/permissions ke highest-level controls.</td></tr>
+</table>
+
+<div class="callout">
+<strong>Important:</strong> Actual permissions organization/repository configuration aur branch protection rules par depend karte hain. Production branches ko controlled access dena common best practice hai.
+</div>
+
+<h3>Collaborator invite ka high-level process</h3>
+<ol>
+<li>GitHub repository open karo.</li>
+<li>Repository settings/access area me jao.</li>
+<li>Team member ko invite karo.</li>
+<li>Required permission level assign karo.</li>
+<li>Member invite accept karta hai.</li>
+<li>Uske baad configured permissions ke according repository access milta hai.</li>
+</ol>
+</section>
+
+<section id="workflow">
+<h2>6. Standard Team Collaboration Workflow</h2>
+<div class="flow">
+<div class="node">Clone / Update</div>
+<div class="arrow">→</div>
+<div class="node">Create Branch</div>
+<div class="arrow">→</div>
+<div class="node">Edit</div>
+<div class="arrow">→</div>
+<div class="node">Commit</div>
+<div class="arrow">→</div>
+<div class="node">Push</div>
+<div class="arrow">→</div>
+<div class="node">Pull Request</div>
+<div class="arrow">→</div>
+<div class="node">Review</div>
+<div class="arrow">→</div>
+<div class="node">Merge</div>
+</div>
+
+<h3>Complete command workflow</h3>
+<pre><code># Get latest main branch
+git switch main
+git pull --ff-only
+
+# Create your feature branch
+git switch -c feature/login
+
+# Work
+# edit files...
+
+# Inspect
+git status
+git diff
+
+# Stage
+git add .
+
+# Commit
+git commit -m "Add login validation"
+
+# Push branch
+git push -u origin feature/login
+
+# Then open Pull Request on GitHub</code></pre>
+
+<div class="callout success">
+<strong>Golden workflow:</strong> <code>Update → Branch → Work → Commit → Push → PR → Review → Merge</code>
+</div>
+</section>
+
+<section id="branch">
+<h2>7. Branches — Collaboration ka Core</h2>
+<p>Team members ko generally alag branches par work karna chahiye, especially features, fixes aur experiments ke liye.</p>
+
+<h3>Main branch</h3>
+<pre><code>main</code></pre>
+<p>Stable/integrated code ko represent kar sakti hai. Exact policy project ke according different ho sakti hai.</p>
+
+<h3>Feature branch</h3>
+<pre><code>git switch main
+git pull --ff-only
+git switch -c feature/user-login</code></pre>
+
+<h3>Bug fix branch</h3>
+<pre><code>git switch -c fix/login-error</code></pre>
+
+<h3>Branch naming examples</h3>
+<div class="grid3">
+<div class="card"><strong>feature/</strong><p>New functionality</p></div>
+<div class="card"><strong>fix/</strong><p>Bug correction</p></div>
+<div class="card"><strong>hotfix/</strong><p>Urgent production issue</p></div>
+<div class="card"><strong>docs/</strong><p>Documentation</p></div>
+<div class="card"><strong>refactor/</strong><p>Code structure improvement</p></div>
+<div class="card"><strong>chore/</strong><p>Maintenance tasks</p></div>
+</div>
+</section>
+
+<section id="pr">
+<h2>8. Pull Request (PR) kya hota hai?</h2>
+<div class="card">
+<p><strong>Pull Request</strong> GitHub par ek proposal hota hai jisme aap apni branch ke changes ko target branch me integrate/review karne ke liye submit karte ho.</p>
+<p>Example:</p>
+<pre><code>feature/login  ───────►  main
+                  Pull Request</code></pre>
+</div>
+
+<h3>PR ka typical lifecycle</h3>
+<ol>
+<li>Feature branch create.</li>
+<li>Code changes.</li>
+<li>Commits create.</li>
+<li>Branch GitHub par push.</li>
+<li>Pull Request open.</li>
+<li>Title + description add.</li>
+<li>Reviewers assign.</li>
+<li>Automated CI checks run.</li>
+<li>Reviewer comments/suggestions de sakta hai.</li>
+<li>Developer requested changes karta hai.</li>
+<li>Checks pass hone aur approval ke baad merge.</li>
+</ol>
+
+<h3>Good PR title</h3>
+<pre><code>Add JWT authentication for user login</code></pre>
+
+<h3>Good PR description structure</h3>
+<pre><code>## What
+Added JWT-based login authentication.
+
+## Why
+Users need secure authentication.
+
+## Changes
+- Added login endpoint
+- Added JWT generation
+- Added authentication middleware
+
+## Testing
+- Tested valid login
+- Tested invalid credentials
+- Tested expired token
+
+## Notes
+No database schema changes.</code></pre>
+</section>
+
+<section id="review">
+<h2>9. Code Review</h2>
+<p>Code review ka purpose sirf “code correct hai ya nahi” check karna nahi, balki maintainability, security, readability, tests aur project standards ko review karna bhi hai.</p>
+
+<div class="grid">
+<div class="card"><h3>🔍 Correctness</h3><p>Kya expected behavior implement hua?</p></div>
+<div class="card"><h3>🔐 Security</h3><p>Kya secrets, injection, auth issues ya unsafe patterns hain?</p></div>
+<div class="card"><h3>🧪 Testing</h3><p>Kya relevant tests add/update kiye gaye?</p></div>
+<div class="card"><h3>📖 Readability</h3><p>Kya code understandable aur maintainable hai?</p></div>
+<div class="card"><h3>⚡ Performance</h3><p>Kya unnecessary expensive operations hain?</p></div>
+<div class="card"><h3>🏗️ Architecture</h3><p>Kya change existing design ke saath fit hota hai?</p></div>
+</div>
+
+<h3>Review feedback ka healthy style</h3>
+<div class="callout success">
+<strong>Good:</strong> “Could we validate the input before calling the database? This would prevent invalid requests from reaching the query layer.”
+</div>
+<div class="callout danger">
+<strong>Avoid:</strong> Personal attacks ya vague comments jaise “This code is bad.”
+</div>
+</section>
+
+<section>
+<h2>10. PR me New Changes kaise bhejte hain?</h2>
+<p>PR open hone ke baad bhi aap same branch par new commits push kar sakte ho.</p>
+<pre><code># Make requested changes
+git add .
+git commit -m "Address review feedback"
+
+git push</code></pre>
+<p>GitHub existing Pull Request ko automatically update kar deta hai.</p>
+
+<div class="callout">
+<strong>Important:</strong> Har review comment ke liye naya PR banana normally required nahi hota. Same source branch me push kiye gaye new commits existing PR me appear ho sakte hain.
+</div>
+</section>
+
+<section id="conflict">
+<h2>11. Collaboration me Merge Conflict</h2>
+<p>Jab do changes same file ke overlapping lines/areas ko incompatible tarike se modify karte hain, Git automatic merge nahi kar pata aur conflict report kar sakta hai.</p>
+
+<h3>Example</h3>
+<pre><code><<<<<<< HEAD
+Hello from main
+=======
+Hello from feature/login
+>>>>>>> feature/login</code></pre>
+
+<h3>Conflict resolution workflow</h3>
+<pre><code># 1. Identify conflicts
+git status
+
+# 2. Open conflicted files
+# 3. Remove conflict markers and choose/fix final content
+
+# 4. Stage resolved files
+git add &lt;file&gt;
+
+# 5. Complete merge if doing a merge
+git commit
+
+# or continue rebase if you were rebasing
+git rebase --continue</code></pre>
+
+<div class="callout warning">
+<strong>Never blindly accept “ours” or “theirs”.</strong> Pehle understand karo ki dono changes kya kar rahe hain aur final code me kya behavior required hai.
+</div>
+
+<h3>PR conflict ko locally resolve karne ka common approach</h3>
+<pre><code>git fetch origin
+git switch feature/login
+
+# Update your understanding of target branch
+git merge origin/main
+
+# Resolve conflicts
+git status
+
+git add .
+git commit
+
+git push</code></pre>
+
+<p>Alternative team policy ke according rebase workflow bhi use ho sakta hai:</p>
+<pre><code>git fetch origin
+git switch feature/login
+git rebase origin/main
+
+# Resolve conflicts
+git add .
+git rebase --continue
+
+git push --force-with-lease</code></pre>
+
+<div class="callout danger">
+<strong>Force push caution:</strong> Rebase ke baad branch history rewrite ho sakti hai. Shared branch par force push avoid karo. Personal feature branch par bhi generally <code>--force-with-lease</code> ko plain <code>--force</code> se prefer kiya jata hai.
+</div>
+</section>
+
+<section>
+<h2>12. Fetch vs Pull in Collaboration</h2>
+<table>
+<tr><th>Command</th><th>What it does</th><th>Collaboration use</th></tr>
+<tr><td><code>git fetch origin</code></td><td>Remote updates locally available karta hai without current branch integration.</td><td>Safe inspection/update before deciding merge or rebase.</td></tr>
+<tr><td><code>git pull</code></td><td>Fetch + integration (merge/rebase according to configuration/options).</td><td>Local branch ko remote branch ke changes ke saath update karna.</td></tr>
+</table>
+
+<pre><code>git fetch origin
+git log --oneline --decorate --graph HEAD..origin/main
+
+# Then choose:
+git merge origin/main
+
+# or according to workflow:
+git rebase origin/main</code></pre>
+</section>
+
+<section>
+<h2>13. Push ka Collaboration me Role</h2>
+<p><code>git push</code> local commits ko remote repository ke selected branch par upload karta hai.</p>
+<pre><code>git push -u origin feature/login</code></pre>
+
+<p>First push ke baad:</p>
+<pre><code>git push</code></pre>
+
+<div class="callout">
+<strong>Tracking branch:</strong> <code>-u</code> / <code>--set-upstream</code> local branch ko remote tracking branch se associate karta hai, jisse future <code>git push</code> aur <code>git pull</code> commands simpler ho sakti hain.
+</div>
+</section>
+
+<section id="fork">
+<h2>14. Fork-based Collaboration</h2>
+<p>Open-source projects me aapko direct write access na ho to <strong>Fork</strong> workflow common hai.</p>
+
+<div class="flow">
+<div class="node">Original Repository</div>
+<div class="arrow">→</div>
+<div class="node">Fork to Your Account</div>
+<div class="arrow">→</div>
+<div class="node">Clone Fork</div>
+<div class="arrow">→</div>
+<div class="node">Feature Branch</div>
+<div class="arrow">→</div>
+<div class="node">Push</div>
+<div class="arrow">→</div>
+<div class="node">PR to Original</div>
+</div>
+
+<h3>Fork workflow commands</h3>
+<pre><code># Clone your fork
+git clone git@github.com:YOUR-USERNAME/project.git
+cd project
+
+# Add original repository as upstream
+git remote add upstream https://github.com/ORIGINAL-OWNER/project.git
+
+# Check remotes
+git remote -v
+
+# Update from original project
+git fetch upstream
+
+# Create feature branch from updated main
+git switch main
+git merge upstream/main
+
+git switch -c feature/my-change
+
+# Work + commit
+git add .
+git commit -m "Add my improvement"
+
+# Push to your fork
+git push -u origin feature/my-change</code></pre>
+
+<p>Uske baad GitHub par apne fork se original repository ke target branch ke against Pull Request open karte ho.</p>
+
+<h3>Origin vs Upstream</h3>
+<table>
+<tr><th>Remote</th><th>Usually means</th></tr>
+<tr><td><code>origin</code></td><td>Your cloned repository ka default remote; fork workflow me usually your fork.</td></tr>
+<tr><td><code>upstream</code></td><td>Original source repository.</td></tr>
+</table>
+</section>
+
+<section>
+<h2>15. Direct Collaboration vs Fork Collaboration</h2>
+<table>
+<tr><th>Feature</th><th>Direct Repository</th><th>Fork Workflow</th></tr>
+<tr><td>Write access</td><td>Usually team member ko granted</td><td>Original repo me direct write access required nahi</td></tr>
+<tr><td>Branches</td><td>Shared repository me branches</td><td>Fork ke andar branches</td></tr>
+<tr><td>PR source</td><td>Same repository branch</td><td>Fork branch → original repository</td></tr>
+<tr><td>Common use</td><td>Internal teams</td><td>Open source / external contributors</td></tr>
+</table>
+</section>
+
+<section>
+<h2>16. Protected Branches & Rules</h2>
+<p>Teams important branches par rules configure kar sakti hain. Exact available controls repository plan/settings par depend karte hain.</p>
+<ul>
+<li>Direct pushes restrict karna.</li>
+<li>Pull Request require karna.</li>
+<li>Required reviews configure karna.</li>
+<li>Required status/CI checks configure karna.</li>
+<li>Conversation resolution requirements configure karna.</li>
+<li>Branch update requirements configure karna.</li>
+<li>Force pushes/deletions ko restrict karna.</li>
+</ul>
+
+<div class="callout success">
+<strong>Professional principle:</strong> Stable/production branches ko controlled integration point banana aur feature work ko PR ke through integrate karna accidental breakage ka risk reduce kar sakta hai.
+</div>
+</section>
+
+<section>
+<h2>17. Issues, Discussions aur Projects ka Role</h2>
+<div class="grid3">
+<div class="card"><h3>Issues</h3><p>Bug reports, tasks, feature requests aur work tracking.</p></div>
+<div class="card"><h3>Pull Requests</h3><p>Code changes ko review/discussion/merge ke liye.</p></div>
+<div class="card"><h3>Discussions</h3><p>Questions, ideas aur community/team conversations.</p></div>
+</div>
+
+<p>Ek useful workflow:</p>
+<pre><code>Issue #123
+   ↓
+Feature branch
+   ↓
+Commit
+   ↓
+Pull Request
+   ↓
+Review + CI
+   ↓
+Merge
+   ↓
+Issue close / update</code></pre>
+</section>
+
+<section id="devops">
+<h2>18. GitHub Collaboration + DevOps / CI-CD</h2>
+<div class="grid">
+<div class="card"><h3>Developer</h3><p>Feature branch me code changes karta hai.</p></div>
+<div class="card"><h3>GitHub</h3><p>Repository, PR, review aur collaboration provide karta hai.</p></div>
+<div class="card"><h3>CI</h3><p>PR par tests, linting, build aur security checks automatically run ho sakte hain.</p></div>
+<div class="card"><h3>CD</h3><p>Approved changes ke merge ke baad deployment pipeline trigger ho sakti hai.</p></div>
+</div>
+
+<div class="flow">
+<div class="node">Developer</div><div class="arrow">→</div>
+<div class="node">Feature Branch</div><div class="arrow">→</div>
+<div class="node">PR</div><div class="arrow">→</div>
+<div class="node">CI Checks</div><div class="arrow">→</div>
+<div class="node">Review</div><div class="arrow">→</div>
+<div class="node">Merge</div><div class="arrow">→</div>
+<div class="node">CD / Deploy</div>
+</div>
+
+<h3>Example CI concept</h3>
+<pre><code>Developer
+   |
+   | git push
+   v
+GitHub Pull Request
+   |
+   v
+GitHub Actions
+   |
+   +--> lint
+   +--> unit tests
+   +--> build
+   +--> security checks
+   |
+   v
+Review + Approval
+   |
+   v
+Merge
+   |
+   v
+Deployment Pipeline</code></pre>
+</section>
+
+<section id="security">
+<h2>19. Collaboration Security</h2>
+<div class="grid">
+<div class="card"><h3>🔑 Never commit secrets</h3><p>API keys, passwords, private keys aur tokens repository me commit mat karo.</p></div>
+<div class="card"><h3>🛡️ Least privilege</h3><p>Users ko required permission se zyada access na dena.</p></div>
+<div class="card"><h3>🔎 Review dependencies</h3><p>Third-party dependencies aur workflow changes carefully review karo.</p></div>
+<div class="card"><h3>🤖 Protect CI/CD</h3><p>Untrusted PR code ko sensitive deployment credentials tak unnecessary access mat do.</p></div>
+</div>
+
+<h3>.gitignore example</h3>
+<pre><code>.env
+.env.*
+*.pem
+*.key
+node_modules/
+dist/
+__pycache__/</code></pre>
+
+<div class="callout danger">
+<strong>Important:</strong> Sirf <code>.gitignore</code> me secret add karna enough nahi hai agar secret pehle hi commit ho chuka hai. Exposed credential ko revoke/rotate karna aur history cleanup ke appropriate process ko follow karna important hai.
+</div>
+</section>
+
+<section>
+<h2>20. Commit Best Practices</h2>
+<table>
+<tr><th>Weak</th><th>Better</th></tr>
+<tr><td><code>update</code></td><td><code>Add login validation</code></td></tr>
+<tr><td><code>changes</code></td><td><code>Fix null response in user API</code></td></tr>
+<tr><td><code>final</code></td><td><code>Update deployment workflow</code></td></tr>
+</table>
+
+<p>Good commit message usually clearly batata hai ki change kya karta hai.</p>
+
+<pre><code>git commit -m "Add JWT authentication middleware"
+git commit -m "Fix Docker healthcheck configuration"
+git commit -m "Update Kubernetes deployment resources"</code></pre>
+</section>
+
+<section>
+<h2>21. Collaboration me <code>git pull</code> karne se pehle kya check karein?</h2>
+<pre><code>git status
+git branch --show-current
+git diff
+git diff --staged</code></pre>
+
+<div class="callout warning">
+Agar local uncommitted changes hain, blindly <code>git pull</code> karna avoid karo. Pehle decide karo: commit, stash, discard, ya required workflow ke according update.
+</div>
+</section>
+
+<section id="lab">
+<h2>22. Complete Practical Team Lab</h2>
+
+<h3>Scenario</h3>
+<p>Do developers hain: <strong>Developer A</strong> aur <strong>Developer B</strong>. Dono ek GitHub repository par collaborate kar rahe hain.</p>
+
+<h3>Developer A — Feature development</h3>
+<pre><code>git clone https://github.com/OWNER/team-project.git
+cd team-project
+
+git switch main
+git pull --ff-only
+
+git switch -c feature/login
+
+# edit files
+git status
+git diff
+
+git add .
+git commit -m "Add login page"
+
+git push -u origin feature/login</code></pre>
+
+<p>Ab GitHub par Pull Request create karo:</p>
+<pre><code>feature/login → main</code></pre>
+
+<h3>Developer B — Review</h3>
+<ul>
+<li>PR description read karo.</li>
+<li>Changed files inspect karo.</li>
+<li>Diff review karo.</li>
+<li>Tests/CI status check karo.</li>
+<li>Comments add karo.</li>
+<li>Approval/request changes according to project policy.</li>
+</ul>
+
+<h3>Developer A — Review feedback</h3>
+<pre><code># Make changes
+
+git status
+git add .
+git commit -m "Address login review feedback"
+git push</code></pre>
+
+<p>Existing PR update ho jayega.</p>
+
+<h3>After approval</h3>
+<p>Project policy ke according PR merge kiya jata hai.</p>
+
+<h3>Developer B / Team — Update local main</h3>
+<pre><code>git switch main
+git pull --ff-only</code></pre>
+</section>
+
+<section>
+<h2>23. Practical Conflict Lab</h2>
+<h3>Situation</h3>
+<p>Developer A aur Developer B ne same line modify kar di.</p>
+
+<pre><code>git fetch origin
+git switch feature/login
+git merge origin/main</code></pre>
+
+<p>Conflict aaye to:</p>
+<pre><code>git status
+
+# Edit conflicted file
+# resolve final content
+
+git add &lt;file&gt;
+git commit -m "Resolve merge conflict"
+
+git push</code></pre>
+
+<div class="callout success">
+<strong>Practice tip:</strong> Conflict ko mistake samajhne ke bajay normal collaboration scenario samjho. Important hai ki conflict ko carefully understand karke correct final behavior choose kiya jaye.
+</div>
+</section>
+
+<section>
+<h2>24. Common Collaboration Mistakes</h2>
+<div class="card">
+<h3>❌ Directly main par kaam karna</h3>
+<p>Feature work ke liye project policy ke according feature branch use karna safer workflow ho sakta hai.</p>
+</div>
+<div class="card">
+<h3>❌ Long-lived branches</h3>
+<p>Bahut long time tak branch ko main se sync na karne par conflicts aur integration complexity badh sakti hai.</p>
+</div>
+<div class="card">
+<h3>❌ Pull na karna</h3>
+<p>Outdated local branch se work karne par unnecessary conflicts aa sakte hain.</p>
+</div>
+<div class="card">
+<h3>❌ Huge PR</h3>
+<p>Bahut large unrelated changes review ko difficult bana dete hain.</p>
+</div>
+<div class="card">
+<h3>❌ Secrets commit karna</h3>
+<p>Credentials ko source code me store karna security risk hai.</p>
+</div>
+<div class="card">
+<h3>❌ Force push on shared branch</h3>
+<p>Shared history disrupt ho sakti hai. Protected/shared branches par avoid karo.</p>
+</div>
+<div class="card">
+<h3>❌ Conflict ko blindly resolve karna</h3>
+<p>“Ours”/“theirs” blindly choose karne ke bajay intended behavior samjho.</p>
+</div>
+</section>
+
+<section>
+<h2>25. Professional GitHub Collaboration Workflow</h2>
+<pre><code>1. git switch main
+2. git pull --ff-only
+3. git switch -c feature/&lt;name&gt;
+4. Make focused changes
+5. git status
+6. git diff
+7. git add ...
+8. git commit -m "Clear message"
+9. git push -u origin feature/&lt;name&gt;
+10. Open Pull Request
+11. CI checks run
+12. Code review
+13. Address feedback
+14. Keep branch updated if required
+15. Approval
+16. Merge according to project policy
+17. Delete merged feature branch if appropriate
+18. Update local main</code></pre>
+
+<div class="callout success">
+<strong>Core idea:</strong> Collaboration ka goal sirf “same repository me code likhna” nahi hai; goal hai controlled, reviewable aur traceable changes ke saath team me safely software deliver karna.
+</div>
+</section>
+
+<section id="interview">
+<h2>26. GitHub Collaboration Interview Questions</h2>
+
+<div class="card"><h3>Q1. Git aur GitHub me difference?</h3><div class="answer">Git distributed version control system hai; GitHub Git repositories ko host karne aur collaboration workflows jaise PR, review aur automation provide karne wala platform hai.</div></div>
+
+<div class="card"><h3>Q2. Pull Request kya hota hai?</h3><div class="answer">PR proposed changes ko target branch me review/discussion/integration ke liye submit karne ka GitHub workflow hai.</div></div>
+
+<div class="card"><h3>Q3. Feature branch kyu use karte hain?</h3><div class="answer">Feature work ko main/stable branch se isolate rakhne aur controlled integration ke liye.</div></div>
+
+<div class="card"><h3>Q4. <code>git fetch</code> aur <code>git pull</code> difference?</h3><div class="answer"><code>fetch</code> remote updates ko local remote-tracking refs tak lata hai; <code>pull</code> fetch ke baad configured/selected integration operation karta hai.</div></div>
+
+<div class="card"><h3>Q5. Merge conflict kya hota hai?</h3><div class="answer">Jab Git do change sets ko automatically combine nahi kar pata, usually overlapping incompatible changes ke case me, conflict generate hota hai.</div></div>
+
+<div class="card"><h3>Q6. Fork kya hota hai?</h3><div class="answer">GitHub par repository ki account-level copy jisme contributor apne changes independently develop karke original project ko PR submit kar sakta hai.</div></div>
+
+<div class="card"><h3>Q7. Origin aur upstream?</h3><div class="answer">Usually <code>origin</code> cloned/default remote hota hai; fork workflow me <code>origin</code> aapka fork aur <code>upstream</code> original repository hota hai.</div></div>
+
+<div class="card"><h3>Q8. Protected branch ka purpose?</h3><div class="answer">Important branches par controlled integration, reviews, required checks aur restricted direct changes enforce karne ke liye.</div></div>
+
+<div class="card"><h3>Q9. PR me review feedback kaise handle karte ho?</h3><div class="answer">Requested changes ko same source branch me commit karke push karte ho; existing PR update hota hai.</div></div>
+
+<div class="card"><h3>Q10. Rebase ke baad force push kyu required ho sakta hai?</h3><div class="answer">Rebase commits ki history/hash change kar sakta hai. Remote branch history update karne ke liye force update required ho sakta hai; shared branches par avoid karna chahiye aur personal feature branch me <code>--force-with-lease</code> safer option hai.</div></div>
+
+<div class="card"><h3>Q11. GitHub collaboration me CI ka role?</h3><div class="answer">PR/branch changes par automated tests, lint, build, security checks etc. run karke integration quality verify karna.</div></div>
+
+<div class="card"><h3>Q12. Secret commit ho gaya to?</h3><div class="answer">Credential ko immediately revoke/rotate karna important hai; uske baad exposure/history cleanup project security process ke according handle kiya jata hai.</div></div>
+</section>
+
+<section id="cheat">
+<h2>27. Collaboration Cheat Sheet</h2>
+<table>
+<tr><th>Task</th><th>Command</th></tr>
+<tr><td>Clone</td><td><code>git clone URL</code></td></tr>
+<tr><td>Check remote</td><td><code>git remote -v</code></td></tr>
+<tr><td>Check status</td><td><code>git status</code></td></tr>
+<tr><td>Update current branch</td><td><code>git pull --ff-only</code></td></tr>
+<tr><td>Fetch remote changes</td><td><code>git fetch origin</code></td></tr>
+<tr><td>Create branch</td><td><code>git switch -c feature/name</code></td></tr>
+<tr><td>Switch branch</td><td><code>git switch branch-name</code></td></tr>
+<tr><td>View branches</td><td><code>git branch -a</code></td></tr>
+<tr><td>Stage</td><td><code>git add .</code></td></tr>
+<tr><td>Commit</td><td><code>git commit -m "message"</code></td></tr>
+<tr><td>First push</td><td><code>git push -u origin feature/name</code></td></tr>
+<tr><td>Future push</td><td><code>git push</code></td></tr>
+<tr><td>View differences</td><td><code>git diff</code></td></tr>
+<tr><td>View staged differences</td><td><code>git diff --staged</code></td></tr>
+<tr><td>View log</td><td><code>git log --oneline --graph --decorate</code></td></tr>
+<tr><td>Temporarily park changes</td><td><code>git stash push -m "WIP"</code></td></tr>
+</table>
+
+<h2>28. Final Mental Model</h2>
+<div class="card">
+<div class="flow">
+<div class="node">GitHub Repository</div>
+<div class="arrow">→</div>
+<div class="node">Clone / Fetch</div>
+<div class="arrow">→</div>
+<div class="node">Feature Branch</div>
+<div class="arrow">→</div>
+<div class="node">Code + Commit</div>
+<div class="arrow">→</div>
+<div class="node">Push</div>
+<div class="arrow">→</div>
+<div class="node">Pull Request</div>
+<div class="arrow">→</div>
+<div class="node">Review + CI</div>
+<div class="arrow">→</div>
+<div class="node">Merge</div>
+<div class="arrow">→</div>
+<div class="node">Deploy</div>
+</div>
+
+<pre><code>LOCAL DEVELOPMENT
+       |
+       | commit
+       v
+FEATURE BRANCH
+       |
+       | push
+       v
+GITHUB
+       |
+       | Pull Request
+       v
+CODE REVIEW + CI
+       |
+       | approval
+       v
+TARGET BRANCH
+       |
+       | CI/CD
+       v
+DEPLOYMENT</code></pre>
+</div>
+
+<h2>29. Learning Checklist</h2>
+<ul class="checklist">
+<li>Git aur GitHub ka difference clear hai</li>
+<li>Remote repository samajh li</li>
+<li>Clone aur remote verify karna aata hai</li>
+<li>Repository permissions ka basic concept clear hai</li>
+<li>Feature branch create/switch karna aata hai</li>
+<li>Commit aur push workflow clear hai</li>
+<li>Pull aur fetch ka difference clear hai</li>
+<li>Pull Request ka complete lifecycle samajh liya</li>
+<li>Code review ka purpose samajh liya</li>
+<li>Review feedback ke baad PR update karna aata hai</li>
+<li>Merge conflicts ka basic resolution aata hai</li>
+<li>Direct collaboration vs fork workflow clear hai</li>
+<li>Origin vs upstream samajh liya</li>
+<li>Protected branch ka concept clear hai</li>
+<li>GitHub Issues/Discussions/PR relationship samajh liya</li>
+<li>CI/CD ke saath GitHub collaboration ka relation samajh liya</li>
+<li>Secret management aur GitHub security basics clear hain</li>
+<li>Complete practical lab khud perform kiya</li>
+</ul>
+</section>
+
+<footer>
+<p><strong>Collaborate on GitHub — Complete Study Material</strong></p>
+<p>Branch → Commit → Push → PR → Review → Merge → Deploy 🚀</p>
+<p class="small">Part of your Git & GitHub learning journey.</p>
+</footer>
+
+</div>
+</body>
+</html>
