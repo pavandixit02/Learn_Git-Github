@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How to Create & Merge Pull Request - Complete Study Material</title>
+<style>
+:root{
+  --bg:#0b1020;--card:#121a2b;--card2:#0f1728;--text:#e8eefc;--muted:#a9b5cc;
+  --accent:#67e8f9;--purple:#a78bfa;--green:#4ade80;--yellow:#facc15;--red:#fb7185;
+  --border:#26324a;--code:#080d18
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;
+  background:linear-gradient(180deg,#080d18,#0b1020 35%,#0b1020);
+  color:var(--text);line-height:1.7
+}
+.container{max-width:1200px;margin:auto;padding:28px 20px 60px}
+.hero{
+  padding:44px 30px;border:1px solid var(--border);border-radius:22px;
+  background:linear-gradient(135deg,#121a2b,#111827 55%,#17112d);
+  box-shadow:0 20px 60px rgba(0,0,0,.25)
+}
+.badge{display:inline-block;padding:6px 12px;border-radius:999px;background:#17243c;color:var(--accent);font-size:13px;font-weight:700}
+h1{font-size:clamp(31px,5vw,57px);line-height:1.08;margin:16px 0 12px}
+h2{font-size:30px;margin-top:48px;border-bottom:1px solid var(--border);padding-bottom:10px}
+h3{font-size:21px;color:var(--accent);margin-top:28px}
+h4{color:#c4b5fd}
+p{color:#d5dced}
+a{color:var(--accent);text-decoration:none}
+nav{
+  position:sticky;top:10px;z-index:10;margin:20px 0;padding:12px;
+  background:rgba(15,23,40,.94);backdrop-filter:blur(12px);
+  border:1px solid var(--border);border-radius:14px;display:flex;gap:8px;flex-wrap:wrap
+}
+nav a{padding:7px 10px;border-radius:8px;background:#141e32;font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;margin:18px 0}
+.callout{border-left:4px solid var(--accent);background:#101b2e;padding:16px 18px;border-radius:10px;margin:18px 0}
+.success{border-left-color:var(--green)}.warning{border-left-color:var(--yellow)}.danger{border-left-color:var(--red)}
+pre{
+  background:var(--code);border:1px solid #202b42;border-radius:13px;padding:18px;
+  overflow:auto;color:#dce7ff;font-size:14px;line-height:1.6
+}
+code{font-family:"Cascadia Code","Fira Code",Consolas,monospace;background:#182238;padding:2px 6px;border-radius:5px;color:#d8f8ff}
+pre code{background:none;padding:0;color:inherit}
+table{width:100%;border-collapse:collapse;margin:18px 0;background:var(--card)}
+th,td{border:1px solid var(--border);padding:12px;text-align:left;vertical-align:top}
+th{background:#172138;color:var(--accent)}
+tr:nth-child(even){background:#10182a}
+.flow{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin:22px 0}
+.node{padding:13px 18px;border:1px solid var(--border);border-radius:12px;background:#151f34;text-align:center}
+.arrow{font-size:24px;color:var(--accent)}
+.tag{display:inline-block;font-size:12px;padding:4px 8px;border-radius:6px;background:#1b2740;color:#c9d7f5;margin:2px}
+.small{font-size:14px;color:var(--muted)}
+.answer{background:#0d1627;border-radius:10px;padding:13px 15px;margin-top:8px}
+.step{
+  counter-increment:step;position:relative;padding-left:58px;margin:18px 0
+}
+.steps{counter-reset:step}
+.step::before{
+  content:counter(step);position:absolute;left:0;top:0;width:38px;height:38px;
+  border-radius:50%;background:#172b43;color:var(--accent);display:flex;
+  align-items:center;justify-content:center;font-weight:800;border:1px solid var(--border)
+}
+.checklist li{list-style:none}.checklist li::before{content:"☐ ";color:var(--accent)}
+footer{margin-top:55px;padding-top:20px;border-top:1px solid var(--border);color:var(--muted);text-align:center}
+@media(max-width:800px){
+ .grid,.grid3{grid-template-columns:1fr}.container{padding:18px 13px 45px}.hero{padding:30px 20px}
+ h2{font-size:25px}.step{padding-left:50px}
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<section class="hero">
+<span class="badge">GITHUB • PULL REQUEST MASTER GUIDE</span>
+<h1>Create & Merge Pull Request</h1>
+<p style="font-size:19px">
+GitHub par <strong>Pull Request create</strong> karna aur usko safely
+<strong>review, approve aur merge</strong> karna — beginner se professional team workflow tak.
+</p>
+<div>
+<span class="tag">Branch</span><span class="tag">Commit</span><span class="tag">Push</span>
+<span class="tag">Pull Request</span><span class="tag">Review</span><span class="tag">CI Checks</span>
+<span class="tag">Approve</span><span class="tag">Merge</span><span class="tag">Conflict</span>
+</div>
+</section>
+
+<nav>
+<a href="#pr">PR kya hai?</a>
+<a href="#before">Before PR</a>
+<a href="#create">Create PR</a>
+<a href="#fields">PR Fields</a>
+<a href="#review">Review</a>
+<a href="#update">Update PR</a>
+<a href="#merge">Merge PR</a>
+<a href="#methods">Merge Methods</a>
+<a href="#conflict">Conflicts</a>
+<a href="#after">After Merge</a>
+<a href="#cli">CLI Workflow</a>
+<a href="#lab">Practical Lab</a>
+<a href="#mistakes">Mistakes</a>
+<a href="#interview">Interview</a>
+<a href="#cheat">Cheat Sheet</a>
+</nav>
+
+<section id="pr">
+<h2>1. Pull Request kya hota hai?</h2>
+<div class="card">
+<p><strong>Pull Request (PR)</strong> GitHub par ek request/proposal hota hai jisme developer apni branch ke changes ko kisi target branch me integrate karne ke liye submit karta hai.</p>
+<div class="flow">
+<div class="node">feature/login</div>
+<div class="arrow">→</div>
+<div class="node">Pull Request</div>
+<div class="arrow">→</div>
+<div class="node">Review + CI</div>
+<div class="arrow">→</div>
+<div class="node">main</div>
+</div>
+<div class="callout success">
+<strong>Simple meaning:</strong> “Maine apna feature complete kiya hai. Please mere changes ko check karo aur suitable hone par target branch me merge karo.”
+</div>
+</div>
+
+<h2>2. PR aur Git Pull ka difference</h2>
+<table>
+<tr><th>Concept</th><th>Meaning</th></tr>
+<tr><td>Pull Request</td><td>GitHub collaboration/review workflow for proposed changes.</td></tr>
+<tr><td><code>git pull</code></td><td>Local Git command jo remote changes fetch karke current branch me integrate karta hai.</td></tr>
+</table>
+
+<div class="callout warning">
+<strong>Important:</strong> “Pull Request” aur <code>git pull</code> same concept nahi hain.
+</div>
+</section>
+
+<section id="before">
+<h2>3. Pull Request create karne se pehle kya hona chahiye?</h2>
+<div class="grid">
+<div class="card"><h3>1️⃣ Repository</h3><p>Aapke paas target GitHub repository ka access ya fork hona chahiye.</p></div>
+<div class="card"><h3>2️⃣ Branch</h3><p>Feature/fix ke liye separate branch use karo.</p></div>
+<div class="card"><h3>3️⃣ Changes</h3><p>Required code/documentation changes complete karo.</p></div>
+<div class="card"><h3>4️⃣ Commit</h3><p>Meaningful commits banao.</p></div>
+<div class="card"><h3>5️⃣ Push</h3><p>Branch ko GitHub par push karo.</p></div>
+<div class="card"><h3>6️⃣ Validation</h3><p>Tests, lint, build ya relevant checks locally run karo.</p></div>
+</div>
+
+<h3>Recommended pre-PR commands</h3>
+<pre><code>git status
+git branch --show-current
+git diff
+git diff --staged
+git log --oneline --decorate -5</code></pre>
+</section>
+
+<section>
+<h2>4. Complete PR Flow</h2>
+<div class="flow">
+<div class="node">Update main</div><div class="arrow">→</div>
+<div class="node">Create feature branch</div><div class="arrow">→</div>
+<div class="node">Code</div><div class="arrow">→</div>
+<div class="node">Commit</div><div class="arrow">→</div>
+<div class="node">Push</div><div class="arrow">→</div>
+<div class="node">Create PR</div><div class="arrow">→</div>
+<div class="node">Review + CI</div><div class="arrow">→</div>
+<div class="node">Approve</div><div class="arrow">→</div>
+<div class="node">Merge</div>
+</div>
+</section>
+
+<section id="create">
+<h2>5. How to Create Pull Request — Complete Process</h2>
+
+<h3>Step 1 — Main branch update karo</h3>
+<pre><code>git switch main
+git pull --ff-only</code></pre>
+<p>Isse local main ko remote main ke latest state ke saath update karne me help milti hai.</p>
+
+<h3>Step 2 — Feature branch create karo</h3>
+<pre><code>git switch -c feature/login</code></pre>
+
+<p>Verify:</p>
+<pre><code>git branch
+git branch --show-current</code></pre>
+
+<h3>Step 3 — Code changes karo</h3>
+<p>Example:</p>
+<pre><code># Edit files
+src/login.html
+src/login.css
+src/login.js</code></pre>
+
+<h3>Step 4 — Changes inspect karo</h3>
+<pre><code>git status
+git diff</code></pre>
+
+<h3>Step 5 — Changes stage karo</h3>
+<pre><code>git add .</code></pre>
+
+<p>Ya specific files:</p>
+<pre><code>git add src/login.html src/login.css src/login.js</code></pre>
+
+<h3>Step 6 — Commit banao</h3>
+<pre><code>git commit -m "Add user login form"</code></pre>
+
+<h3>Step 7 — Branch GitHub par push karo</h3>
+<pre><code>git push -u origin feature/login</code></pre>
+
+<div class="callout success">
+<strong>Ab aapki feature branch GitHub par available hai.</strong> Ab GitHub UI se Pull Request create kar sakte ho.
+</div>
+
+<h3>Step 8 — GitHub repository open karo</h3>
+<p>Browser me apni GitHub repository open karo. Push ke baad GitHub often feature branch ke liye Pull Request create karne ka prompt/banner show kar sakta hai.</p>
+
+<h3>Step 9 — “Compare & pull request” / Pull Request creation flow open karo</h3>
+<p>GitHub aapko source branch aur target branch choose karne ka interface deta hai.</p>
+
+<div class="callout warning">
+<strong>Branch direction carefully check karo:</strong><br>
+<strong>base / target:</strong> jisme changes merge karne hain<br>
+<strong>compare / source:</strong> jahan aapke changes hain
+</div>
+
+<h3>Step 10 — Base aur Compare branch select karo</h3>
+<pre><code>base:    main
+compare: feature/login</code></pre>
+
+<p>Typical flow:</p>
+<div class="flow">
+<div class="node">feature/login<br><small>source / compare</small></div>
+<div class="arrow">→</div>
+<div class="node">main<br><small>target / base</small></div>
+</div>
+
+<h3>Step 11 — PR title likho</h3>
+<p>Clear title example:</p>
+<pre><code>Add user login form with validation</code></pre>
+
+<h3>Step 12 — PR description likho</h3>
+<pre><code>## What
+Added a user login form.
+
+## Changes
+- Added email field
+- Added password field
+- Added client-side validation
+- Added error messages
+
+## Testing
+- Tested valid credentials
+- Tested invalid email
+- Tested empty fields
+
+## Related Issue
+Closes #25</code></pre>
+
+<h3>Step 13 — Reviewers / labels / project details</h3>
+<p>Project configuration ke according reviewers, labels, milestones, projects, assignees etc. add kiye ja sakte hain.</p>
+
+<h3>Step 14 — Create Pull Request</h3>
+<p>Details verify karke <strong>Create pull request</strong> select karo.</p>
+
+<div class="callout success">
+<strong>PR created!</strong> Ab review, CI checks aur discussion ka phase start hota hai.
+</div>
+</section>
+
+<section id="fields">
+<h2>6. Pull Request ke Important Fields</h2>
+<table>
+<tr><th>Field</th><th>Purpose</th></tr>
+<tr><td>Base branch</td><td>Target branch jisme changes eventually merge honge.</td></tr>
+<tr><td>Compare branch</td><td>Source branch jisme proposed changes hain.</td></tr>
+<tr><td>Title</td><td>Short summary of the change.</td></tr>
+<tr><td>Description</td><td>What, why, testing, screenshots, notes etc.</td></tr>
+<tr><td>Reviewers</td><td>Code review ke liye team members.</td></tr>
+<tr><td>Assignees</td><td>PR/task ke responsible people.</td></tr>
+<tr><td>Labels</td><td>Classification such as bug, feature, documentation.</td></tr>
+<tr><td>Milestone</td><td>Project/release grouping.</td></tr>
+<tr><td>Checks</td><td>Automated CI/test/build/security results.</td></tr>
+</table>
+</section>
+
+<section id="review">
+<h2>7. Pull Request Review kaise hota hai?</h2>
+<p>PR create hone ke baad reviewer changed files aur discussion ko inspect karta hai.</p>
+
+<h3>Reviewer ko kya check karna chahiye?</h3>
+<div class="grid3">
+<div class="card"><h3>Correctness</h3><p>Kya requested functionality correct hai?</p></div>
+<div class="card"><h3>Readability</h3><p>Code understandable hai?</p></div>
+<div class="card"><h3>Security</h3><p>Secrets, auth, validation ya injection risks?</p></div>
+<div class="card"><h3>Testing</h3><p>Relevant tests present/pass hain?</p></div>
+<div class="card"><h3>Performance</h3><p>Unnecessary expensive operations?</p></div>
+<div class="card"><h3>Architecture</h3><p>Existing design ke saath fit?</p></div>
+</div>
+
+<h3>Review outcomes</h3>
+<table>
+<tr><th>Outcome</th><th>Meaning</th></tr>
+<tr><td>Approve</td><td>Reviewer changes ko project policy ke according acceptable samajhta hai.</td></tr>
+<tr><td>Request changes</td><td>Author ko modifications karne hain before approval/merge.</td></tr>
+<tr><td>Comment</td><td>Feedback/discussion without necessarily changing approval state.</td></tr>
+</table>
+</section>
+
+<section id="update">
+<h2>8. Review ke baad Pull Request update kaise karein?</h2>
+<p>Suppose reviewer ne kaha: “Validation improve karo.”</p>
+
+<pre><code># Same feature branch par raho
+git switch feature/login
+
+# Make requested changes
+
+git status
+git diff
+
+git add .
+git commit -m "Improve login validation"
+
+git push</code></pre>
+
+<div class="callout success">
+<strong>Important:</strong> Same source branch par push karne par existing Pull Request automatically new commits/changes reflect kar sakta hai.
+</div>
+
+<h3>Review feedback ko manage karne ka pattern</h3>
+<pre><code>PR opened
+   ↓
+Review comments
+   ↓
+Modify code
+   ↓
+Commit
+   ↓
+Push
+   ↓
+PR automatically updates
+   ↓
+Re-review</code></pre>
+</section>
+
+<section>
+<h2>9. CI Checks ka Role</h2>
+<p>Repository me GitHub Actions ya other CI system configured ho sakta hai jo PR par automatically checks run kare.</p>
+
+<div class="grid">
+<div class="card"><h3>🧪 Tests</h3><p>Unit/integration tests.</p></div>
+<div class="card"><h3>🔍 Lint</h3><p>Code style/quality checks.</p></div>
+<div class="card"><h3>🏗️ Build</h3><p>Application successfully build ho rahi hai ya nahi.</p></div>
+<div class="card"><h3>🔐 Security</h3><p>Dependency/code/security checks.</p></div>
+</div>
+
+<div class="callout warning">
+Agar repository me required checks configured hain aur koi check fail hai, merge allowed na ho sakta hai. Exact behavior branch protection/rules par depend karta hai.
+</div>
+</section>
+
+<section id="merge">
+<h2>10. How to Merge Pull Request — Complete Process</h2>
+
+<h3>Step 1 — PR open karo</h3>
+<p>GitHub repository ke <strong>Pull Requests</strong> section me jao aur required PR open karo.</p>
+
+<h3>Step 2 — Conversation read karo</h3>
+<p>Reviewer comments, author responses aur resolved/unresolved discussions check karo.</p>
+
+<h3>Step 3 — Changed files / diff inspect karo</h3>
+<p>PR ke <strong>Files changed</strong> section me actual code changes inspect karo.</p>
+
+<h3>Step 4 — CI checks verify karo</h3>
+<p>Tests, build, lint, security aur repository ke required checks pass hain ya nahi check karo.</p>
+
+<h3>Step 5 — Approvals check karo</h3>
+<p>Agar branch rules required approvals enforce karte hain to required approvals available hone chahiye.</p>
+
+<h3>Step 6 — Merge readiness check karo</h3>
+<div class="grid">
+<div class="card"><strong>✅ PR approved</strong><p>Required review complete.</p></div>
+<div class="card"><strong>✅ Checks pass</strong><p>Required CI checks successful.</p></div>
+<div class="card"><strong>✅ No blocking conflict</strong><p>PR mergeable state me hai.</p></div>
+<div class="card"><strong>✅ Requirements satisfied</strong><p>Project-specific policy complete.</p></div>
+</div>
+
+<h3>Step 7 — Merge button</h3>
+<p>GitHub PR page par available merge action se appropriate merge method choose karo.</p>
+
+<h3>Step 8 — Merge method choose karo</h3>
+<p>Repository configuration ke according options available ho sakte hain:</p>
+<ul>
+<li>Merge commit</li>
+<li>Squash and merge</li>
+<li>Rebase and merge</li>
+</ul>
+
+<h3>Step 9 — Confirm merge</h3>
+<p>Selected merge strategy ko review karke merge confirm karo.</p>
+
+<h3>Step 10 — Optional branch deletion</h3>
+<p>PR merge hone ke baad GitHub feature branch delete karne ka option de sakta hai. Short-lived merged branches ko clean up karna common practice hai.</p>
+</section>
+
+<section id="methods">
+<h2>11. Merge Methods in Detail</h2>
+
+<h3>11.1 Merge Commit</h3>
+<pre><code>main:    A---B-------M
+              \     /
+feature:       C---D</code></pre>
+<p>Merge commit target branch history me integration point create karta hai.</p>
+
+<h3>11.2 Squash and Merge</h3>
+<pre><code>feature: C---D---E
+             \
+main:    A----S</code></pre>
+<p>Feature branch ke multiple commits ko target branch me single squashed commit ke form me integrate kiya ja sakta hai.</p>
+<p>Useful when team clean, compact main-branch history prefer karti hai.</p>
+
+<h3>11.3 Rebase and Merge</h3>
+<pre><code>Before:
+main:    A---B
+              \
+feature:       C---D
+
+After rebase:
+main:    A---B---C'---D'</code></pre>
+<p>Rebase commits ko target branch ke top par replay karta hai, jisse linear-looking history mil sakti hai. Commit hashes change ho sakte hain.</p>
+
+<table>
+<tr><th>Method</th><th>History Idea</th><th>Typical Consideration</th></tr>
+<tr><td>Merge commit</td><td>Explicit branch integration point</td><td>Full branch topology visible</td></tr>
+<tr><td>Squash merge</td><td>Multiple PR commits → one target commit</td><td>Clean compact target history</td></tr>
+<tr><td>Rebase merge</td><td>Commits linear sequence me replay</td><td>Linear history; rewritten commit hashes</td></tr>
+</table>
+
+<div class="callout warning">
+<strong>Which one use karna hai?</strong> Team repository ki established policy follow karo. Har project ka preferred merge strategy different ho sakta hai.
+</div>
+</section>
+
+<section>
+<h2>12. Merge Commit vs Squash vs Rebase — Visual</h2>
+<div class="grid">
+<div class="card">
+<h3>Merge</h3>
+<pre><code>A---B-------M
+     \     /
+      C---D</code></pre>
+</div>
+<div class="card">
+<h3>Squash</h3>
+<pre><code>A---B---S</code></pre>
+<p>C/D ke changes S me combine.</p>
+</div>
+<div class="card">
+<h3>Rebase</h3>
+<pre><code>A---B---C'---D'</code></pre>
+<p>Feature commits replay hote hain.</p>
+</div>
+</div>
+</section>
+
+<section id="conflict">
+<h2>13. Pull Request me Merge Conflict</h2>
+<p>Agar source aur target branches ke changes overlap karte hain, GitHub PR ko conflicting state me show kar sakta hai.</p>
+
+<h3>Conflict ko locally resolve karna</h3>
+<pre><code># Update remote references
+git fetch origin
+
+# Switch to feature branch
+git switch feature/login
+
+# Bring latest target branch changes
+git merge origin/main
+
+# Check conflicts
+git status</code></pre>
+
+<p>Conflicted files me markers aa sakte hain:</p>
+<pre><code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+feature branch version
+=======
+main branch version
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; origin/main</code></pre>
+
+<p>Final correct code manually select/compose karo, markers remove karo, then:</p>
+<pre><code>git add &lt;resolved-file&gt;
+git commit -m "Resolve merge conflict with main"
+git push</code></pre>
+
+<div class="callout success">
+Ab GitHub PR updated branch ko re-check karega aur mergeability/CI state update ho sakti hai.
+</div>
+
+<h3>Rebase-based alternative</h3>
+<pre><code>git fetch origin
+git switch feature/login
+git rebase origin/main
+
+# Resolve conflict
+git add &lt;resolved-file&gt;
+git rebase --continue
+
+# If appropriate for your feature branch:
+git push --force-with-lease</code></pre>
+
+<div class="callout danger">
+Shared branches par force push avoid karo. Rebase ke baad force update ki zarurat ho to branch ownership aur team policy verify karo.
+</div>
+</section>
+
+<section id="after">
+<h2>14. Pull Request Merge hone ke baad kya karein?</h2>
+
+<h3>Step 1 — Local main update karo</h3>
+<pre><code>git switch main
+git pull --ff-only</code></pre>
+
+<h3>Step 2 — Feature branch clean up</h3>
+<p>Agar branch merge ho chuki hai aur local branch ki zarurat nahi:</p>
+<pre><code>git branch -d feature/login</code></pre>
+
+<p>Remote branch clean up (agar GitHub par ab bhi exist karti ho):</p>
+<pre><code>git push origin --delete feature/login</code></pre>
+
+<div class="callout warning">
+Branch delete karne se pehle confirm karo ki correct branch merge ho chuki hai aur team policy ke according deletion allowed hai.
+</div>
+
+<h3>Step 3 — Continue next task</h3>
+<pre><code>git switch main
+git pull --ff-only
+git switch -c feature/next-task</code></pre>
+</section>
+
+<section>
+<h2>15. PR Close vs Merge</h2>
+<table>
+<tr><th>Action</th><th>Meaning</th></tr>
+<tr><td>Merge</td><td>PR ke proposed changes target branch me integrate karna.</td></tr>
+<tr><td>Close</td><td>PR ko merge kiye bina close karna.</td></tr>
+<tr><td>Reopen</td><td>Eligible closed PR ko dobara open karna, subject to repository state/permissions.</td></tr>
+</table>
+
+<div class="callout">
+<strong>Important:</strong> PR close karna aur PR merge karna completely different actions hain.
+</div>
+</section>
+
+<section>
+<h2>16. Draft Pull Request</h2>
+<p>Agar work abhi complete nahi hai aur aap early feedback chahte ho, GitHub me Draft Pull Request useful ho sakta hai.</p>
+<div class="callout success">
+<strong>Draft PR:</strong> “Work in progress hai; abhi final merge ke liye ready nahi.”
+</div>
+<p>Draft ko later “Ready for review” state me convert kiya ja sakta hai.</p>
+</section>
+
+<section>
+<h2>17. Pull Request Best Practices</h2>
+<ul>
+<li>PR ko focused rakho — unrelated changes avoid karo.</li>
+<li>Clear title use karo.</li>
+<li>Description me what/why/testing explain karo.</li>
+<li>Small aur reviewable commits prefer karo.</li>
+<li>Tests/build/lint locally run karo.</li>
+<li>PR open karne se pehle <code>git diff</code> review karo.</li>
+<li>Target branch ki latest state se aware raho.</li>
+<li>Review comments ko respectfully handle karo.</li>
+<li>Secrets commit mat karo.</li>
+<li>Team ki branch/merge policy follow karo.</li>
+<li>Large PR ko logical smaller PRs me divide karna consider karo.</li>
+</ul>
+</section>
+
+<section>
+<h2>18. PR Description ka Professional Template</h2>
+<pre><code>## Summary
+<!-- What does this PR change? -->
+
+## Motivation
+<!-- Why is this change needed? -->
+
+## Changes
+- 
+- 
+- 
+
+## Testing
+- [ ] Unit tests
+- [ ] Integration tests
+- [ ] Manual testing
+- [ ] Build passed
+
+## Screenshots
+<!-- Add screenshots if UI changed -->
+
+## Breaking Changes
+None
+
+## Related Issue
+Closes #123</code></pre>
+</section>
+
+<section>
+<h2>19. Commit vs Pull Request vs Merge</h2>
+<table>
+<tr><th>Concept</th><th>Purpose</th></tr>
+<tr><td>Commit</td><td>Local Git history me specific change record karna.</td></tr>
+<tr><td>Push</td><td>Local commits ko remote branch par upload karna.</td></tr>
+<tr><td>Pull Request</td><td>Changes ko review/discussion/integration ke liye propose karna.</td></tr>
+<tr><td>Review</td><td>Proposed changes inspect karna.</td></tr>
+<tr><td>Merge</td><td>Approved PR ke changes ko target branch me integrate karna.</td></tr>
+</table>
+</section>
+
+<section id="cli">
+<h2>20. Complete Command-Line Workflow</h2>
+<pre><code># 1. Start from main
+git switch main
+git pull --ff-only
+
+# 2. Create feature branch
+git switch -c feature/login
+
+# 3. Work
+# edit files...
+
+# 4. Inspect
+git status
+git diff
+
+# 5. Stage
+git add .
+
+# 6. Commit
+git commit -m "Add login feature"
+
+# 7. Push
+git push -u origin feature/login
+
+# 8. Open PR on GitHub
+# feature/login -> main
+
+# 9. If reviewer requests changes
+# edit files...
+git add .
+git commit -m "Address review feedback"
+git push
+
+# 10. After PR merge
+git switch main
+git pull --ff-only
+
+# 11. Optional local cleanup
+git branch -d feature/login</code></pre>
+
+<div class="callout success">
+<strong>Remember:</strong> Pull Request create/merge primarily GitHub-side collaboration actions hain, jabki branch/commit/push/fetch/merge/rebase Git operations local Git workflow ko manage karte hain.
+</div>
+</section>
+
+<section id="lab">
+<h2>21. Complete Practical Lab — Create & Merge PR</h2>
+
+<h3>Scenario</h3>
+<p>Ek project hai aur aapko <strong>login feature</strong> add karni hai.</p>
+
+<div class="steps">
+<div class="step">
+<h3>Repository clone</h3>
+<pre><code>git clone https://github.com/OWNER/project.git
+cd project</code></pre>
+</div>
+
+<div class="step">
+<h3>Main update</h3>
+<pre><code>git switch main
+git pull --ff-only</code></pre>
+</div>
+
+<div class="step">
+<h3>Feature branch</h3>
+<pre><code>git switch -c feature/login</code></pre>
+</div>
+
+<div class="step">
+<h3>Code changes</h3>
+<p>Login UI/API/authentication related files modify karo.</p>
+</div>
+
+<div class="step">
+<h3>Review locally</h3>
+<pre><code>git status
+git diff</code></pre>
+</div>
+
+<div class="step">
+<h3>Commit</h3>
+<pre><code>git add .
+git commit -m "Add login feature"</code></pre>
+</div>
+
+<div class="step">
+<h3>Push</h3>
+<pre><code>git push -u origin feature/login</code></pre>
+</div>
+
+<div class="step">
+<h3>Create PR</h3>
+<p>GitHub → Pull Requests → New Pull Request → <code>feature/login → main</code>.</p>
+</div>
+
+<div class="step">
+<h3>Review</h3>
+<p>PR description, diff, reviewers, CI checks aur comments check karo.</p>
+</div>
+
+<div class="step">
+<h3>Address feedback</h3>
+<pre><code>git add .
+git commit -m "Address review feedback"
+git push</code></pre>
+</div>
+
+<div class="step">
+<h3>Approve</h3>
+<p>Reviewer project rules ke according approval deta hai.</p>
+</div>
+
+<div class="step">
+<h3>Merge</h3>
+<p>Required merge strategy select karke PR merge karo.</p>
+</div>
+
+<div class="step">
+<h3>Update local main</h3>
+<pre><code>git switch main
+git pull --ff-only</code></pre>
+</div>
+</div>
+</section>
+
+<section id="mistakes">
+<h2>22. Common Mistakes</h2>
+
+<div class="card">
+<h3>❌ Wrong base/compare branch</h3>
+<p>PR create karte waqt <code>feature → main</code> ki jagah galti se <code>main → feature</code> select ho sakta hai.</p>
+<div class="callout warning"><strong>Always check:</strong> base = target, compare = source.</div>
+</div>
+
+<div class="card">
+<h3>❌ PR create karne se pehle changes review na karna</h3>
+<p>Unwanted files ya debug code PR me chala ja sakta hai.</p>
+<pre><code>git status
+git diff
+git diff --staged</code></pre>
+</div>
+
+<div class="card">
+<h3>❌ Huge PR</h3>
+<p>Unrelated features ko ek hi PR me combine karna review ko difficult bana sakta hai.</p>
+</div>
+
+<div class="card">
+<h3>❌ Failed CI ke baad merge karna</h3>
+<p>Required checks fail hon to root cause samjho aur project policy follow karo.</p>
+</div>
+
+<div class="card">
+<h3>❌ Review feedback ignore karna</h3>
+<p>Reviewer comments ko resolve/discuss karke required changes push karo.</p>
+</div>
+
+<div class="card">
+<h3>❌ Direct main push</h3>
+<p>Agar project protected branch/PR workflow use karta hai to direct push allowed nahi ho sakta.</p>
+</div>
+
+<div class="card">
+<h3>❌ Merge ke baad local main update na karna</h3>
+<pre><code>git switch main
+git pull --ff-only</code></pre>
+</div>
+</section>
+
+<section>
+<h2>23. Troubleshooting</h2>
+<table>
+<tr><th>Problem</th><th>Possible Reason</th><th>Action</th></tr>
+<tr><td>PR option nahi dikh raha</td><td>Branch remote par push nahi hui</td><td><code>git push -u origin branch-name</code></td></tr>
+<tr><td>PR has conflicts</td><td>Source/target changes overlap</td><td>Target branch locally merge/rebase karke conflict resolve karo</td></tr>
+<tr><td>Merge button disabled</td><td>Required checks/reviews/rules incomplete</td><td>Repository rules aur PR checks inspect karo</td></tr>
+<tr><td>CI failed</td><td>Test/build/lint/security issue</td><td>Failed workflow logs inspect karo</td></tr>
+<tr><td>PR me latest changes nahi</td><td>New commits push nahi hue</td><td><code>git push</code></td></tr>
+<tr><td>Wrong branch PR</td><td>Base/compare selection incorrect</td><td>PR branches carefully verify/change karo</td></tr>
+<tr><td>Authentication failed</td><td>HTTPS/SSH credentials issue</td><td>Remote/authentication configuration verify karo</td></tr>
+</table>
+</section>
+
+<section>
+<h2>24. GitHub PR + DevOps / CI-CD</h2>
+<div class="flow">
+<div class="node">Developer</div>
+<div class="arrow">→</div>
+<div class="node">Feature Branch</div>
+<div class="arrow">→</div>
+<div class="node">Push</div>
+<div class="arrow">→</div>
+<div class="node">PR</div>
+<div class="arrow">→</div>
+<div class="node">CI</div>
+<div class="arrow">→</div>
+<div class="node">Review</div>
+<div class="arrow">→</div>
+<div class="node">Merge</div>
+<div class="arrow">→</div>
+<div class="node">CD</div>
+</div>
+
+<pre><code>git push
+    |
+    v
+Pull Request
+    |
+    +----> Unit Tests
+    |
+    +----> Lint
+    |
+    +----> Build
+    |
+    +----> Security Scan
+    |
+    v
+Code Review
+    |
+    v
+Merge
+    |
+    v
+Deployment Pipeline
+    |
+    v
+Environment</code></pre>
+
+<p>Ye workflow modern DevOps teams me Git-based collaboration aur automated delivery ko connect karta hai.</p>
+</section>
+
+<section id="interview">
+<h2>25. Pull Request Interview Questions</h2>
+
+<div class="card"><h3>Q1. Pull Request kya hota hai?</h3><div class="answer">GitHub collaboration mechanism jisme source branch ke changes ko target branch me integrate karne ke liye review/proposal create kiya jata hai.</div></div>
+
+<div class="card"><h3>Q2. PR create karne ke basic steps?</h3><div class="answer">Feature branch → changes → commit → push → GitHub → source/target branches select → title/description → Create PR.</div></div>
+
+<div class="card"><h3>Q3. Base aur compare branch kya hoti hain?</h3><div class="answer">Base target branch hoti hai; compare source branch hoti hai jisme proposed changes hain.</div></div>
+
+<div class="card"><h3>Q4. PR merge karne se pehle kya check karna chahiye?</h3><div class="answer">Diff, review comments, required approvals, CI checks, conflicts aur project-specific branch rules.</div></div>
+
+<div class="card"><h3>Q5. Squash merge kya hai?</h3><div class="answer">PR ke multiple commits ko target branch me single squashed commit ke form me integrate karna.</div></div>
+
+<div class="card"><h3>Q6. Merge commit kya hai?</h3><div class="answer">Do histories ko integrate karte waqt explicit merge commit create karne wala merge strategy.</div></div>
+
+<div class="card"><h3>Q7. Rebase and merge kya karta hai?</h3><div class="answer">Source commits ko target branch ke latest base par replay karke linear history-style integration provide kar sakta hai.</div></div>
+
+<div class="card"><h3>Q8. PR me conflict aaye to?</h3><div class="answer">Latest target changes fetch karke source branch ko merge/rebase karo, conflicts resolve karo, commit/push karo aur PR re-check karo.</div></div>
+
+<div class="card"><h3>Q9. Review ke baad PR update kaise hota hai?</h3><div class="answer">Same source branch me requested changes commit karke push karo; existing PR automatically update hota hai.</div></div>
+
+<div class="card"><h3>Q10. PR aur git pull me difference?</h3><div class="answer">PR GitHub review/integration workflow hai; <code>git pull</code> local repository ko remote changes se update karne wala Git command hai.</div></div>
+
+<div class="card"><h3>Q11. Draft PR kab use karenge?</h3><div class="answer">Jab work in progress ho aur early feedback chahiye ho, lekin PR abhi final review/merge ke liye ready na ho.</div></div>
+
+<div class="card"><h3>Q12. Merge ke baad feature branch ka kya?</h3><div class="answer">Project policy ke according merged short-lived branch ko delete kiya ja sakta hai; local main ko latest state se update karna chahiye.</div></div>
+</section>
+
+<section id="cheat">
+<h2>26. Complete Cheat Sheet</h2>
+<table>
+<tr><th>Task</th><th>Command / Action</th></tr>
+<tr><td>Update main</td><td><code>git switch main</code><br><code>git pull --ff-only</code></td></tr>
+<tr><td>Create feature branch</td><td><code>git switch -c feature/name</code></td></tr>
+<tr><td>Check changes</td><td><code>git status</code> / <code>git diff</code></td></tr>
+<tr><td>Stage</td><td><code>git add .</code></td></tr>
+<tr><td>Commit</td><td><code>git commit -m "message"</code></td></tr>
+<tr><td>Push branch</td><td><code>git push -u origin feature/name</code></td></tr>
+<tr><td>Create PR</td><td>GitHub → Pull Requests → New Pull Request</td></tr>
+<tr><td>Update PR</td><td>Same branch → commit → <code>git push</code></td></tr>
+<tr><td>Fetch remote</td><td><code>git fetch origin</code></td></tr>
+<tr><td>Merge target locally</td><td><code>git merge origin/main</code></td></tr>
+<tr><td>Rebase on target</td><td><code>git rebase origin/main</code></td></tr>
+<tr><td>Resolve conflict</td><td>Edit → <code>git add</code> → commit/rebase continue</td></tr>
+<tr><td>Update main after merge</td><td><code>git switch main</code><br><code>git pull --ff-only</code></td></tr>
+<tr><td>Delete local branch</td><td><code>git branch -d feature/name</code></td></tr>
+<tr><td>Delete remote branch</td><td><code>git push origin --delete feature/name</code></td></tr>
+</table>
+
+<h2>27. Final Mental Model</h2>
+<div class="card">
+<pre><code>              CREATE PULL REQUEST
+                     |
+                     v
+        +--------------------------+
+        | Update target branch     |
+        +--------------------------+
+                     |
+                     v
+        +--------------------------+
+        | Create feature branch    |
+        +--------------------------+
+                     |
+                     v
+        +--------------------------+
+        | Code + Test + Commit     |
+        +--------------------------+
+                     |
+                     v
+        +--------------------------+
+        | Push feature branch      |
+        +--------------------------+
+                     |
+                     v
+        +--------------------------+
+        | Create Pull Request      |
+        +--------------------------+
+                     |
+                     v
+        +--------------------------+
+        | Review + CI Checks       |
+        +--------------------------+
+                     |
+              +------+------+
+              |             |
+          Changes       Approved
+              |             |
+              v             v
+        Commit + Push     MERGE
+              |             |
+              +-----> PR <-+
+                            |
+                            v
+                     Update main
+                            |
+                            v
+                       Next task</code></pre>
+</div>
+
+<h2>28. Learning Checklist</h2>
+<ul class="checklist">
+<li>Pull Request ka purpose samajh liya</li>
+<li>PR aur <code>git pull</code> ka difference clear hai</li>
+<li>Feature branch create karna aata hai</li>
+<li>Changes inspect karna aata hai</li>
+<li>Commit aur push workflow clear hai</li>
+<li>GitHub par PR create karna aata hai</li>
+<li>Base vs compare branch samajh liya</li>
+<li>PR title aur description likhna aata hai</li>
+<li>Review process samajh liya</li>
+<li>Review feedback ke baad PR update karna aata hai</li>
+<li>CI checks ka role samajh liya</li>
+<li>Merge readiness check karna aata hai</li>
+<li>Merge commit samajh liya</li>
+<li>Squash and merge samajh liya</li>
+<li>Rebase and merge samajh liya</li>
+<li>Merge conflicts resolve karna samajh liya</li>
+<li>Merge ke baad local main update karna aata hai</li>
+<li>Feature branch cleanup samajh liya</li>
+<li>Professional PR best practices revise ki hain</li>
+<li>Interview questions practice kiye hain</li>
+</ul>
+</section>
+
+<footer>
+<p><strong>How to Create & Merge Pull Request — Complete Study Material</strong></p>
+<p>Branch → Commit → Push → PR → Review → CI → Approve → Merge 🚀</p>
+<p class="small">Part of your Git & GitHub learning journey.</p>
+</footer>
+
+</div>
+</body>
+</html>
