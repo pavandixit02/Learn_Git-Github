@@ -1,0 +1,384 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>GitHub Actions Practical Workflows</title><style>
+:root{--bg:#080d18;--p:#10192b;--p2:#0c1424;--t:#e9eef8;--m:#aab6ca;--b:#293750;--a:#58a6ff;--g:#45d483;--y:#e5bd55;--r:#ff6b6b}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:linear-gradient(180deg,#070b14,#0b1120);color:var(--t);font:16px/1.7 Inter,Segoe UI,Arial,sans-serif}.c{width:min(1180px,92%);margin:auto}header{padding:64px 0 42px;border-bottom:1px solid var(--b);background:radial-gradient(circle at 10% 0,#17355e,transparent 35%),radial-gradient(circle at 90% 0,#33205e,transparent 30%)}h1{font-size:clamp(2.2rem,5vw,4rem);line-height:1.08;margin:18px 0}h2{font-size:2rem}h3{color:#dce8fa}.badge{display:inline-block;padding:6px 12px;border:1px solid #3a5c86;border-radius:999px;background:#0d1d35;color:#9dccff}.sub,.small{color:var(--m)}nav{position:sticky;top:0;z-index:5;background:#080d18e8;backdrop-filter:blur(10px);border-bottom:1px solid var(--b)}nav .c{display:flex;gap:6px;overflow:auto;padding:9px 0}nav a{white-space:nowrap;color:#bac8dc;padding:7px 10px;border-radius:8px;text-decoration:none}nav a:hover{background:#18253d;color:#fff}section{padding:52px 0;border-bottom:1px solid var(--b)}.card,.call{background:linear-gradient(145deg,var(--p),var(--p2));border:1px solid var(--b);border-radius:15px;padding:21px;margin:18px 0}.call{border-left:4px solid var(--a)}.ok{border-left-color:var(--g)}.warn{border-left-color:var(--y)}.danger{border-left-color:var(--r)}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:15px}pre{background:#050a12;border:1px solid #202e46;border-radius:11px;padding:17px;overflow:auto;color:#dce7f8;font:14px/1.65 "JetBrains Mono",Consolas,monospace}code{font-family:"JetBrains Mono",Consolas,monospace}.in{background:#17243b;color:#a8d3ff;padding:2px 6px;border-radius:5px}table{width:100%;border-collapse:collapse;display:block;overflow:auto;margin:18px 0}th,td{border:1px solid var(--b);padding:11px 13px;text-align:left;min-width:150px}th{background:#17243b}.flow{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:9px;margin:25px 0}.step{padding:12px 16px;border:1px solid #35577f;background:#13213a;border-radius:11px;text-align:center}.arrow{color:#7da1d0;font-size:1.3rem}.diagram{background:#050a12;border:1px solid var(--b);border-radius:12px;padding:18px;overflow:auto}li{margin:6px 0}footer{text-align:center;color:var(--m);padding:38px}
+</style></head><body>
+<header><div class="c"><span class="badge">GitHub Actions • Practical YAML • Angular CI</span><h1>GitHub Actions Practical Workflows</h1><p class="sub">Simple workflow, scheduled workflow, disabling workflows, Angular automated build, and deep keyword explanations—beginner se DevOps-ready level tak.</p></div></header>
+<nav><div class="c"><a href="#simple">Simple</a><a href="#schedule">Schedule</a><a href="#disable">Disable</a><a href="#angular">Angular Build</a><a href="#keys">Keywords</a><a href="#patterns">Patterns</a><a href="#lab">Lab</a><a href="#interview">Interview</a><a href="#cheat">Cheat Sheet</a></div></nav>
+<main class="c">
+
+<section id="simple"><h2>1. Simple Workflow — First GitHub Actions Workflow</h2>
+<div class="call"><b>Goal:</b> <span class="in">main</span> par push hote hi workflow start ho aur runner par commands execute kare.</div>
+<h3>File location</h3><pre><code>.github/
+└── workflows/
+    └── simple.yml</code></pre>
+<h3>Complete example</h3><pre><code>name: Simple Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  hello:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Say Hello
+        run: echo "Hello from GitHub Actions"
+
+      - name: Show Git version
+        run: git --version
+
+      - name: Show repository
+        run: echo "Repository: $GITHUB_REPOSITORY"</code></pre>
+<div class="flow"><div class="step">git push</div><div class="arrow">→</div><div class="step">push event</div><div class="arrow">→</div><div class="step">workflow</div><div class="arrow">→</div><div class="step">job</div><div class="arrow">→</div><div class="step">runner</div><div class="arrow">→</div><div class="step">steps</div></div>
+<h3>Keyword-by-keyword</h3><table><tr><th>Keyword</th><th>Work</th><th>Why important?</th></tr>
+<tr><td><code>name</code></td><td>Workflow display name.</td><td>Actions UI mein identify karne ke liye.</td></tr><tr><td><code>on</code></td><td>Trigger define karta hai.</td><td>Kab automation start hogi.</td></tr><tr><td><code>push</code></td><td>Push event.</td><td>Code push par CI.</td></tr><tr><td><code>branches</code></td><td>Branch filter.</td><td>Specific branches tak trigger limit.</td></tr><tr><td><code>jobs</code></td><td>Work units ka collection.</td><td>Actual automation yahan define hoti hai.</td></tr><tr><td><code>hello</code></td><td>Job ID.</td><td>Job ko reference karne ke liye.</td></tr><tr><td><code>runs-on</code></td><td>Runner environment.</td><td>Commands kis OS/environment par chalengi.</td></tr><tr><td><code>steps</code></td><td>Execution sequence.</td><td>Job ka actual work.</td></tr><tr><td><code>run</code></td><td>Shell command.</td><td>Runner par command execute.</td></tr></table>
+<h3>Repository checkout kab chahiye?</h3><p>Agar workflow ko source files build/test karni hain, normally checkout karo:</p><pre><code>- uses: actions/checkout@v4</code></pre><p>Sirf <code>echo</code> ya runner/GitHub environment inspect karne ke liye checkout har workflow mein required nahi.</p>
+<h3>Better CI example</h3><pre><code>name: Simple CI
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: List files
+        run: ls -la
+      - name: Check
+        run: echo "CI is running successfully."</code></pre>
+</section>
+
+<section id="schedule"><h2>2. Schedule Workflow — Cron ke Through Automation</h2>
+<div class="call"><b>Schedule:</b> Git event ka wait kiye bina workflow ko defined time par automatically run karna. Iske liye <span class="in">schedule</span> + cron expression use hoti hai.</div>
+<h3>Basic example</h3><pre><code>name: Scheduled Workflow
+
+on:
+  schedule:
+    - cron: '30 6 * * *'
+
+jobs:
+  daily-task:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run scheduled task
+        run: echo "Scheduled task executed."</code></pre>
+<h3>Cron structure</h3><pre><code>┌──────── minute       0-59
+│ ┌────── hour         0-23
+│ │ ┌──── day of month 1-31
+│ │ │ ┌── month        1-12
+│ │ │ │ ┌ day of week  0-6
+│ │ │ │ │
+* * * * *</code></pre>
+<table><tr><th>Cron</th><th>Meaning</th></tr><tr><td><code>0 * * * *</code></td><td>Every hour at minute 0.</td></tr><tr><td><code>0 0 * * *</code></td><td>Daily at 00:00 UTC.</td></tr><tr><td><code>30 6 * * *</code></td><td>Daily at 06:30 UTC.</td></tr><tr><td><code>0 9 * * 1</code></td><td>Every Monday 09:00 UTC.</td></tr><tr><td><code>0 0 1 * *</code></td><td>First day of every month.</td></tr><tr><td><code>*/15 * * * *</code></td><td>Every 15 minutes.</td></tr></table>
+<div class="call warn"><b>Timezone:</b> GitHub Actions schedule UTC mein hota hai. IST = UTC + 5:30. Example: 06:30 UTC = 12:00 IST.</div>
+<h3>Scheduled + manual</h3><pre><code>name: Daily Maintenance
+
+on:
+  schedule:
+    - cron: '0 3 * * *'
+  workflow_dispatch:
+
+jobs:
+  maintenance:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Maintenance task"</code></pre>
+<p><code>schedule</code> automatic run deta hai; <code>workflow_dispatch</code> manual testing/re-run ke liye useful hai.</p>
+<h3>Common use cases</h3><div class="grid"><div class="card"><b>🧹 Maintenance</b><p>Periodic cleanup.</p></div><div class="card"><b>🔐 Security</b><p>Scheduled checks/scans.</p></div><div class="card"><b>📊 Reports</b><p>Daily/weekly reports.</p></div><div class="card"><b>🔎 Monitoring</b><p>Periodic health/config checks.</p></div></div>
+</section>
+
+<section id="disable"><h2>3. How to Disable a Workflow</h2>
+<div class="call"><b>Disable:</b> Workflow ko temporarily pause karna so that new trigger-based runs start na hon. Ye workflow file delete karne se different concept hai.</div>
+<h3>Method 1 — GitHub UI</h3><ol><li>Repository open karo.</li><li><b>Actions</b> tab.</li><li>Target workflow select karo.</li><li>Available workflow controls mein <b>Disable workflow</b> choose karo.</li></ol>
+<h3>Method 2 — Workflow ko remove/restore</h3><pre><code>git rm .github/workflows/deploy.yml
+git commit -m "Remove deployment workflow"
+git push origin main</code></pre>
+<p>Ye repository se definition remove karta hai; temporary pause ke liye UI disable zyada direct approach hai.</p>
+<h3>Method 3 — Manual-only workflow</h3><pre><code>name: Controlled Deployment
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Manual deployment"</code></pre>
+<p>Automatic push/PR trigger nahi hai; workflow manually run kiya ja sakta hai.</p>
+<table><tr><th>Approach</th><th>Effect</th><th>Use</th></tr><tr><td>Disable</td><td>Existing automation paused.</td><td>Temporary pause.</td></tr><tr><td>Delete file</td><td>Workflow definition removed.</td><td>No longer needed.</td></tr><tr><td>Manual-only</td><td>Only manual trigger.</td><td>Controlled deployment.</td></tr><tr><td>Trigger filters</td><td>Selected events/branches only.</td><td>Scoped automation.</td></tr></table>
+<div class="call warn"><b>Important:</b> Disabling a workflow and cancelling an already-running workflow run are separate operations.</div>
+</section>
+
+<section id="angular"><h2>4. Automate Angular Build Process</h2>
+<div class="call"><b>Goal:</b> Push/PR → checkout → Node setup → <code>npm ci</code> → Angular build → artifact. Isse repetitive manual build process CI mein automate hota hai.</div>
+<h3>Typical project</h3><pre><code>my-angular-app/
+├── src/
+├── public/
+├── angular.json
+├── package.json
+├── package-lock.json
+└── tsconfig.json</code></pre>
+<h3>Manual build</h3><pre><code>npm ci
+npm run build</code></pre>
+<h3>Workflow: <code>.github/workflows/angular-ci.yml</code></h3><pre><code>name: Angular CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Angular application
+        run: npm run build
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: angular-build
+          path: dist/</code></pre>
+<h3>Execution flow</h3><div class="diagram"><pre>Developer
+   │ git push / PR
+   ▼
+GitHub Repository
+   │ trigger
+   ▼
+Angular CI
+   ├─ Checkout
+   ├─ Setup Node
+   ├─ npm ci
+   ├─ npm run build
+   └─ upload dist/
+          │
+          ▼
+       Artifact</pre></div>
+<h3>Angular example — keyword details</h3><table><tr><th>Keyword</th><th>Work</th><th>Importance</th></tr><tr><td><code>push</code></td><td>Push par CI.</td><td>Automatic validation.</td></tr><tr><td><code>pull_request</code></td><td>PR par CI.</td><td>Merge se pehle validation.</td></tr><tr><td><code>workflow_dispatch</code></td><td>Manual run.</td><td>Debug/re-run.</td></tr><tr><td><code>permissions</code></td><td>GITHUB_TOKEN permissions.</td><td>Least privilege.</td></tr><tr><td><code>checkout</code></td><td>Source code runner par lata hai.</td><td>Build ko files chahiye.</td></tr><tr><td><code>setup-node</code></td><td>Node runtime.</td><td>Consistent environment.</td></tr><tr><td><code>node-version</code></td><td>Node version.</td><td>Compatibility.</td></tr><tr><td><code>cache: npm</code></td><td>npm cache setup.</td><td>Repeated dependency work faster ho sakta hai.</td></tr><tr><td><code>npm ci</code></td><td>Clean lockfile install.</td><td>Reproducible CI install.</td></tr><tr><td><code>npm run build</code></td><td>package.json build script.</td><td>Angular build generate karta hai.</td></tr><tr><td><code>upload-artifact</code></td><td>Output retain/upload.</td><td>Build result inspect/share.</td></tr></table>
+<h3>package.json connection</h3><pre><code>{
+  "scripts": {
+    "start": "ng serve",
+    "build": "ng build",
+    "test": "ng test"
+  }
+}</code></pre><p><code>npm run build</code> actually <code>package.json</code> ka <code>scripts.build</code> execute karta hai.</p>
+<h3>Build + Test</h3><pre><code>name: Angular CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm test -- --watch=false
+      - run: npm run build</code></pre>
+<div class="call ok"><b>Recommended learning pattern:</b> PR par test/build validate karo; production deployment ko controlled CD stage/workflow mein rakho.</div>
+</section>
+
+<section id="keys"><h2>5. All Important Keywords — Deep Dive</h2>
+<h3><code>name</code></h3><pre><code>name: Angular CI</code></pre><p>UI label; execution logic change nahi karta.</p>
+<h3><code>on</code> + event filters</h3><pre><code>on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]</code></pre><p>Multiple event types combine kar sakte ho.</p>
+<h3>Path filters</h3><pre><code>on:
+  push:
+    paths:
+      - 'frontend/**'
+      - 'package.json'</code></pre><p>Relevant files change hone par hi workflow run karne mein useful; monorepo mein helpful.</p>
+<h3><code>workflow_dispatch</code> + inputs</h3><pre><code>on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: Deployment environment
+        required: true
+        default: staging
+        type: choice
+        options:
+          - staging
+          - production</code></pre><p>Manual workflow ko parameters dene ka structured method.</p>
+<h3><code>jobs</code> + IDs</h3><pre><code>jobs:
+  build:
+    ...
+  test:
+    ...</code></pre><p>Independent logical work units.</p>
+<h3><code>needs</code></h3><pre><code>deploy:
+  needs: build</code></pre><pre><code>deploy:
+  needs: [build, test]</code></pre><p>Dependencies/order define karta hai.</p>
+<h3><code>runs-on</code></h3><pre><code>runs-on: ubuntu-latest</code></pre><p>Runner OS/environment selection.</p>
+<h3><code>uses</code> vs <code>run</code></h3><table><tr><th>uses</th><th>run</th></tr><tr><td>Reusable Action.</td><td>Shell command/script.</td></tr><tr><td><code>actions/checkout@v4</code></td><td><code>npm ci</code></td></tr></table>
+<h3><code>with</code></h3><pre><code>- uses: actions/setup-node@v4
+  with:
+    node-version: 22
+    cache: npm</code></pre><p>Action-specific inputs/configuration.</p>
+<h3><code>if</code></h3><pre><code>if: github.ref == 'refs/heads/main'</code></pre><p>Conditional execution.</p>
+<h3><code>env</code></h3><pre><code>env:
+  APP_ENV: production
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "$APP_ENV"</code></pre>
+<h3>Expressions <code>${{ }}</code></h3><pre><code>run: echo "Branch: ${{ github.ref_name }}"</code></pre><p>GitHub contexts/expression values evaluate karne ke liye.</p>
+<h3>Secrets</h3><pre><code>env:
+  TOKEN: ${{ secrets.MY_TOKEN }}</code></pre><p>Sensitive credentials ke liye. Secrets ko logs mein print mat karo.</p>
+<h3><code>permissions</code></h3><pre><code>permissions:
+  contents: read</code></pre><p>GITHUB_TOKEN access ko least privilege ke saath restrict karne mein useful.</p>
+<h3>Matrix</h3><pre><code>strategy:
+  matrix:
+    node: [20, 22]
+
+runs-on: ubuntu-latest</code></pre><p>Multiple versions/configurations par same tests.</p>
+<h3><code>timeout-minutes</code> & <code>continue-on-error</code></h3><pre><code>jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15</code></pre><pre><code>- run: ./optional-check.sh
+  continue-on-error: true</code></pre>
+<p>Timeout runaway jobs ko limit karta hai; continue-on-error selected failure ko tolerated bana sakta hai—business logic ke according carefully use karo.</p>
+</section>
+
+<section id="patterns"><h2>Different Ways to Design Workflows</h2>
+<h3>Push CI</h3><pre><code>on:
+  push:
+    branches: [ main ]</code></pre>
+<h3>PR validation</h3><pre><code>on:
+  pull_request:
+    branches: [ main ]</code></pre>
+<h3>Scheduled</h3><pre><code>on:
+  schedule:
+    - cron: '0 3 * * *'</code></pre>
+<h3>Manual-only</h3><pre><code>on:
+  workflow_dispatch:</code></pre>
+<h3>Push + PR + manual</h3><pre><code>on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:</code></pre>
+<h3>Path-specific</h3><pre><code>on:
+  push:
+    paths:
+      - 'frontend/**'</code></pre>
+<h3>Build → Deploy</h3><pre><code>jobs:
+  build:
+    ...
+  deploy:
+    needs: build
+    ...</code></pre>
+<h3>Parallel checks → Deploy</h3><pre><code>jobs:
+  lint: ...
+  test: ...
+  security: ...
+  deploy:
+    needs: [lint, test, security]</code></pre>
+<div class="diagram"><pre>                 ┌── Lint ───────┐
+Push / PR ───────┼── Test ────────┼──> Deploy
+                 └── Security ───┘
+                    parallel          sequential</pre></div>
+</section>
+
+<section><h2>Common Mistakes & Troubleshooting</h2>
+<table><tr><th>Problem</th><th>Likely reason</th><th>Check</th></tr><tr><td>Workflow not starting</td><td>Event/branch/path mismatch.</td><td><code>on</code> filters.</td></tr><tr><td>Schedule time wrong</td><td>UTC vs IST confusion.</td><td>Cron timezone.</td></tr><tr><td>Angular build fails</td><td>Node/dependency mismatch.</td><td>Project-supported Node + lockfile.</td></tr><tr><td><code>npm ci</code> fails</td><td>Lockfile mismatch.</td><td>package.json/package-lock consistency.</td></tr><tr><td><code>ng</code> not found</td><td>Dependency/CLI setup issue.</td><td>Use project-local CLI/package scripts.</td></tr><tr><td>Wrong artifact path</td><td>Angular output config differs.</td><td>Actual <code>dist/</code> structure.</td></tr><tr><td>Secret missing</td><td>Name/scope mismatch.</td><td>Secret reference/configuration.</td></tr><tr><td>Deploy runs unexpectedly</td><td>Broad trigger.</td><td>Filters + <code>if</code> + environments.</td></tr><tr><td>YAML error</td><td>Indentation.</td><td>Spaces, no tabs.</td></tr></table>
+<div class="call danger"><b>Golden rule:</b> YAML indentation syntax ka part hai. Consistent spaces use karo.</div>
+</section>
+
+<section id="lab"><h2>Complete Practical Lab — Angular CI</h2>
+<h3>1. Directory</h3><pre><code>mkdir -p .github/workflows</code></pre>
+<h3>2. File</h3><pre><code>touch .github/workflows/angular-ci.yml</code></pre>
+<h3>3. Add workflow</h3><pre><code>name: Angular CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install
+        run: npm ci
+      - name: Build
+        run: npm run build
+      - name: Upload build
+        uses: actions/upload-artifact@v4
+        with:
+          name: angular-build
+          path: dist/</code></pre>
+<h3>4. Test locally</h3><pre><code>npm ci
+npm run build</code></pre>
+<h3>5. Commit & push</h3><pre><code>git add .github/workflows/angular-ci.yml
+git commit -m "Add Angular CI workflow"
+git push origin main</code></pre>
+<h3>6. GitHub par inspect</h3><ol><li>Repository → <b>Actions</b></li><li>Angular CI select karo.</li><li>Latest run open karo.</li><li>build job open karo.</li><li>Checkout → Node → npm ci → Build → Upload logs dekho.</li></ol>
+<div class="call ok"><b>Challenge:</b> Ek separate <code>test</code> job banao aur <code>build</code> mein <code>needs: test</code> add karo.</div>
+</section>
+
+<section id="interview"><h2>Interview Questions</h2><div class="card">
+<h3>Q1. Simple workflow ka basic structure?</h3><p><code>name</code>, <code>on</code>, <code>jobs</code>, <code>runs-on</code>, <code>steps</code>.</p>
+<h3>Q2. schedule ka use?</h3><p>Cron-based automatic execution.</p>
+<h3>Q3. Cron timezone?</h3><p>UTC.</p>
+<h3>Q4. workflow_dispatch?</h3><p>Manual execution.</p>
+<h3>Q5. Disable vs delete?</h3><p>Disable pause karta hai; delete/remove definition ko repository se hata deta hai.</p>
+<h3>Q6. Angular CI mein npm ci?</h3><p>Lockfile-based clean/reproducible dependency installation ke liye.</p>
+<h3>Q7. Angular automation flow?</h3><p>Trigger → checkout → Node → npm ci → npm run build → artifact.</p>
+<h3>Q8. uses vs run?</h3><p>Action invocation vs shell command.</p>
+<h3>Q9. needs?</h3><p>Job dependency/order.</p>
+<h3>Q10. paths?</h3><p>Relevant file changes tak trigger scope karna.</p>
+<h3>Q11. CI/CD separate kyu?</h3><p>Validation aur deployment ko independently control/security/troubleshoot karna easier.</p>
+<h3>Q12. Manual-only workflow?</h3><p>Automatic triggers remove karke <code>workflow_dispatch</code>.</p></div></section>
+
+<section id="cheat"><h2>Quick Cheat Sheet</h2><table><tr><th>Keyword</th><th>Memory</th></tr>
+<tr><td><code>name</code></td><td>Workflow name</td></tr><tr><td><code>on</code></td><td>When?</td></tr><tr><td><code>push</code></td><td>Push trigger</td></tr><tr><td><code>pull_request</code></td><td>PR validation</td></tr><tr><td><code>schedule</code></td><td>Cron trigger</td></tr><tr><td><code>workflow_dispatch</code></td><td>Manual trigger</td></tr><tr><td><code>jobs</code></td><td>Work units</td></tr><tr><td><code>runs-on</code></td><td>Runner</td></tr><tr><td><code>steps</code></td><td>Execution sequence</td></tr><tr><td><code>uses</code></td><td>Reusable Action</td></tr><tr><td><code>run</code></td><td>Shell command</td></tr><tr><td><code>with</code></td><td>Action inputs</td></tr><tr><td><code>needs</code></td><td>Dependency</td></tr><tr><td><code>if</code></td><td>Condition</td></tr><tr><td><code>env</code></td><td>Environment variable</td></tr><tr><td><code>secrets</code></td><td>Secret value</td></tr><tr><td><code>permissions</code></td><td>Token permissions</td></tr><tr><td><code>strategy.matrix</code></td><td>Multiple configurations</td></tr><tr><td><code>timeout-minutes</code></td><td>Job time limit</td></tr></table>
+<div class="call ok"><b>Master formula:</b> Event → Workflow → Job → Runner → Steps → Action/Command → Test/Build → Artifact → Deployment</div>
+<div class="call"><b>Angular formula:</b> Push/PR → Checkout → Setup Node → npm ci → npm test → npm run build → dist/ → Artifact → Deploy</div>
+<h3>Final checklist</h3><ul><li>□ Simple workflow created</li><li>□ push/branch filters understood</li><li>□ schedule + cron understood</li><li>□ UTC/IST conversion understood</li><li>□ workflow_dispatch understood</li><li>□ Disable/Delete/Manual-only difference understood</li><li>□ Angular CI built</li><li>□ checkout/setup-node understood</li><li>□ npm ci/build understood</li><li>□ artifact understood</li><li>□ needs/if/env/secrets/permissions understood</li><li>□ Parallel vs sequential design understood</li><li>□ Logs-based troubleshooting practiced</li></ul></section>
+
+</main><footer><div class="c"><b>GitHub Actions Practical Workflows</b><br>Simple Workflow • Schedule • Disable • Angular CI • YAML Deep Dive</div></footer>
+</body></html>
