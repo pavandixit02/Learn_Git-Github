@@ -1,0 +1,462 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GitHub Actions — Artifacts, Caching & Job Concurrency</title>
+<style>
+:root{--bg:#080d18;--p:#10192b;--p2:#0c1424;--t:#eaf0fa;--m:#aab6ca;--b:#293750;--a:#58a6ff;--g:#45d483;--y:#e7bd55;--r:#ff6b6b}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:linear-gradient(180deg,#070b14,#0b1120);color:var(--t);font:16px/1.7 Inter,Segoe UI,Arial,sans-serif}
+.container{width:min(1200px,92%);margin:auto}
+header{padding:64px 0 44px;border-bottom:1px solid var(--b);background:radial-gradient(circle at 12% 0,#17385f,transparent 34%),radial-gradient(circle at 90% 5%,#33205e,transparent 30%)}
+.badge{display:inline-block;padding:6px 12px;border:1px solid #3b5d87;border-radius:999px;background:#0d1d35;color:#9dccff}
+h1{font-size:clamp(2.1rem,5vw,4rem);line-height:1.08;margin:18px 0}h2{font-size:2rem}h3{color:#dce8fa}
+.sub,.small{color:var(--m)}nav{position:sticky;top:0;z-index:10;background:#080d18e8;backdrop-filter:blur(12px);border-bottom:1px solid var(--b)}
+nav .container{display:flex;gap:6px;overflow:auto;padding:9px 0}nav a{white-space:nowrap;color:#bdc9db;text-decoration:none;padding:7px 10px;border-radius:8px}nav a:hover{background:#18243b;color:#fff}
+section{padding:55px 0;border-bottom:1px solid var(--b)}.card,.call{background:linear-gradient(145deg,var(--p),var(--p2));border:1px solid var(--b);border-radius:15px;padding:22px;margin:18px 0}
+.call{border-left:4px solid var(--a)}.ok{border-left-color:var(--g)}.warn{border-left-color:var(--y)}.danger{border-left-color:var(--r)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:15px}
+pre{background:#050a12;border:1px solid #202e46;border-radius:11px;padding:18px;overflow:auto;color:#dce7f8;font:14px/1.65 "JetBrains Mono",Consolas,monospace}
+code{font-family:"JetBrains Mono",Consolas,monospace}.in{background:#17243b;color:#a8d3ff;padding:2px 6px;border-radius:5px}
+table{width:100%;border-collapse:collapse;display:block;overflow:auto;margin:18px 0}th,td{border:1px solid var(--b);padding:11px 13px;text-align:left;min-width:155px}th{background:#17243b}tr:nth-child(even){background:#0e1729}
+.flow{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:9px;margin:25px 0}.step{padding:12px 16px;border:1px solid #35577f;background:#13213a;border-radius:11px;text-align:center;min-width:145px}.arrow{color:#7da1d0;font-size:1.3rem}
+.diagram{background:#050a12;border:1px solid var(--b);border-radius:12px;padding:18px;overflow:auto}li{margin:6px 0}footer{text-align:center;color:var(--m);padding:42px}
+</style>
+</head>
+<body>
+<header><div class="container"><span class="badge">GitHub Actions • Artifacts • Caching • Concurrency</span>
+<h1>Artifacts, Caching & Job Concurrency</h1>
+<p class="sub">Complete practical guide: artifacts vs dependency caching, JavaScript/Node.js, Python, Java, cache keys, restore logic, job concurrency, duplicate-run control, deployment protection and CI/CD examples.</p></div></header>
+<nav><div class="container">
+<a href="#artifacts">Artifacts</a><a href="#cache">Caching</a><a href="#js">JavaScript</a><a href="#python">Python</a><a href="#java">Java</a><a href="#compare">Comparison</a><a href="#concurrency">Concurrency</a><a href="#examples">Examples</a><a href="#lab">Lab</a><a href="#interview">Interview</a><a href="#cheat">Cheat Sheet</a>
+</div></nav>
+<main class="container">
+
+<section id="artifacts"><h2>1. GitHub Actions Artifacts</h2>
+<div class="call"><b>Simple definition:</b> Workflow ke dauran generate hua output/file jise workflow run ke saath upload karke baad mein inspect, download, share ya next job mein use kiya ja sakta hai. Examples: <code>dist/</code>, JAR/WAR, test reports, coverage reports, ZIP/packages.</div>
+<h3>Real-life analogy</h3><div class="card">Factory mein raw material → production → finished product → warehouse. CI/CD mein source code → build/test → <b>artifact</b>.</div>
+<h3>Basic flow</h3><div class="flow"><div class="step">Source</div><div class="arrow">→</div><div class="step">Build</div><div class="arrow">→</div><div class="step">Output</div><div class="arrow">→</div><div class="step">Upload</div><div class="arrow">→</div><div class="step">Download/Deploy</div></div>
+<h3>Upload artifact</h3><pre><code>- name: Build
+  run: npm run build
+
+- name: Upload build
+  uses: actions/upload-artifact@v4
+  with:
+    name: web-build
+    path: dist/</code></pre>
+<table><tr><th>Keyword</th><th>Purpose</th></tr><tr><td><code>upload-artifact@v4</code></td><td>Files/directories upload.</td></tr><tr><td><code>name</code></td><td>Artifact identifier.</td></tr><tr><td><code>path</code></td><td>Upload source path.</td></tr><tr><td><code>download-artifact@v4</code></td><td>Later job/step mein artifact retrieve.</td></tr></table>
+<h3>Build → Deploy using artifact</h3><pre><code>jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm ci
+      - run: npm run build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: app-build
+          path: dist/
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: app-build
+          path: dist/
+      - run: echo "Deploy dist/ here"</code></pre>
+<div class="diagram"><pre>BUILD JOB
+source → build → dist/ → upload-artifact
+                         ↓
+                    GitHub Artifact
+                         ↓
+DEPLOY JOB ← download-artifact ← artifact</pre></div>
+<div class="call ok"><b>DevOps benefit:</b> Build once, then same generated output ko later deployment stage mein use karo.</div>
+</section>
+
+<section id="cache"><h2>2. GitHub Actions Caching</h2>
+<div class="call"><b>Definition:</b> Frequently reusable dependencies/files ko temporarily store karna taaki future runs mein same data ko scratch se dobara download/generate na karna pade.</div>
+<h3>Why cache?</h3><p>CI mein dependencies repeatedly install hoti hain. npm, pip, Maven, Gradle jaise package ecosystems mein cache repeated network/download work ko reduce karke pipeline faster kar sakta hai.</p>
+<div class="flow"><div class="step">First Run</div><div class="arrow">→</div><div class="step">Download</div><div class="arrow">→</div><div class="step">Save Cache</div><div class="arrow">→</div><div class="step">Next Run</div><div class="arrow">→</div><div class="step">Restore</div></div>
+<h3>Artifact vs Cache</h3><table><tr><th>Artifact</th><th>Cache</th></tr><tr><td>Build/test output preserve/share.</td><td>Repeated dependency/data work faster.</td></tr><tr><td><code>dist/</code>, JAR, reports.</td><td>npm/pip/Maven/Gradle dependency data.</td></tr><tr><td>Next job/release consume kar sakta hai.</td><td>Performance optimization.</td></tr><tr><td>Deployable output ho sakta hai.</td><td>Release source-of-truth nahi.</td></tr></table>
+<div class="call warn"><b>Golden rule:</b> Artifact = output. Cache = speed optimization.</div>
+<h3>Explicit cache</h3><pre><code>- uses: actions/cache@v4
+  with:
+    path: some/cache/path
+    key: ${{ runner.os }}-deps-${{ hashFiles('lockfile') }}
+    restore-keys: |
+      ${{ runner.os }}-deps-</code></pre>
+<table><tr><th>Keyword</th><th>Meaning</th></tr><tr><td><code>path</code></td><td>What to cache.</td></tr><tr><td><code>key</code></td><td>Cache identity.</td></tr><tr><td><code>hashFiles()</code></td><td>Lock/dependency file content se hash context.</td></tr><tr><td><code>restore-keys</code></td><td>Exact key miss hone par fallback prefixes.</td></tr><tr><td><code>runner.os</code></td><td>OS-specific key.</td></tr></table>
+<h3>Cache key concept</h3><pre><code>OS + runtime version + dependency lockfile state
+
+Example:
+ubuntu-latest-node-22-&lt;lockfile-hash&gt;</code></pre>
+<p>Lockfile change hone par hash change ho sakta hai, jisse new dependency cache context milta hai.</p>
+</section>
+
+<section id="js"><h2>3. JavaScript / Node.js — Cache + Artifact</h2>
+<pre><code>name: Node CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Test
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+      - name: Upload build
+        uses: actions/upload-artifact@v4
+        with:
+          name: node-build
+          path: dist/</code></pre>
+<ol><li><code>checkout</code> source runner par.</li><li><code>setup-node</code> Node runtime.</li><li><code>cache: npm</code> npm cache.</li><li><code>npm ci</code> clean lockfile install.</li><li><code>npm test</code> validation.</li><li><code>npm run build</code> output.</li><li><code>upload-artifact</code> output preserve.</li></ol>
+<h3>Explicit npm cache</h3><pre><code>- name: Get npm cache directory
+  id: npm-cache
+  run: echo "dir=$(npm config get cache)" >> "$GITHUB_OUTPUT"
+
+- name: Cache npm
+  uses: actions/cache@v4
+  with:
+    path: ${{ steps.npm-cache.outputs.dir }}
+    key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+    restore-keys: |
+      ${{ runner.os }}-node-</code></pre>
+<div class="call"><b>Tip:</b> <code>setup-node</code> ka built-in cache simple projects ke liye convenient hai; <code>actions/cache</code> custom paths/keys ke liye useful hai.</div>
+</section>
+
+<section id="python"><h2>4. Python — pip Cache + Package Artifact</h2>
+<pre><code>name: Python CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: requirements.txt
+
+      - run: pip install -r requirements.txt
+      - run: pytest
+      - run: python -m build
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: python-package
+          path: dist/</code></pre>
+<table><tr><th>Config</th><th>Purpose</th></tr><tr><td><code>setup-python</code></td><td>Python runtime.</td></tr><tr><td><code>python-version</code></td><td>Python version.</td></tr><tr><td><code>cache: pip</code></td><td>pip cache reuse.</td></tr><tr><td><code>cache-dependency-path</code></td><td>Dependency file context.</td></tr><tr><td><code>pytest</code></td><td>Tests.</td></tr><tr><td><code>python -m build</code></td><td>Package build.</td></tr></table>
+</section>
+
+<section id="java"><h2>5. Java — Maven / Gradle Cache + JAR Artifact</h2>
+<h3>Maven</h3><pre><code>name: Java Maven CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+
+      - run: mvn -B verify
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: java-jar
+          path: target/*.jar</code></pre>
+<h3>Gradle</h3><pre><code>- uses: actions/setup-java@v4
+  with:
+    distribution: temurin
+    java-version: '21'
+    cache: gradle
+
+- run: ./gradlew build
+
+- uses: actions/upload-artifact@v4
+  with:
+    name: gradle-build
+    path: build/libs/*.jar</code></pre>
+<table><tr><th>Keyword</th><th>Purpose</th></tr><tr><td><code>distribution</code></td><td>JDK distribution.</td></tr><tr><td><code>java-version</code></td><td>JDK version.</td></tr><tr><td><code>cache: maven</code></td><td>Maven dependency cache.</td></tr><tr><td><code>cache: gradle</code></td><td>Gradle cache.</td></tr><tr><td><code>mvn -B verify</code></td><td>Maven build/test lifecycle.</td></tr><tr><td><code>./gradlew build</code></td><td>Gradle build.</td></tr></table>
+</section>
+
+<section id="compare"><h2>6. Artifacts vs Caching — Deep Comparison</h2>
+<table><tr><th>Question</th><th>Artifact</th><th>Cache</th></tr><tr><td>Purpose?</td><td>Output preserve/share.</td><td>Future runs faster.</td></tr><tr><td>Typical data?</td><td>dist, JAR, reports, packages.</td><td>npm/pip/Maven/Gradle dependency data.</td></tr><tr><td>Next job?</td><td>Download and consume.</td><td>Usually install/build optimization.</td></tr><tr><td>Release output?</td><td>Can be.</td><td>Normally not.</td></tr><tr><td>Key?</td><td>Artifact name.</td><td>Cache key + restore keys.</td></tr></table>
+<div class="call ok"><b>Remember:</b> “Artifact ko sambhal ke rakho.” “Cache se baar-baar hone wala kaam fast karo.”</div>
+</section>
+
+<section id="concurrency"><h2>7. Job Concurrency in GitHub Actions</h2>
+<div class="call"><b>Definition:</b> Concurrency control karta hai ki same logical group ke overlapping workflow/job runs ko kaise handle kiya jaye—especially duplicate runs ko cancel ya deployment ko serialize karna.</div>
+<h3>Why needed?</h3><div class="grid"><div class="card"><b>🚫 Duplicate CI</b><p>Old PR runs cancel.</p></div><div class="card"><b>💰 Resource saving</b><p>Unnecessary runners stop.</p></div><div class="card"><b>⚡ Latest code</b><p>Latest commit validation priority.</p></div><div class="card"><b>🔒 Deploy safety</b><p>Production deployments control.</p></div></div>
+<h3>Basic syntax</h3><pre><code>concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true</code></pre>
+<table><tr><th>Keyword</th><th>Meaning</th></tr><tr><td><code>concurrency</code></td><td>Concurrency policy.</td></tr><tr><td><code>group</code></td><td>Logical group identifier.</td></tr><tr><td><code>cancel-in-progress</code></td><td>Active group run cancellation policy.</td></tr></table>
+<h3>PR: latest run wins</h3><pre><code>name: PR CI
+
+on:
+  pull_request:
+
+concurrency:
+  group: pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm ci
+      - run: npm test</code></pre>
+<div class="diagram"><pre>Commit A → Run A ───────── X cancelled
+Commit B → Run B ───── X cancelled
+Commit C → Run C ─────────────→ active</pre></div>
+<h3>Production: don't cancel active run</h3><pre><code>name: Production Deploy
+
+on:
+  push:
+    branches: [ main ]
+
+concurrency:
+  group: production-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Deploy production"</code></pre>
+<p>Critical deployment mein active run ko automatically cancel na karna useful ho sakta hai; exact strategy application/environment requirements par depend karti hai.</p>
+<h3>Job-level concurrency</h3><pre><code>jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: deploy-${{ github.ref }}
+      cancel-in-progress: false
+    steps:
+      - run: echo "Deploy"</code></pre>
+</section>
+
+<section id="examples"><h2>8. Multiple Concurrency Examples</h2>
+<h3>Example 1 — Same branch CI</h3><pre><code>concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true</code></pre>
+<p>Same branch par new push old CI ko replace kar sakta hai.</p>
+<h3>Example 2 — Workflow + branch</h3><pre><code>concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true</code></pre>
+<p>Workflow identity + ref ko group mein include karke groups ko more specific banaya ja sakta hai.</p>
+<h3>Example 3 — PR number</h3><pre><code>concurrency:
+  group: pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: true</code></pre>
+<p>Same PR ke runs cancel; different PRs independently run.</p>
+<h3>Example 4 — Environment-specific</h3><pre><code>on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        required: true
+        type: choice
+        options: [staging, production]
+
+concurrency:
+  group: deploy-${{ inputs.environment }}
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Deploy ${{ inputs.environment }}"</code></pre>
+<h3>Example 5 — Parallel checks → serialized deployment</h3><pre><code>jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo lint
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo test
+
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo security
+
+  deploy:
+    needs: [lint, test, security]
+    runs-on: ubuntu-latest
+    concurrency:
+      group: production-deploy
+      cancel-in-progress: false
+    steps:
+      - run: echo deploy</code></pre>
+<div class="diagram"><pre>             ┌── Lint ────────┐
+Push / PR ───┼── Test ─────────┼──→ Deploy
+             └── Security ────┘       │
+                 parallel       production group</pre></div>
+<div class="call warn"><b>Important:</b> Group bahut broad hua to unrelated branches/environments unnecessarily block ho sakte hain. Group design deliberately karo.</div>
+</section>
+
+<section><h2>9. Workflow-Level vs Job-Level Concurrency</h2>
+<table><tr><th>Workflow-level</th><th>Job-level</th></tr><tr><td>Top-level <code>concurrency</code>.</td><td>Specific job ke andar.</td></tr><tr><td>Whole workflow runs ko control karne ke liye.</td><td>Particular job/resource ko control karne ke liye.</td></tr><tr><td>Simple branch/PR CI patterns.</td><td>Specific deployment serialization.</td></tr></table>
+<div class="diagram"><pre>Workflow
+├── Build Job
+├── Test Job
+└── Deploy Job
+       └── job-level concurrency
+
+Top-level concurrency
+        ↓
+workflow runs/grouping</pre></div>
+</section>
+
+<section><h2>10. Combined Cache + Artifact + Concurrency Pipeline</h2>
+<pre><code>name: Full CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: app-build
+          path: dist/
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    concurrency:
+      group: production-deploy
+      cancel-in-progress: false
+
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: app-build
+          path: dist/
+      - run: echo "Deploy dist/ to production"</code></pre>
+<div class="diagram"><pre>Push / PR
+   ↓
+Concurrency: latest CI wins
+   ↓
+Build
+ ├─ dependency cache
+ ├─ npm ci
+ ├─ test
+ └─ build
+   ↓
+Artifact
+   ↓
+Deploy
+ └─ production concurrency
+</pre></div>
+</section>
+
+<section id="lab"><h2>11. Practical Labs</h2>
+<h3>Lab A — Node</h3><p>Build workflow mein <code>setup-node + cache: npm + npm ci + npm test + npm run build + upload-artifact</code> implement karo.</p>
+<h3>Lab B — Python</h3><p><code>setup-python + cache: pip</code> use karo, tests run karo aur package/report artifact upload karo.</p>
+<h3>Lab C — Java</h3><p><code>setup-java + cache: maven</code> use karo aur JAR ko artifact banao.</p>
+<h3>Lab D — PR concurrency</h3><pre><code>concurrency:
+  group: pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: true</code></pre><p>Same PR par multiple commits push karke old/new run behavior observe karo.</p>
+<h3>Lab E — Production concurrency</h3><pre><code>concurrency:
+  group: production-deploy
+  cancel-in-progress: false</code></pre><p>Deployment runs ko serialized group mein test karo.</p>
+<div class="call ok"><b>Advanced challenge:</b> Frontend Node.js, backend Python aur Java service ke separate build jobs banao; artifacts upload karo; deploy stage ko <code>needs</code> se connect karo; production deploy par concurrency apply karo.</div>
+</section>
+
+<section><h2>12. Common Mistakes & Troubleshooting</h2>
+<table><tr><th>Problem</th><th>Likely cause</th><th>Check</th></tr><tr><td>Artifact missing</td><td>Wrong path/build failed.</td><td>Build logs + output path.</td></tr><tr><td>Upload fails</td><td>Path doesn't exist.</td><td><code>ls -la</code>.</td></tr><tr><td>Cache never hits</td><td>Key/path mismatch.</td><td>Key + lockfile.</td></tr><tr><td>Stale cache</td><td>Key too broad.</td><td>Include dependency hash/version.</td></tr><tr><td>Old CI not cancelled</td><td>Different group IDs.</td><td>Group expression.</td></tr><tr><td>Production cancelled</td><td>Broad <code>cancel-in-progress: true</code>.</td><td>Use deployment-specific policy.</td></tr><tr><td>Jobs blocked</td><td>Group too broad.</td><td>Make group specific.</td></tr></table>
+<div class="call danger"><b>Security:</b> Cache/artifact mein credentials, tokens ya secret files accidentally package/store na hon. Sensitive values ko logs mein print mat karo.</div>
+</section>
+
+<section id="interview"><h2>13. Interview Questions</h2><div class="card">
+<h3>Q1. Artifact kya hai?</h3><p>Workflow output ko upload/store/share karne ka mechanism.</p>
+<h3>Q2. Cache vs artifact?</h3><p>Artifact output preservation; cache performance optimization.</p>
+<h3>Q3. Node cache?</h3><p><code>actions/setup-node</code> + <code>cache: npm</code>.</p>
+<h3>Q4. Python cache?</h3><p><code>actions/setup-python</code> + <code>cache: pip</code>.</p>
+<h3>Q5. Java Maven cache?</h3><p><code>actions/setup-java</code> + <code>cache: maven</code>.</p>
+<h3>Q6. hashFiles?</h3><p>Dependency file changes ko cache key context mein include karne ke liye.</p>
+<h3>Q7. restore-keys?</h3><p>Exact key miss par fallback prefixes.</p>
+<h3>Q8. Concurrency?</h3><p>Overlapping runs/jobs ko group-based control karna.</p>
+<h3>Q9. cancel-in-progress true?</h3><p>Latest PR/branch CI ko priority dene ke liye useful.</p>
+<h3>Q10. Production mein false?</h3><p>Active deployment ko automatically cancel na karne ke liye; strategy environment requirements par depend karti hai.</p>
+<h3>Q11. Concurrency group?</h3><p>Runs/jobs ka logical group identifier.</p>
+<h3>Q12. Artifact next job?</h3><p>First job upload, later job download.</p>
+<h3>Q13. Cache ko release package use karna?</h3><p>Nahi; cache optimization hai. Release output ke liye artifact/package/container registry use karo.</p>
+</div></section>
+
+<section id="cheat"><h2>14. Quick Cheat Sheet</h2>
+<table><tr><th>Feature</th><th>Remember</th></tr><tr><td>Artifact</td><td>Build/test output preserve.</td></tr><tr><td><code>upload-artifact@v4</code></td><td>Upload.</td></tr><tr><td><code>download-artifact@v4</code></td><td>Retrieve.</td></tr><tr><td><code>path</code></td><td>Files/directories.</td></tr><tr><td>Cache</td><td>Repeated work faster.</td></tr><tr><td><code>cache: npm</code></td><td>Node.</td></tr><tr><td><code>cache: pip</code></td><td>Python.</td></tr><tr><td><code>cache: maven</code></td><td>Java Maven.</td></tr><tr><td><code>cache: gradle</code></td><td>Java Gradle.</td></tr><tr><td><code>actions/cache@v4</code></td><td>Custom cache.</td></tr><tr><td><code>key</code></td><td>Cache identity.</td></tr><tr><td><code>hashFiles()</code></td><td>Dependency-aware key.</td></tr><tr><td><code>restore-keys</code></td><td>Fallback cache.</td></tr><tr><td><code>concurrency</code></td><td>Overlap control.</td></tr><tr><td><code>group</code></td><td>Logical group.</td></tr><tr><td><code>cancel-in-progress</code></td><td>Active-run cancellation policy.</td></tr></table>
+<div class="call ok"><b>Master formula:</b> Cache = Speed → Artifact = Output → Concurrency = Control</div>
+<div class="call"><b>DevOps formula:</b> Code → Cache → Install → Test → Build → Artifact → Deploy → Concurrency Control</div>
+<h3>Final checklist</h3><ul><li>□ Artifact understood</li><li>□ Upload/download artifact practiced</li><li>□ Cache understood</li><li>□ Artifact vs cache understood</li><li>□ Node npm caching practiced</li><li>□ Python pip caching practiced</li><li>□ Java Maven/Gradle caching practiced</li><li>□ Cache key/hashFiles/restore-keys understood</li><li>□ Workflow-level concurrency understood</li><li>□ Job-level concurrency understood</li><li>□ PR latest-run cancellation practiced</li><li>□ Production serialization understood</li><li>□ Combined cache + artifact + concurrency pipeline understood</li></ul>
+</section>
+</main>
+<footer><div class="container"><b>GitHub Actions — Artifacts, Caching & Job Concurrency</b><br>JavaScript • Python • Java • CI/CD • DevOps Practice</div></footer>
+</body>
+</html>
