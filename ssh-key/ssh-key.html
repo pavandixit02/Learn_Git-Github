@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SSH Keys — Complete Git, GitHub & DevOps Study Material</title>
+<style>
+:root{--bg:#080d18;--panel:#10192b;--panel2:#0c1424;--text:#eaf0fa;--muted:#aab6ca;--blue:#58a6ff;--green:#45d483;--yellow:#e7bd55;--red:#ff6b6b;--cyan:#4dd9e3;--border:#293750;--code:#050a12}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:linear-gradient(180deg,#070b14,#0b1120 45%,#09101d);color:var(--text);font:16px/1.7 Inter,Segoe UI,Arial,sans-serif}
+.container{width:min(1200px,92%);margin:auto}
+header{padding:65px 0 45px;border-bottom:1px solid var(--border);background:radial-gradient(circle at 10% 0,#17385f,transparent 34%),radial-gradient(circle at 90% 5%,#33205e,transparent 30%)}
+.badge{display:inline-block;padding:6px 12px;border:1px solid #3b5d87;border-radius:999px;background:#0d1d35;color:#9dccff;font-size:.85rem}
+h1{font-size:clamp(2.1rem,5vw,4rem);line-height:1.08;margin:18px 0}h2{font-size:2rem}h3{color:#dce8fa;margin-top:28px}
+.sub,.small{color:var(--muted)}nav{position:sticky;top:0;z-index:10;background:#080d18e8;backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+nav .container{display:flex;gap:6px;overflow:auto;padding:9px 0}nav a{white-space:nowrap;color:#bdc9db;text-decoration:none;padding:7px 10px;border-radius:8px}nav a:hover{background:#18243b;color:#fff}
+section{padding:55px 0;border-bottom:1px solid var(--border)}.card,.call{background:linear-gradient(145deg,var(--panel),var(--panel2));border:1px solid var(--border);border-radius:15px;padding:22px;margin:18px 0}
+.call{border-left:4px solid var(--blue)}.ok{border-left-color:var(--green);background:#0b1d16}.warn{border-left-color:var(--yellow);background:#211b0d}.danger{border-left-color:var(--red);background:#211114}.info{border-left-color:var(--cyan);background:#0a1b21}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:15px}
+pre{background:var(--code);border:1px solid #202e46;border-radius:11px;padding:18px;overflow:auto;color:#dce7f8;font:14px/1.65 "JetBrains Mono",Consolas,monospace}
+code{font-family:"JetBrains Mono",Consolas,monospace}.in{background:#17243b;color:#a8d3ff;padding:2px 6px;border-radius:5px}
+table{width:100%;border-collapse:collapse;display:block;overflow:auto;margin:18px 0}th,td{border:1px solid var(--border);padding:11px 13px;text-align:left;min-width:155px}th{background:#17243b;color:#dce8f8}tr:nth-child(even){background:#0e1729}
+.flow{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:9px;margin:25px 0}.step{padding:12px 16px;border:1px solid #35577f;background:#13213a;border-radius:11px;text-align:center;min-width:145px}.arrow{color:#7da1d0;font-size:1.3rem}
+.diagram{background:#050a12;border:1px solid var(--border);border-radius:12px;padding:18px;overflow:auto}
+.badge2{display:inline-block;padding:4px 8px;border:1px solid #3a4e6a;border-radius:6px;color:#b9d5f5;margin:2px;font-size:.8rem}
+footer{text-align:center;color:var(--muted);padding:42px}li{margin:6px 0}
+</style>
+</head>
+<body>
+
+<header>
+<div class="container">
+<span class="badge">SSH • Git • GitHub • Linux • DevOps</span>
+<h1>SSH Keys — Complete Study Material</h1>
+<p class="sub">
+Beginner-to-intermediate notes covering SSH, public/private keys, how authentication works,
+SSH key generation, GitHub setup, HTTPS vs SSH, testing, ssh-agent, passphrases, multiple keys,
+troubleshooting, security best practices, Git workflows and DevOps use cases.
+</p>
+</div>
+</header>
+
+<nav>
+<div class="container">
+<a href="#ssh">1. SSH</a>
+<a href="#keys">2. SSH Keys</a>
+<a href="#auth">3. Authentication Flow</a>
+<a href="#generate">4. Generate</a>
+<a href="#github">5. GitHub Setup</a>
+<a href="#https">6. HTTPS vs SSH</a>
+<a href="#agent">7. ssh-agent</a>
+<a href="#multiple">8. Multiple Keys</a>
+<a href="#trouble">9. Troubleshooting</a>
+<a href="#lab">10. Lab</a>
+<a href="#interview">Interview</a>
+<a href="#cheat">Cheat Sheet</a>
+</div>
+</nav>
+
+<main class="container">
+
+<section id="ssh">
+<h2>1. SSH Kya Hai?</h2>
+
+<div class="call">
+<strong>SSH = Secure Shell.</strong> SSH ek secure network protocol hai jiske through tum
+remote computer/server ke saath encrypted connection establish karke securely authenticate
+aur commands/data transfer kar sakte ho.
+</div>
+
+<h3>Simple real-life analogy</h3>
+<div class="card">
+<p>Imagine ek secure building hai:</p>
+<ul>
+<li><strong>Server:</strong> Building</li>
+<li><strong>SSH connection:</strong> Secure entrance</li>
+<li><strong>Private key:</strong> Tumhari secret key</li>
+<li><strong>Public key:</strong> Building ke security system mein registered lock information</li>
+<li><strong>Authentication:</strong> Security verify karta hai ki tum authorized ho</li>
+</ul>
+</div>
+
+<h3>SSH ka use kaha hota hai?</h3>
+<div class="grid">
+<div class="card"><b>🐧 Linux Servers</b><p>Remote server login aur administration.</p></div>
+<div class="card"><b>🐙 GitHub</b><p>Git repository ke saath SSH-based authentication.</p></div>
+<div class="card"><b>☁️ Cloud</b><p>Cloud VM/instance administration.</p></div>
+<div class="card"><b>🚀 DevOps</b><p>Automation, deployment aur server operations.</p></div>
+<div class="card"><b>🔐 Secure Access</b><p>Password ke alternative authentication.</p></div>
+<div class="card"><b>📦 Git</b><p>Clone, fetch, pull, push via SSH remote.</p></div>
+</div>
+
+<h3>SSH basic command</h3>
+<pre><code>ssh username@server-ip</code></pre>
+
+<p>Example:</p>
+<pre><code>ssh ubuntu@203.0.113.10</code></pre>
+
+<div class="call warn">
+<strong>Important:</strong> Example IP documentation ke liye use kiya gaya hai. Apne actual server ke
+hostname/IP aur username ko replace karna hota hai.
+</div>
+</section>
+
+<section id="keys">
+<h2>2. SSH Key Kya Hoti Hai?</h2>
+
+<div class="call">
+SSH key authentication mein normally <strong>key pair</strong> hota hai:
+<strong>private key + public key</strong>.
+Dono mathematically related hote hain, lekin private key ko secret rakhna hota hai.
+</div>
+
+<h3>Key pair</h3>
+<div class="flow">
+<div class="step">Private Key<br><small>Secret</small></div>
+<div class="arrow">+</div>
+<div class="step">Public Key<br><small>Shareable</small></div>
+<div class="arrow">→</div>
+<div class="step">SSH Authentication</div>
+</div>
+
+<table>
+<tr><th>Private Key</th><th>Public Key</th></tr>
+<tr><td>Secret hoti hai.</td><td>Server/GitHub par add ki ja sakti hai.</td></tr>
+<tr><td>Normally machine par securely stored.</td><td>Remote service ko provide ki jati hai.</td></tr>
+<tr><td>Kabhi public nahi karni.</td><td>Share/register ki ja sakti hai.</td></tr>
+<tr><td>Authentication mein prove karti hai ki tumhare paas corresponding secret hai.</td><td>Authentication verification mein use hoti hai.</td></tr>
+</table>
+
+<h3>Typical files</h3>
+<pre><code>~/.ssh/
+├── id_ed25519          ← Private key
+├── id_ed25519.pub      ← Public key
+└── known_hosts         ← Known server host keys</code></pre>
+
+<div class="call danger">
+<strong>Golden rule:</strong> <code>id_ed25519</code> private key hai. Isko GitHub, Git repository,
+chat, screenshot ya public repository mein upload/commit mat karo.
+</div>
+
+<h3>Common SSH key algorithms</h3>
+<table>
+<tr><th>Type</th><th>Notes</th></tr>
+<tr><td>Ed25519</td><td>Modern SSH key type; new keys ke liye commonly preferred.</td></tr>
+<tr><td>RSA</td><td>Widely supported; legacy systems mein useful ho sakta hai.</td></tr>
+<tr><td>ECDSA</td><td>Elliptic-curve based SSH key type.</td></tr>
+<tr><td>DSA</td><td>Old/deprecated; new setup ke liye avoid.</td></tr>
+</table>
+</section>
+
+<section id="auth">
+<h2>3. SSH Authentication Kaise Work Karti Hai?</h2>
+
+<div class="diagram"><pre>
+Your Computer                         Remote Server / GitHub
+     │                                         │
+     │  1. Connection request                 │
+     ├───────────────────────────────────────→│
+     │                                         │
+     │  2. Server identity / host key         │
+     │←───────────────────────────────────────┤
+     │                                         │
+     │  3. Authentication challenge            │
+     │←───────────────────────────────────────┤
+     │                                         │
+     │  4. Client proves possession            │
+     │     of private key                      │
+     ├───────────────────────────────────────→│
+     │                                         │
+     │  5. Server verifies with public key     │
+     │                                         │
+     │←──────────── authenticated ─────────────┤
+</pre></div>
+
+<p>
+High level par server verify karta hai ki client corresponding private key possess karta hai,
+without sending the private key itself to the remote service.
+</p>
+
+<h3>Important terms</h3>
+<table>
+<tr><th>Term</th><th>Meaning</th></tr>
+<tr><td>Public key</td><td>Remote side par registered key.</td></tr>
+<tr><td>Private key</td><td>Client side secret key.</td></tr>
+<tr><td>Host key</td><td>Server ki identity verify karne mein SSH use karta hai.</td></tr>
+<tr><td>known_hosts</td><td>Known server identities/host keys ka local record.</td></tr>
+<tr><td>Passphrase</td><td>Private key ko local machine par protect karne wali secret phrase.</td></tr>
+<tr><td>ssh-agent</td><td>Loaded private keys ko session ke dauran manage/use karne mein help karta hai.</td></tr>
+</table>
+</section>
+
+<section id="generate">
+<h2>4. SSH Key Kaise Generate Karein?</h2>
+
+<h3>Step 1 — Check existing SSH keys</h3>
+<pre><code>ls -la ~/.ssh</code></pre>
+
+<p>Common output mein files jaise:</p>
+<pre><code>id_ed25519
+id_ed25519.pub
+known_hosts</code></pre>
+
+<h3>Step 2 — Generate Ed25519 key</h3>
+<pre><code>ssh-keygen -t ed25519 -C "your-email@example.com"</code></pre>
+
+<p>Command ke parts:</p>
+<table>
+<tr><th>Part</th><th>Meaning</th></tr>
+<tr><td><code>ssh-keygen</code></td><td>SSH key pair generate/manage karne ka command.</td></tr>
+<tr><td><code>-t ed25519</code></td><td>Ed25519 key type select.</td></tr>
+<tr><td><code>-C</code></td><td>Comment add karta hai; identification ke liye useful.</td></tr>
+</table>
+
+<h3>Step 3 — File location</h3>
+<p>Prompt kuch is type ka aa sakta hai:</p>
+<pre><code>Enter file in which to save the key:
+/home/username/.ssh/id_ed25519</code></pre>
+
+<p>Single GitHub account ke simple setup mein default location accept kar sakte ho.</p>
+
+<h3>Step 4 — Passphrase</h3>
+<pre><code>Enter passphrase:
+Enter same passphrase again:</code></pre>
+
+<div class="call ok">
+<strong>Recommended:</strong> Private key ko passphrase se protect karna useful hai.
+Agar private key file accidentally copy ho bhi jaye, passphrase ek additional protection layer provide karti hai.
+</div>
+
+<h3>Step 5 — Verify generated files</h3>
+<pre><code>ls -la ~/.ssh
+ls -l ~/.ssh/id_ed25519*</code></pre>
+
+<h3>Step 6 — Public key display</h3>
+<pre><code>cat ~/.ssh/id_ed25519.pub</code></pre>
+
+<p>Public key normally ek single line hoti hai, for example:</p>
+<pre><code>ssh-ed25519 AAAA... your-email@example.com</code></pre>
+
+<div class="call danger">
+<strong>Only .pub key share karo.</strong> <code>id_ed25519</code> ko kabhi copy/share/upload mat karo.
+</div>
+
+<h3>RSA key generation — compatibility case</h3>
+<pre><code>ssh-keygen -t rsa -b 4096 -C "your-email@example.com"</code></pre>
+
+<p>New setups mein Ed25519 generally simpler modern choice hai; RSA tab use karo jab compatibility requirement ho.</p>
+</section>
+
+<section id="github">
+<h2>5. GitHub ke Saath SSH Key Setup</h2>
+
+<h3>Step 1 — Generate key</h3>
+<pre><code>ssh-keygen -t ed25519 -C "your-email@example.com"</code></pre>
+
+<h3>Step 2 — Public key copy karo</h3>
+
+<p>Linux clipboard tools environment-dependent hote hain. Terminal mein safe/simple method:</p>
+<pre><code>cat ~/.ssh/id_ed25519.pub</code></pre>
+
+<p>Output ki complete line copy karo.</p>
+
+<h3>Step 3 — GitHub account mein public key add karo</h3>
+<ol>
+<li>GitHub account open karo.</li>
+<li>Settings open karo.</li>
+<li>SSH and GPG keys section par jao.</li>
+<li>New SSH key choose karo.</li>
+<li>Descriptive title do, e.g. <code>Dell Ubuntu</code>.</li>
+<li>Public key paste karo.</li>
+<li>Save/Add SSH key.</li>
+</ol>
+
+<h3>Step 4 — SSH connection test</h3>
+<pre><code>ssh -T git@github.com</code></pre>
+
+<p>First connection par host authenticity confirmation prompt aa sakta hai. Expected GitHub authentication response ko
+dekhkar verify karo ki authentication successful hai.</p>
+
+<h3>Step 5 — Git remote SSH format</h3>
+<pre><code>git@github.com:USERNAME/REPOSITORY.git</code></pre>
+
+<p>Check current remote:</p>
+<pre><code>git remote -v</code></pre>
+
+<h3>HTTPS remote ko SSH mein change karna</h3>
+<pre><code>git remote set-url origin git@github.com:USERNAME/REPOSITORY.git</code></pre>
+
+<p>Verify:</p>
+<pre><code>git remote -v</code></pre>
+
+<h3>Then normal Git commands</h3>
+<pre><code>git add .
+git commit -m "Update project"
+git push origin main</code></pre>
+
+<div class="call success">
+<strong>Important:</strong> Ek baar SSH authentication correctly configured ho jaye, Git remote SSH URL use karke
+push/pull/clone operations ke liye normal Git workflow continue kar sakte ho.
+</div>
+</section>
+
+<section id="https">
+<h2>6. HTTPS vs SSH — Detailed Difference</h2>
+
+<table>
+<tr><th>Feature</th><th>HTTPS</th><th>SSH</th></tr>
+<tr><td>Example remote</td><td><code>https://github.com/user/repo.git</code></td><td><code>git@github.com:user/repo.git</code></td></tr>
+<tr><td>Authentication</td><td>Git hosting credentials/token-based authentication.</td><td>SSH key pair authentication.</td></tr>
+<tr><td>Private key required?</td><td>No SSH private key.</td><td>Yes, SSH private key.</td></tr>
+<tr><td>Setup</td><td>Often simple to start.</td><td>Initial key setup required.</td></tr>
+<tr><td>Daily Git usage</td><td>Credentials/token mechanism configured as required.</td><td>SSH agent/key handles authentication.</td></tr>
+<tr><td>Common port</td><td>443 for HTTPS.</td><td>22 for standard SSH; hosting providers may offer alternatives.</td></tr>
+<tr><td>Server login</td><td>Not the normal SSH server login mechanism.</td><td>Designed for secure shell/remote access.</td></tr>
+<tr><td>Best use</td><td>Restricted networks, quick setup, environments where HTTPS is preferred.</td><td>Developer/DevOps workflows where SSH key auth is convenient.</td></tr>
+</table>
+
+<h3>Visual comparison</h3>
+<div class="grid">
+<div class="card">
+<h3>HTTPS</h3>
+<pre><code>git clone
+https://github.com/user/repo.git
+
+        ↓
+
+HTTPS authentication
+        ↓
+GitHub
+</code></pre>
+</div>
+<div class="card">
+<h3>SSH</h3>
+<pre><code>git clone
+git@github.com:user/repo.git
+
+        ↓
+
+SSH key authentication
+        ↓
+GitHub
+</code></pre>
+</div>
+</div>
+
+<h3>Which one should you understand as a DevOps learner?</h3>
+<p>
+Dono ko samjho. HTTPS networking environments mein common aur convenient ho sakta hai; SSH keys
+Git/GitHub, Linux administration, cloud VMs, automation aur DevOps workflows mein important concept hain.
+</p>
+
+<div class="call info">
+<strong>Important:</strong> SSH aur HTTPS dono secure protocols/transport mechanisms hain, lekin
+“SSH key” ek authentication mechanism hai. HTTPS ko SSH key ke saath compare karna technically
+“HTTPS-based Git authentication vs SSH-based Git authentication” comparison hai.
+</div>
+</section>
+
+<section id="agent">
+<h2>7. ssh-agent — Private Key Management</h2>
+
+<div class="call">
+<strong>Why ssh-agent?</strong> Agar private key passphrase protected hai, to ssh-agent loaded key ko
+session ke dauran manage kar sakta hai, jisse har SSH operation par passphrase repeatedly enter karne ki need kam ho sakti hai.
+</div>
+
+<h3>Start agent</h3>
+<pre><code>eval "$(ssh-agent -s)"</code></pre>
+
+<h3>Add key</h3>
+<pre><code>ssh-add ~/.ssh/id_ed25519</code></pre>
+
+<h3>List loaded keys</h3>
+<pre><code>ssh-add -l</code></pre>
+
+<h3>Remove all loaded keys</h3>
+<pre><code>ssh-add -D</code></pre>
+
+<table>
+<tr><th>Command</th><th>Purpose</th></tr>
+<tr><td><code>ssh-agent</code></td><td>Agent process manage.</td></tr>
+<tr><td><code>ssh-add</code></td><td>Private key agent mein load.</td></tr>
+<tr><td><code>ssh-add -l</code></td><td>Loaded identities list.</td></tr>
+<tr><td><code>ssh-add -D</code></td><td>All identities remove from agent.</td></tr>
+</table>
+</section>
+
+<section id="multiple">
+<h2>8. Multiple SSH Keys — GitHub, Work, Personal</h2>
+
+<p>
+Agar tumhare paas multiple GitHub accounts/services hain, separate keys rakhna useful ho sakta hai.
+Example:
+</p>
+
+<pre><code>~/.ssh/
+├── id_ed25519_personal
+├── id_ed25519_personal.pub
+├── id_ed25519_work
+├── id_ed25519_work.pub
+└── config</code></pre>
+
+<h3>Generate separate keys</h3>
+<pre><code>ssh-keygen -t ed25519 -C "personal@example.com" -f ~/.ssh/id_ed25519_personal
+
+ssh-keygen -t ed25519 -C "work@example.com" -f ~/.ssh/id_ed25519_work</code></pre>
+
+<h3>SSH config</h3>
+<pre><code>Host github-personal
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/id_ed25519_personal
+    IdentitiesOnly yes
+
+Host github-work
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/id_ed25519_work
+    IdentitiesOnly yes</code></pre>
+
+<h3>Use personal alias</h3>
+<pre><code>git clone git@github-personal:PERSONAL_USER/repo.git</code></pre>
+
+<h3>Use work alias</h3>
+<pre><code>git clone git@github-work:WORK_USER/repo.git</code></pre>
+
+<div class="call warn">
+<strong>Concept:</strong> Host alias Git remote mein use hota hai, but actual <code>HostName</code> GitHub hi ho sakta hai.
+Isse SSH ko correct private key select karne mein help milti hai.
+</div>
+
+<h3>Project remote set karna</h3>
+<pre><code>git remote set-url origin git@github-personal:USERNAME/REPO.git</code></pre>
+</section>
+
+<section id="trouble">
+<h2>9. SSH Troubleshooting</h2>
+
+<h3>Error: Permission denied (publickey)</h3>
+<pre><code>git@github.com: Permission denied (publickey).</code></pre>
+
+<p>Possible causes:</p>
+<ul>
+<li>Public key GitHub account mein add nahi hui.</li>
+<li>Wrong private key use ho rahi hai.</li>
+<li>ssh-agent mein key loaded nahi.</li>
+<li>SSH config wrong hai.</li>
+<li>Git remote wrong hai.</li>
+</ul>
+
+<h3>Debug command</h3>
+<pre><code>ssh -vT git@github.com</code></pre>
+
+<p>More detailed:</p>
+<pre><code>ssh -vvT git@github.com</code></pre>
+
+<h3>Check keys</h3>
+<pre><code>ls -la ~/.ssh
+ssh-add -l</code></pre>
+
+<h3>Check remote</h3>
+<pre><code>git remote -v</code></pre>
+
+<h3>Test specific key</h3>
+<pre><code>ssh -i ~/.ssh/id_ed25519 -T git@github.com</code></pre>
+
+<h3>Check SSH config</h3>
+<pre><code>cat ~/.ssh/config</code></pre>
+
+<h3>Permissions on Linux</h3>
+<pre><code>chmod 700 ~/.ssh
+chmod 600 ~/.ssh/id_ed25519
+chmod 644 ~/.ssh/id_ed25519.pub</code></pre>
+
+<div class="call danger">
+<strong>Never do this:</strong> private key ko <code>chmod 644</code> karke world-readable mat rakho.
+Private key permissions restrictive honi chahiye.
+</div>
+
+<h3>Error: Repository not found</h3>
+<p>
+SSH authentication successful hone ke baad bhi repository access fail ho sakta hai agar:
+wrong repository path, wrong GitHub account, ya insufficient repository permissions hain.
+</p>
+</section>
+
+<section id="lab">
+<h2>10. Complete SSH + GitHub Practical Lab</h2>
+
+<h3>Step 1 — Check OS/user</h3>
+<pre><code>whoami
+uname -a</code></pre>
+
+<h3>Step 2 — Check existing keys</h3>
+<pre><code>ls -la ~/.ssh</code></pre>
+
+<h3>Step 3 — Generate key</h3>
+<pre><code>ssh-keygen -t ed25519 -C "your-email@example.com"</code></pre>
+
+<h3>Step 4 — Start agent</h3>
+<pre><code>eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/id_ed25519</code></pre>
+
+<h3>Step 5 — Verify public key</h3>
+<pre><code>cat ~/.ssh/id_ed25519.pub</code></pre>
+
+<h3>Step 6 — Add public key to GitHub</h3>
+<p>GitHub Settings → SSH and GPG keys → New SSH key → paste public key → save.</p>
+
+<h3>Step 7 — Test</h3>
+<pre><code>ssh -T git@github.com</code></pre>
+
+<h3>Step 8 — Create/use repository remote</h3>
+<pre><code>git remote -v</code></pre>
+
+<p>If HTTPS remote hai:</p>
+<pre><code>git remote set-url origin git@github.com:USERNAME/REPOSITORY.git</code></pre>
+
+<h3>Step 9 — Push</h3>
+<pre><code>git add .
+git commit -m "Configure SSH workflow"
+git push origin main</code></pre>
+
+<div class="call ok">
+<strong>Lab success condition:</strong> <code>git push</code> successfully complete ho aur
+<code>ssh -T git@github.com</code> authentication successful indicate kare.
+</div>
+</section>
+
+<section>
+<h2>11. SSH Security Best Practices</h2>
+<ul>
+<li>Private key kabhi share mat karo.</li>
+<li>Private key ko public Git repository mein commit mat karo.</li>
+<li>Strong passphrase use karo.</li>
+<li>Need ke according separate keys use karo.</li>
+<li>Unknown host-key warnings ko blindly ignore mat karo.</li>
+<li>Unused/compromised keys ko revoke/remove karo.</li>
+<li>Production servers par password login/SSH configuration ko organization policy ke according harden karo.</li>
+<li>Least privilege follow karo.</li>
+<li>Private keys ka secure backup strategy rakho; unencrypted copies casually cloud/chat mein mat upload karo.</li>
+</ul>
+
+<div class="call danger">
+<strong>Most important:</strong> Public key share karna generally expected hai; private key share karna authentication secret compromise kar sakta hai.
+</div>
+</section>
+
+<section id="interview">
+<h2>12. Interview Questions</h2>
+<div class="card">
+<h3>Q1. SSH kya hai?</h3>
+<p>Secure Shell, encrypted remote communication/authentication ke liye protocol.</p>
+<h3>Q2. SSH key pair kya hota hai?</h3>
+<p>Public key + private key ka cryptographic pair.</p>
+<h3>Q3. Public aur private key mein difference?</h3>
+<p>Public key remote service par register hoti hai; private key secret client-side credential hoti hai.</p>
+<h3>Q4. GitHub mein SSH key kyu use karte hain?</h3>
+<p>Git operations ko SSH-based key authentication ke through authenticate karne ke liye.</p>
+<h3>Q5. Ed25519 kya hai?</h3>
+<p>Modern public-key signature algorithm/key type jo SSH key generation mein commonly use hota hai.</p>
+<h3>Q6. <code>ssh-keygen</code> kya karta hai?</h3>
+<p>SSH key pair generate/manage karta hai.</p>
+<h3>Q7. <code>ssh-agent</code>?</h3>
+<p>Loaded private keys ko session ke dauran manage/use karne mein help karta hai.</p>
+<h3>Q8. <code>known_hosts</code>?</h3>
+<p>SSH known server host keys/identities ka local record.</p>
+<h3>Q9. HTTPS vs SSH Git remote?</h3>
+<p>HTTPS remote HTTPS-based authentication use karta hai; SSH remote SSH key-based authentication use karta hai.</p>
+<h3>Q10. Permission denied (publickey) kaise troubleshoot?</h3>
+<p>Public key registration, private key selection, ssh-agent, SSH config, remote URL aur verbose SSH logs check karo.</p>
+<h3>Q11. Multiple GitHub accounts kaise manage karoge?</h3>
+<p>Separate keys + <code>~/.ssh/config</code> host aliases use kar sakte ho.</p>
+<h3>Q12. Private key GitHub par upload karni hai?</h3>
+<p><strong>No.</strong> GitHub ko public key add karni hoti hai; private key secret rehti hai.</p>
+</div>
+</section>
+
+<section id="cheat">
+<h2>13. SSH Cheat Sheet</h2>
+<table>
+<tr><th>Command</th><th>Use</th></tr>
+<tr><td><code>ls -la ~/.ssh</code></td><td>SSH files check.</td></tr>
+<tr><td><code>ssh-keygen -t ed25519</code></td><td>Ed25519 key pair generate.</td></tr>
+<tr><td><code>cat ~/.ssh/id_ed25519.pub</code></td><td>Public key show.</td></tr>
+<tr><td><code>eval "$(ssh-agent -s)"</code></td><td>Agent start.</td></tr>
+<tr><td><code>ssh-add ~/.ssh/id_ed25519</code></td><td>Private key agent mein add.</td></tr>
+<tr><td><code>ssh-add -l</code></td><td>Loaded keys list.</td></tr>
+<tr><td><code>ssh -T git@github.com</code></td><td>GitHub SSH auth test.</td></tr>
+<tr><td><code>ssh -vT git@github.com</code></td><td>SSH debug.</td></tr>
+<tr><td><code>git remote -v</code></td><td>Git remote check.</td></tr>
+<tr><td><code>git remote set-url origin ...</code></td><td>Remote URL change.</td></tr>
+<tr><td><code>chmod 600 ~/.ssh/id_ed25519</code></td><td>Private key restrictive permission.</td></tr>
+</table>
+
+<div class="call ok">
+<strong>Master formula:</strong><br>
+Generate Key Pair → Keep Private Key Secret → Add Public Key → Test SSH → Use SSH Git Remote → Push/Pull
+</div>
+
+<h3>Final checklist</h3>
+<ul>
+<li>□ SSH ka purpose samjha</li>
+<li>□ Public/private key difference samjha</li>
+<li>□ Ed25519 samjha</li>
+<li>□ SSH key generate ki</li>
+<li>□ Passphrase samjhi</li>
+<li>□ GitHub mein public key add ki</li>
+<li>□ <code>ssh -T git@github.com</code> test kiya</li>
+<li>□ HTTPS vs SSH Git remote samjha</li>
+<li>□ ssh-agent samjha</li>
+<li>□ Multiple keys/config samjhe</li>
+<li>□ publickey error troubleshoot karna samjha</li>
+<li>□ Private key security rules yaad hain</li>
+</ul>
+</section>
+
+</main>
+<footer>
+<div class="container"><strong>SSH Keys — Git, GitHub & DevOps Complete Study Material</strong><br>
+Learn → Generate → Configure → Test → Troubleshoot → Secure</div>
+</footer>
+</body>
+</html>
